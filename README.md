@@ -5,9 +5,81 @@ Four Keys（デプロイ頻度・変更のリードタイム・変更障害率�
 
 ---
 
+## 動かし方
+
+開発マシン上で必要なときに起動する構成です（ADR-0007）。常時稼働はしません。
+
+### 準備
+
+```sh
+cp .env.example .env
+# .env に GitHub の fine-grained PAT（read-only・対象リポジトリのみ）を設定する
+```
+
+`.env` は `.gitignore` 済みです。**コミットしないでください。**
+
+### Docker で起動する（通常はこちら）
+
+```sh
+docker compose up --build   # 起動
+docker compose down         # 停止
+```
+
+`http://127.0.0.1:3000` で開きます。
+
+SQLite ファイルは名前付き volume (`four-keys-data`) 上の `/data/four-keys.sqlite` にあり、
+コンテナを作り直しても残ります。**`docker compose down -v` を実行すると収集済みの履歴がすべて消えます。**
+
+### ホスト上で直接動かす（開発時）
+
+```sh
+npm install
+npm run dev     # tsx watch
+npm run build && npm start
+```
+
+`http://127.0.0.1:3000` で開きます。
+
+### その他のコマンド
+
+```sh
+npm run typecheck   # tsc --noEmit
+npm run lint        # biome check
+npm run format      # biome check --write
+npm test            # vitest run
+```
+
+### 設定（環境変数）
+
+| 変数 | 既定値 | 説明 |
+|---|---|---|
+| `GITHUB_TOKEN` | （なし） | fine-grained PAT。未設定でも画面は開くが収集は動かない |
+| `HOST` | `127.0.0.1` | バインド先。下の注意を参照 |
+| `PORT` | `3000` | 待ち受けポート |
+| `DATABASE_PATH` | `./data/four-keys.sqlite` | SQLite ファイル。Docker では `/data/four-keys.sqlite` |
+| `COLLECT_CRON` | `0 * * * *` | 稼働中の収集スケジュール |
+| `COLLECT_ON_STARTUP` | `true` | 起動時に 1 回追いつくかどうか |
+
+> **公開範囲について。** ホスト上で直接動かす場合、アプリは `127.0.0.1` にのみバインドします。
+> Docker の場合はコンテナ内で `0.0.0.0` にバインドし（そうしないとホストから到達できません）、
+> 公開範囲は `docker-compose.yml` の `ports: "127.0.0.1:3000:3000"` が抑えています。
+> **この左辺の `127.0.0.1:` を外すと、同一ネットワーク上の全端末から認証なしで閲覧可能になります。**
+> 詳細は `docs/adr/0006-auth-and-access-control.md` の実装上の補足を参照してください。
+
+---
+
 ## コンセプト
 
 > 本セクションは要件定義前のコンセプト（方向性）の記述です。詳細仕様は別途定義します。
+
+### 現状の実装スコープ（2026-09-20 時点）
+
+> 上記のコンセプトに対し、**現在の実装は単一利用者がローカルで実行する形**を取ります。
+> Docker コンテナを開発マシン上で必要なときに起動し、`127.0.0.1` でのみアクセスします。
+> チームが共有 URL を開いて眺める形は、設計上の余地は残していますが MVP では提供しません。
+> また、**対象指標は MVP ではスループット側 2 指標**（デプロイ頻度・変更のリードタイム）に絞っています。
+>
+> 経緯と判断の根拠は `docs/adr/` を参照してください。
 
 ### このアプリケーションが目指すもの
 

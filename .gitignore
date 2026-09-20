@@ -1,0 +1,15 @@
+node_modules/
+dist/
+data/
+coverage/
+
+# PAT を含む。絶対にコミットしないこと（ADR-0006 改訂）
+.env
+.env.*
+!.env.example
+
+*.sqlite
+*.sqlite-wal
+*.sqlite-shm
+
+.DS_Store
