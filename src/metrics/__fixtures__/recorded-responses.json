@@ -1,0 +1,301 @@
+{
+  "recordedAt": "2026-09-20T06:00:00.000Z",
+  "repo": {
+    "owner": "ymiyamoto63",
+    "repo": "four-keys-metrics-viewer"
+  },
+  "note": "src/github/__fixtures__ に記録済みの実 API レスポンスを record-fixtures.ts と同じサニタイズに通して組み立てたもの（#16）。取り直すときは npm run record:fixtures を使う。",
+  "commits": [
+    {
+      "sha": "dc68ad05a7330b6e7610f0ac359b929050810dc3",
+      "node_id": "C_kwDOUh8989oAKGRjNjhhZDA1YTczMzBiNmU3NjEwZjBhYzM1OWI5MjkwNTA4MTBkYzM",
+      "url": "https://api.github.com/repos/ymiyamoto63/four-keys-metrics-viewer/commits/dc68ad05a7330b6e7610f0ac359b929050810dc3",
+      "html_url": "https://github.com/ymiyamoto63/four-keys-metrics-viewer/commit/dc68ad05a7330b6e7610f0ac359b929050810dc3",
+      "comments_url": "https://api.github.com/repos/ymiyamoto63/four-keys-metrics-viewer/commits/dc68ad05a7330b6e7610f0ac359b929050810dc3/comments",
+      "parents": [
+        {
+          "sha": "69430f7020cccd2bf11594690fe586b8fd91f1b0",
+          "url": "https://api.github.com/repos/ymiyamoto63/four-keys-metrics-viewer/commits/69430f7020cccd2bf11594690fe586b8fd91f1b0",
+          "html_url": "https://github.com/ymiyamoto63/four-keys-metrics-viewer/commit/69430f7020cccd2bf11594690fe586b8fd91f1b0"
+        },
+        {
+          "sha": "d98794cd75f28ddb8c6a65b792e0e51611f3337b",
+          "url": "https://api.github.com/repos/ymiyamoto63/four-keys-metrics-viewer/commits/d98794cd75f28ddb8c6a65b792e0e51611f3337b",
+          "html_url": "https://github.com/ymiyamoto63/four-keys-metrics-viewer/commit/d98794cd75f28ddb8c6a65b792e0e51611f3337b"
+        }
+      ],
+      "commit": {
+        "message": "Merge pull request #6 from ymiyamoto63/claude/intelligent-shannon-9df2w1\n\nAdd grilling skill from upstream productivity skills",
+        "tree": {
+          "sha": "60635e8d5cdc7e6454730949f5aa0d31f46a73b2",
+          "url": "https://api.github.com/repos/ymiyamoto63/four-keys-metrics-viewer/git/trees/60635e8d5cdc7e6454730949f5aa0d31f46a73b2"
+        },
+        "url": "https://api.github.com/repos/ymiyamoto63/four-keys-metrics-viewer/git/commits/dc68ad05a7330b6e7610f0ac359b929050810dc3",
+        "comment_count": 0,
+        "author": {
+          "date": "2026-09-20T03:49:00Z"
+        },
+        "committer": {
+          "date": "2026-09-20T03:49:00Z"
+        }
+      }
+    },
+    {
+      "comments_url": "https://api.github.com/repos/ymiyamoto63/four-keys-metrics-viewer/commits/c7aeb16a2dc0107e8b8016cdd2b9cea85f93df07/comments",
+      "html_url": "https://github.com/ymiyamoto63/four-keys-metrics-viewer/commit/c7aeb16a2dc0107e8b8016cdd2b9cea85f93df07",
+      "node_id": "C_kwDOUh8989oAKGM3YWViMTZhMmRjMDEwN2U4YjgwMTZjZGQyYjljZWE4NWY5M2RmMDc",
+      "parents": [
+        {
+          "html_url": "https://github.com/ymiyamoto63/four-keys-metrics-viewer/commit/dc68ad05a7330b6e7610f0ac359b929050810dc3",
+          "sha": "dc68ad05a7330b6e7610f0ac359b929050810dc3",
+          "url": "https://api.github.com/repos/ymiyamoto63/four-keys-metrics-viewer/commits/dc68ad05a7330b6e7610f0ac359b929050810dc3"
+        }
+      ],
+      "sha": "c7aeb16a2dc0107e8b8016cdd2b9cea85f93df07",
+      "url": "https://api.github.com/repos/ymiyamoto63/four-keys-metrics-viewer/commits/c7aeb16a2dc0107e8b8016cdd2b9cea85f93df07",
+      "commit": {
+        "comment_count": 0,
+        "message": "docs: grilling の合意内容を ADR 6 枚と CONTEXT.md に記録\n\nMVP の設計判断を確定させた。主要な決定:\n\n- デプロイ検出ルールをスコープごとの設定とし、MVP は default_branch\n  (既定 merge_only) と workflow_run の 2 戦略。deployments_api は保留\n- デプロイ時刻はマージコミットの committer date から取る。PR の merged_at は\n  過去日付で作れず、合成履歴による検証が不可能になるため使わない\n- 生イベントのみ恒久保存し、指標の集計値は保存せずクエリ時に計算。\n  外部 API 再取得が必要な導出のみキャッシュし、ルール変更時に破棄\n- Cloudflare Workers + D1 + Cron Triggers、収集は再開可能な分割ジョブ\n- リードタイムはコミット単位、デプロイ間差分は compare API で取得。\n  時刻順近似は長期放置コミットを集計から落とすため却下\n- 週次バケット / JST 月曜始まり / 中央値 + p75,p90、データ不足週は線を繋がない\n- スコープ設定はリポジトリ内の設定ファイルで管理し、編集 UI は作らない\n- アクセス制御はインフラ層に出し、GitHub 認証は read-only の fine-grained PAT\n\nCo-Authored-By: Claude Opus 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01GJbJUqQHUjRQPDxcbxx3p7",
+        "tree": {
+          "sha": "4cc75ca38d4e4bd790d9b2e2eef3f90f28a562a3",
+          "url": "https://api.github.com/repos/ymiyamoto63/four-keys-metrics-viewer/git/trees/4cc75ca38d4e4bd790d9b2e2eef3f90f28a562a3"
+        },
+        "url": "https://api.github.com/repos/ymiyamoto63/four-keys-metrics-viewer/git/commits/c7aeb16a2dc0107e8b8016cdd2b9cea85f93df07",
+        "author": {
+          "date": "2026-09-20T04:21:38Z"
+        },
+        "committer": {
+          "date": "2026-09-20T04:21:38Z"
+        }
+      }
+    },
+    {
+      "comments_url": "https://api.github.com/repos/ymiyamoto63/four-keys-metrics-viewer/commits/559c75729cb2115f8bb54f52d41b23357912940c/comments",
+      "html_url": "https://github.com/ymiyamoto63/four-keys-metrics-viewer/commit/559c75729cb2115f8bb54f52d41b23357912940c",
+      "node_id": "C_kwDOUh8989oAKDU1OWM3NTcyOWNiMjExNWY4YmI1NGY1MmQ0MWIyMzM1NzkxMjk0MGM",
+      "parents": [
+        {
+          "html_url": "https://github.com/ymiyamoto63/four-keys-metrics-viewer/commit/dc68ad05a7330b6e7610f0ac359b929050810dc3",
+          "sha": "dc68ad05a7330b6e7610f0ac359b929050810dc3",
+          "url": "https://api.github.com/repos/ymiyamoto63/four-keys-metrics-viewer/commits/dc68ad05a7330b6e7610f0ac359b929050810dc3"
+        },
+        {
+          "html_url": "https://github.com/ymiyamoto63/four-keys-metrics-viewer/commit/c7aeb16a2dc0107e8b8016cdd2b9cea85f93df07",
+          "sha": "c7aeb16a2dc0107e8b8016cdd2b9cea85f93df07",
+          "url": "https://api.github.com/repos/ymiyamoto63/four-keys-metrics-viewer/commits/c7aeb16a2dc0107e8b8016cdd2b9cea85f93df07"
+        }
+      ],
+      "sha": "559c75729cb2115f8bb54f52d41b23357912940c",
+      "url": "https://api.github.com/repos/ymiyamoto63/four-keys-metrics-viewer/commits/559c75729cb2115f8bb54f52d41b23357912940c",
+      "commit": {
+        "comment_count": 0,
+        "message": "Merge pull request #27 from ymiyamoto63/claude/quirky-mendel-1dpn73\n\ndocs: Add ADRs and domain context for four-keys metrics viewer",
+        "tree": {
+          "sha": "4cc75ca38d4e4bd790d9b2e2eef3f90f28a562a3",
+          "url": "https://api.github.com/repos/ymiyamoto63/four-keys-metrics-viewer/git/trees/4cc75ca38d4e4bd790d9b2e2eef3f90f28a562a3"
+        },
+        "url": "https://api.github.com/repos/ymiyamoto63/four-keys-metrics-viewer/git/commits/559c75729cb2115f8bb54f52d41b23357912940c",
+        "author": {
+          "date": "2026-09-20T04:30:00Z"
+        },
+        "committer": {
+          "date": "2026-09-20T04:30:00Z"
+        }
+      }
+    }
+  ],
+  "pullRequests": [
+    {
+      "url": "https://api.github.com/repos/ymiyamoto63/four-keys-metrics-viewer/pulls/28",
+      "id": 4582494208,
+      "node_id": "PR_kwDOUh89888AAAABESNQAA",
+      "html_url": "https://github.com/ymiyamoto63/four-keys-metrics-viewer/pull/28",
+      "diff_url": "https://github.com/ymiyamoto63/four-keys-metrics-viewer/pull/28.diff",
+      "patch_url": "https://github.com/ymiyamoto63/four-keys-metrics-viewer/pull/28.patch",
+      "issue_url": "https://api.github.com/repos/ymiyamoto63/four-keys-metrics-viewer/issues/28",
+      "number": 28,
+      "state": "closed",
+      "locked": false,
+      "title": "feat: Node + SQLite + Docker への構成変更と、プロジェクト雛形 (#7)",
+      "body": "PR #27 がマージされた後にこのブランチへ積まれた 3 コミットを main へ入れるための PR です。\n内容は「Cloudflare Workers + D1 から Node + SQLite + Docker への構成変更」と、その構成での雛形実装です。\n\n## 含まれる変更\n\n### `docs: D1 容量見積もり (#25) と ADR-0003 の訂正`\n\n実測に基づく容量見積もり（`docs/spikes/0025-d1-capacity.md`）。\n\nD1 の容量・書き込み制限には十分余裕がありました（10 スコープ・1 年で 41,124 行 / 6.3 MB）。\n律速は D1 ではなく **Workers Free の Cron Trigger あたり 10 ms という CPU 時間**で、\ncompare レスポンス（実測 342 KB）の JSON パース 1 回で使い切ります。\n\nADR-0003 が理由として挙げていた「無料枠で常時稼働できる」は誤りだったため、その場で訂正しています。\n\n### `docs: Node + SQLite の自ホスト構成へ切り替え (ADR-0007)`\n\n上記を受けた構成変更。ADR-0003 を supersede します。\n\n- Node + TypeScript の単一プロセスを Docker コンテナ 1 つに収める\n- ストアは SQLite (`better-sqlite3`)、DB ファイルは volume\n- 開発マシン上で必要なときに起動する（常時稼働しない）\n- アプリ内スケジューラ。起動時に追いつき、稼働中は毎時\n- `127.0.0.1` からのみアクセス可能にする\n\nADR-0006 の改訂（PAT の保管先を Workers Secrets → `.env`）と README への注記を含みます。\n\n### `feat: プロジェクト雛形 (Node + Hono + SQLite + Docker) (#7)`\n\nADR-0007 の構成でアプリの骨格を作ります。収集とスキーマは空のまま、\n起動・バインド・永続化・スケジューラの経路だけを通しています。\n\n- Hono + JSX の SSR。プレースホルダ画面と `/healthz`\n- SQLite を開く（WAL / foreign_keys / busy_timeout）\n- `node-cron` のアプリ内スケジューラ。収集の失敗でプロセスを落とさず、多重発火も抑止\n- Dockerfile（マルチステージ）と docker-compose.yml\n- TypeScript strict / Biome / Vitest\n- `.env` は `.gitignore`、`.env.example` を追加\n\n## バインド先について\n\nADR-0006 は「`0.0.0.0` にバインドしてはならない」としていましたが、\nコンテナ内でそのまま守るとホストから到達できません（コンテナ内の `127.0.0.1` はコンテナ自身）。\n\n守るべき不変条件は「アプリが `127.0.0.1` にバインドすること」ではなく\n**「このホスト以外から到達できないこと」**で、それを満たす箇所が構成によって変わります。\n\n| 動かし方 | バインド先 | 公開範囲を抑えているもの |\n|---|---|---|\n| `npm start` | `127.0.0.1` | バインド先そのもの |\n| Docker | `0.0.0.0` | compose の `ports: \"127.0.0.1:3000:3000\"` |\n\nコンテナ用の設定がホストでの直接実行に紛れ込むと無防備になるため、\nループバック以外へのバインドは既定で起動時エラーとし、`ALLOW_NON_LOOPBACK_BIND=1` の明示を要求します。\nこの指定を持つのは `docker-compose.yml` だけです。ADR-0006 に補足として追記しました。\n\n## 確認したこと\n\n- `npm run typecheck` / `npm run lint` / `npm test` (6 passed) / `npm run build` がすべて成功\n- ビルド成果物が起動し、`/` と `/healthz` が応答する\n- listen エントリが `127.0.0.1` の 1 件のみ\n- SIGTERM でサーバ停止 → スケジューラ停止 → DB クローズの順に終了する\n- 再起動で既存の SQLite ファイルを開き直す\n- `HOST=0.0.0.0` をオプトインなしで指定すると exit 1 で起動を拒否する\n\n## 確認できていないこと\n\n**Docker の実行は検証していません。** 作業環境に Docker デーモンがないためです。\n`docker compose config` によるパースと `ports` の `host_ip: 127.0.0.1` は確認済みですが、\n`docker compose up --build` が通ること、別端末からアクセスできないこと、\nvolume が残ることは手元での確認が必要です。\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nhttps://claude.ai/code/session_01GJbJUqQHUjRQPDxcbxx3p7\n\n---\n_Generated by [Claude Code](https://claude.ai/code/session_01GJbJUqQHUjRQPDxcbxx3p7)_",
+      "created_at": "2026-09-20T05:19:49Z",
+      "updated_at": "2026-09-20T05:20:23Z",
+      "closed_at": "2026-09-20T05:20:21Z",
+      "merged_at": "2026-09-20T05:20:21Z",
+      "merge_commit_sha": "1df6bbace9735571ec8b8b4e6ab44f44789c543f",
+      "labels": [],
+      "milestone": null,
+      "draft": false,
+      "commits_url": "https://api.github.com/repos/ymiyamoto63/four-keys-metrics-viewer/pulls/28/commits",
+      "review_comments_url": "https://api.github.com/repos/ymiyamoto63/four-keys-metrics-viewer/pulls/28/comments",
+      "review_comment_url": "https://api.github.com/repos/ymiyamoto63/four-keys-metrics-viewer/pulls/comments{/number}",
+      "comments_url": "https://api.github.com/repos/ymiyamoto63/four-keys-metrics-viewer/issues/28/comments",
+      "statuses_url": "https://api.github.com/repos/ymiyamoto63/four-keys-metrics-viewer/statuses/c10da661b1c2a481c8f122b526ff27bcba15ea13",
+      "_links": {
+        "self": {
+          "href": "https://api.github.com/repos/ymiyamoto63/four-keys-metrics-viewer/pulls/28"
+        },
+        "html": {
+          "href": "https://github.com/ymiyamoto63/four-keys-metrics-viewer/pull/28"
+        },
+        "issue": {
+          "href": "https://api.github.com/repos/ymiyamoto63/four-keys-metrics-viewer/issues/28"
+        },
+        "comments": {
+          "href": "https://api.github.com/repos/ymiyamoto63/four-keys-metrics-viewer/issues/28/comments"
+        },
+        "review_comments": {
+          "href": "https://api.github.com/repos/ymiyamoto63/four-keys-metrics-viewer/pulls/28/comments"
+        },
+        "review_comment": {
+          "href": "https://api.github.com/repos/ymiyamoto63/four-keys-metrics-viewer/pulls/comments{/number}"
+        },
+        "commits": {
+          "href": "https://api.github.com/repos/ymiyamoto63/four-keys-metrics-viewer/pulls/28/commits"
+        },
+        "statuses": {
+          "href": "https://api.github.com/repos/ymiyamoto63/four-keys-metrics-viewer/statuses/c10da661b1c2a481c8f122b526ff27bcba15ea13"
+        }
+      },
+      "author_association": "OWNER",
+      "active_lock_reason": null,
+      "merged": true,
+      "mergeable": null,
+      "rebaseable": null,
+      "mergeable_state": "unknown",
+      "comments": 0,
+      "review_comments": 0,
+      "maintainer_can_modify": false,
+      "commits": 3,
+      "additions": 3301,
+      "deletions": 3,
+      "changed_files": 25,
+      "head": {
+        "label": "ymiyamoto63:claude/quirky-mendel-1dpn73",
+        "ref": "claude/quirky-mendel-1dpn73",
+        "sha": "c10da661b1c2a481c8f122b526ff27bcba15ea13"
+      },
+      "base": {
+        "label": "ymiyamoto63:main",
+        "ref": "main",
+        "sha": "559c75729cb2115f8bb54f52d41b23357912940c"
+      }
+    }
+  ],
+  "compares": [
+    {
+      "baseSha": "dc68ad05a7330b6e7610f0ac359b929050810dc3",
+      "headSha": "c7aeb16a2dc0107e8b8016cdd2b9cea85f93df07",
+      "response": {
+        "url": "https://api.github.com/repos/ymiyamoto63/four-keys-metrics-viewer/compare/dc68ad0...c7aeb16",
+        "html_url": "https://github.com/ymiyamoto63/four-keys-metrics-viewer/compare/dc68ad0...c7aeb16",
+        "permalink_url": "https://github.com/ymiyamoto63/four-keys-metrics-viewer/compare/ymiyamoto63:dc68ad0...ymiyamoto63:c7aeb16",
+        "diff_url": "https://github.com/ymiyamoto63/four-keys-metrics-viewer/compare/dc68ad0...c7aeb16.diff",
+        "patch_url": "https://github.com/ymiyamoto63/four-keys-metrics-viewer/compare/dc68ad0...c7aeb16.patch",
+        "status": "ahead",
+        "ahead_by": 1,
+        "behind_by": 0,
+        "total_commits": 1,
+        "base_commit": {
+          "sha": "dc68ad05a7330b6e7610f0ac359b929050810dc3",
+          "node_id": "C_kwDOUh8989oAKGRjNjhhZDA1YTczMzBiNmU3NjEwZjBhYzM1OWI5MjkwNTA4MTBkYzM",
+          "url": "https://api.github.com/repos/ymiyamoto63/four-keys-metrics-viewer/commits/dc68ad05a7330b6e7610f0ac359b929050810dc3",
+          "html_url": "https://github.com/ymiyamoto63/four-keys-metrics-viewer/commit/dc68ad05a7330b6e7610f0ac359b929050810dc3",
+          "comments_url": "https://api.github.com/repos/ymiyamoto63/four-keys-metrics-viewer/commits/dc68ad05a7330b6e7610f0ac359b929050810dc3/comments",
+          "parents": [
+            {
+              "sha": "69430f7020cccd2bf11594690fe586b8fd91f1b0",
+              "url": "https://api.github.com/repos/ymiyamoto63/four-keys-metrics-viewer/commits/69430f7020cccd2bf11594690fe586b8fd91f1b0",
+              "html_url": "https://github.com/ymiyamoto63/four-keys-metrics-viewer/commit/69430f7020cccd2bf11594690fe586b8fd91f1b0"
+            },
+            {
+              "sha": "d98794cd75f28ddb8c6a65b792e0e51611f3337b",
+              "url": "https://api.github.com/repos/ymiyamoto63/four-keys-metrics-viewer/commits/d98794cd75f28ddb8c6a65b792e0e51611f3337b",
+              "html_url": "https://github.com/ymiyamoto63/four-keys-metrics-viewer/commit/d98794cd75f28ddb8c6a65b792e0e51611f3337b"
+            }
+          ],
+          "commit": {
+            "message": "Merge pull request #6 from ymiyamoto63/claude/intelligent-shannon-9df2w1\n\nAdd grilling skill from upstream productivity skills",
+            "tree": {
+              "sha": "60635e8d5cdc7e6454730949f5aa0d31f46a73b2",
+              "url": "https://api.github.com/repos/ymiyamoto63/four-keys-metrics-viewer/git/trees/60635e8d5cdc7e6454730949f5aa0d31f46a73b2"
+            },
+            "url": "https://api.github.com/repos/ymiyamoto63/four-keys-metrics-viewer/git/commits/dc68ad05a7330b6e7610f0ac359b929050810dc3",
+            "comment_count": 0,
+            "author": {
+              "date": "2026-09-20T03:49:00Z"
+            },
+            "committer": {
+              "date": "2026-09-20T03:49:00Z"
+            }
+          }
+        },
+        "merge_base_commit": {
+          "sha": "dc68ad05a7330b6e7610f0ac359b929050810dc3",
+          "node_id": "C_kwDOUh8989oAKGRjNjhhZDA1YTczMzBiNmU3NjEwZjBhYzM1OWI5MjkwNTA4MTBkYzM",
+          "url": "https://api.github.com/repos/ymiyamoto63/four-keys-metrics-viewer/commits/dc68ad05a7330b6e7610f0ac359b929050810dc3",
+          "html_url": "https://github.com/ymiyamoto63/four-keys-metrics-viewer/commit/dc68ad05a7330b6e7610f0ac359b929050810dc3",
+          "comments_url": "https://api.github.com/repos/ymiyamoto63/four-keys-metrics-viewer/commits/dc68ad05a7330b6e7610f0ac359b929050810dc3/comments",
+          "parents": [
+            {
+              "sha": "69430f7020cccd2bf11594690fe586b8fd91f1b0",
+              "url": "https://api.github.com/repos/ymiyamoto63/four-keys-metrics-viewer/commits/69430f7020cccd2bf11594690fe586b8fd91f1b0",
+              "html_url": "https://github.com/ymiyamoto63/four-keys-metrics-viewer/commit/69430f7020cccd2bf11594690fe586b8fd91f1b0"
+            },
+            {
+              "sha": "d98794cd75f28ddb8c6a65b792e0e51611f3337b",
+              "url": "https://api.github.com/repos/ymiyamoto63/four-keys-metrics-viewer/commits/d98794cd75f28ddb8c6a65b792e0e51611f3337b",
+              "html_url": "https://github.com/ymiyamoto63/four-keys-metrics-viewer/commit/d98794cd75f28ddb8c6a65b792e0e51611f3337b"
+            }
+          ],
+          "commit": {
+            "message": "Merge pull request #6 from ymiyamoto63/claude/intelligent-shannon-9df2w1\n\nAdd grilling skill from upstream productivity skills",
+            "tree": {
+              "sha": "60635e8d5cdc7e6454730949f5aa0d31f46a73b2",
+              "url": "https://api.github.com/repos/ymiyamoto63/four-keys-metrics-viewer/git/trees/60635e8d5cdc7e6454730949f5aa0d31f46a73b2"
+            },
+            "url": "https://api.github.com/repos/ymiyamoto63/four-keys-metrics-viewer/git/commits/dc68ad05a7330b6e7610f0ac359b929050810dc3",
+            "comment_count": 0,
+            "author": {
+              "date": "2026-09-20T03:49:00Z"
+            },
+            "committer": {
+              "date": "2026-09-20T03:49:00Z"
+            }
+          }
+        },
+        "commits": [
+          {
+            "sha": "c7aeb16a2dc0107e8b8016cdd2b9cea85f93df07",
+            "node_id": "C_kwDOUh8989oAKGM3YWViMTZhMmRjMDEwN2U4YjgwMTZjZGQyYjljZWE4NWY5M2RmMDc",
+            "url": "https://api.github.com/repos/ymiyamoto63/four-keys-metrics-viewer/commits/c7aeb16a2dc0107e8b8016cdd2b9cea85f93df07",
+            "html_url": "https://github.com/ymiyamoto63/four-keys-metrics-viewer/commit/c7aeb16a2dc0107e8b8016cdd2b9cea85f93df07",
+            "comments_url": "https://api.github.com/repos/ymiyamoto63/four-keys-metrics-viewer/commits/c7aeb16a2dc0107e8b8016cdd2b9cea85f93df07/comments",
+            "parents": [
+              {
+                "sha": "dc68ad05a7330b6e7610f0ac359b929050810dc3",
+                "url": "https://api.github.com/repos/ymiyamoto63/four-keys-metrics-viewer/commits/dc68ad05a7330b6e7610f0ac359b929050810dc3",
+                "html_url": "https://github.com/ymiyamoto63/four-keys-metrics-viewer/commit/dc68ad05a7330b6e7610f0ac359b929050810dc3"
+              }
+            ],
+            "commit": {
+              "message": "docs: grilling の合意内容を ADR 6 枚と CONTEXT.md に記録\n\nMVP の設計判断を確定させた。主要な決定:\n\n- デプロイ検出ルールをスコープごとの設定とし、MVP は default_branch\n  (既定 merge_only) と workflow_run の 2 戦略。deployments_api は保留\n- デプロイ時刻はマージコミットの committer date から取る。PR の merged_at は\n  過去日付で作れず、合成履歴による検証が不可能になるため使わない\n- 生イベントのみ恒久保存し、指標の集計値は保存せずクエリ時に計算。\n  外部 API 再取得が必要な導出のみキャッシュし、ルール変更時に破棄\n- Cloudflare Workers + D1 + Cron Triggers、収集は再開可能な分割ジョブ\n- リードタイムはコミット単位、デプロイ間差分は compare API で取得。\n  時刻順近似は長期放置コミットを集計から落とすため却下\n- 週次バケット / JST 月曜始まり / 中央値 + p75,p90、データ不足週は線を繋がない\n- スコープ設定はリポジトリ内の設定ファイルで管理し、編集 UI は作らない\n- アクセス制御はインフラ層に出し、GitHub 認証は read-only の fine-grained PAT\n\nCo-Authored-By: Claude Opus 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01GJbJUqQHUjRQPDxcbxx3p7",
+              "tree": {
+                "sha": "4cc75ca38d4e4bd790d9b2e2eef3f90f28a562a3",
+                "url": "https://api.github.com/repos/ymiyamoto63/four-keys-metrics-viewer/git/trees/4cc75ca38d4e4bd790d9b2e2eef3f90f28a562a3"
+              },
+              "url": "https://api.github.com/repos/ymiyamoto63/four-keys-metrics-viewer/git/commits/c7aeb16a2dc0107e8b8016cdd2b9cea85f93df07",
+              "comment_count": 0,
+              "author": {
+                "date": "2026-09-20T04:21:38Z"
+              },
+              "committer": {
+                "date": "2026-09-20T04:21:38Z"
+              }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
