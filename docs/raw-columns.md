@@ -77,6 +77,42 @@ ADR-0002 は「GitHub 生レスポンスの**必要部分**を `raw` JSON カラ
 **最大 250 コミット**しか返さない。取りこぼしに気付かないまま集計すると、リードタイムの標本が
 黙って欠け、ADR-0004 が退けた「時刻順近似」と同じ壊れ方をする。
 
+## デプロイ (`deploy_events.raw`)
+
+デプロイは生イベントではなく、**デプロイ検出ルールを適用した結果**である。したがって
+`raw` に入る内容も検出ルールごとに違う。ここに書くのは `workflow_run` ルール（#14）の分で、
+射影は `src/deploy/workflow-run.ts` にある（生イベントの射影と同じ `src/github/project.ts`
+には置かない。ワークフロー実行はこのルールでしか使わないため）。
+
+取得元: `GET /repos/{owner}/{repo}/actions/workflows/{workflow}/runs`
+
+| 項目 | 用途 |
+| --- | --- |
+| `id` | 同一性。GitHub 上の実行を特定する |
+| `head_sha` | **デプロイの commit SHA**（ADR-0001 / #14） |
+| `conclusion` | `success` の実行だけをデプロイとみなす判定そのもの |
+| `status` | 未完了（`conclusion` が null）の実行を読み分けるため |
+| `updated_at` | **デプロイ時刻**。実行の完了時刻として採る（理由は後述） |
+| `run_started_at` | 実行時間の確認用。指標には使わない |
+| `run_attempt` | 再実行を経た実行かどうか。`updated_at` の読み方に直結する |
+| `name` / `path` | どのワークフローの成功で数えたか（柱 4 の開示） |
+| `html_url` | ドリルダウン（柱 4） |
+
+**保存しない主な項目**: `actor` / `triggering_actor` / `head_commit.author` /
+`head_commit.committer`（ユーザー情報）、`repository` / `head_repository`、`node_id`、
+`pull_requests`、`referenced_workflows`、各種 `*_url`（`jobs_url` / `logs_url` /
+`cancel_url` / `rerun_url` など）、`display_title` / `run_number` / `event` / `head_branch`。
+
+**完了時刻に `updated_at` を採る。** ワークフロー実行のレスポンスに完了時刻そのものの
+フィールドは無く、時刻は `created_at` / `run_started_at` / `updated_at` の 3 つしかない
+（`src/deploy/__fixtures__/workflow_run.json` が実レスポンス）。正確な完了時刻は jobs API の
+`completed_at` から得られるが、デプロイ 1 件につき 1 コール増える。レート制限で待機しない
+構成（ADR-0007 / #10）でこれは割に合わない。`updated_at` は再実行などで後から動きうるが、
+`deploy_events` は (scope_id, detection_rule, commit_sha) で upsert するため行は増えず、
+「そのコミットが本番に出た最後の時刻」に更新されるだけである。
+
+実測: 12,901 B → 354 B。
+
 ## 障害 (`incidents.raw`)
 
 **MVP では書き込まない。** ADR-0002 決定 5 により、取得元を示す `source` 列を持つ
