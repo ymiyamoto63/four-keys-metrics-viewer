@@ -1,6 +1,7 @@
 # AGENTS.md
 
 Agent-facing conventions for `four-keys-metrics-viewer`.
+日本語で回答すること.
 
 ## Agent skills
 
