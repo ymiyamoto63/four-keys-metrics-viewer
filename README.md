@@ -58,7 +58,7 @@ npm test            # vitest run
 
 | 変数 | 既定値 | 説明 |
 |---|---|---|
-| `GITHUB_TOKEN` | （なし） | fine-grained PAT。未設定でも画面は開くが収集は動かない |
+| `GITHUB_TOKEN` | （なし） | fine-grained PAT。未設定でも画面は開くが、収集は「失敗」として記録され、画面の収集状態にその旨が出る |
 | `HOST` | `127.0.0.1` | バインド先。下の注意を参照 |
 | `PORT` | `3000` | 待ち受けポート |
 | `DATABASE_PATH` | `./data/four-keys.sqlite` | SQLite ファイル。Docker では `/data/four-keys.sqlite` |

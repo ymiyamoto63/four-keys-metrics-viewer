@@ -48,7 +48,8 @@ function main(): void {
 
   const db = openDatabase(config.databasePath);
   const scheduler = startScheduler({ config, db, scopes, client });
-  const app = createApp(config, db);
+  // 画面はスコープ設定を唯一の正とする（ADR-0005）。DB に居るが設定に無いスコープは表示しない。
+  const app = createApp({ config, db, scopes });
 
   const server = serve({ fetch: app.fetch, hostname: config.host, port: config.port }, (info) => {
     logger.info("HTTP サーバーを開始した", {
