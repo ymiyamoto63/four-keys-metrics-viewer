@@ -246,6 +246,14 @@ export type CollectionCursor = {
   /** どこまで過去へ遡ったか。null は未着手。 */
   backfilledUntil: string | null;
   backfillComplete: boolean;
+  /**
+   * どこまで最新を追ったか。null は未着手（#11 / CONTEXT.md の収集カーソル）。
+   *
+   * `lastSuccessAt` とは別物である。あちらは「収集サイクルがいつ成功したか」、
+   * こちらは「どの時刻までのイベントを取り込んだか」。混ぜると、中断したサイクルの
+   * 取り込み済み範囲を取り直すか、逆に未取得の範囲を取り込み済みとみなして取りこぼす。
+   */
+  followedUntil: string | null;
   /** 最終収集成功時刻。画面に常時表示する（ADR-0007）。 */
   lastSuccessAt: string | null;
   lastError: string | null;
@@ -254,11 +262,13 @@ export type CollectionCursor = {
 export function saveCollectionCursor(db: Db, cursor: CollectionCursor): void {
   db.prepare(
     `INSERT INTO collection_cursors
-       (scope_id, backfilled_until, backfill_complete, last_success_at, last_error)
-     VALUES (@scopeId, @backfilledUntil, @backfillComplete, @lastSuccessAt, @lastError)
+       (scope_id, backfilled_until, backfill_complete, followed_until, last_success_at, last_error)
+     VALUES
+       (@scopeId, @backfilledUntil, @backfillComplete, @followedUntil, @lastSuccessAt, @lastError)
      ON CONFLICT (scope_id) DO UPDATE SET
        backfilled_until  = excluded.backfilled_until,
        backfill_complete = excluded.backfill_complete,
+       followed_until    = excluded.followed_until,
        last_success_at   = excluded.last_success_at,
        last_error        = excluded.last_error`,
   ).run({ ...cursor, backfillComplete: cursor.backfillComplete ? 1 : 0 });
@@ -268,6 +278,7 @@ type CollectionCursorRow = {
   scope_id: string;
   backfilled_until: string | null;
   backfill_complete: number;
+  followed_until: string | null;
   last_success_at: string | null;
   last_error: string | null;
 };
@@ -283,6 +294,7 @@ export function findCollectionCursor(db: Db, scopeId: string): CollectionCursor 
     scopeId: row.scope_id,
     backfilledUntil: row.backfilled_until,
     backfillComplete: row.backfill_complete === 1,
+    followedUntil: row.followed_until,
     lastSuccessAt: row.last_success_at,
     lastError: row.last_error,
   };
@@ -314,6 +326,22 @@ export function recordBackfillProgress(
  * 収集の失敗を記録する。最終収集成功時刻は上書きしない。
  * PAT の期限切れなどで収集が静かに止まったことを、画面から読み取れるようにするため。
  */
+/**
+ * 「どこまで最新を追ったか」を記録する（#11）。他の列には触れない。
+ *
+ * バックフィルの進捗（`recordBackfillProgress`）と同じ扱いにしてある。最新を追う収集も
+ * 窓ごとに分割して進めるため、途中でレート制限に当たっても**取り終えた窓までは確定させる**。
+ * 収集サイクル自体の成否（`last_success_at` / `last_error`）は `per-scope.ts` が記録する。
+ */
+export function recordFollowProgress(db: Db, scopeId: string, followedUntil: string): void {
+  db.prepare(
+    `INSERT INTO collection_cursors
+       (scope_id, backfilled_until, backfill_complete, followed_until, last_success_at, last_error)
+     VALUES (?, NULL, 0, ?, NULL, NULL)
+     ON CONFLICT (scope_id) DO UPDATE SET followed_until = excluded.followed_until`,
+  ).run(scopeId, followedUntil);
+}
+
 export function recordCollectionFailure(db: Db, scopeId: string, message: string): void {
   db.prepare(
     `INSERT INTO collection_cursors

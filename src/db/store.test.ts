@@ -9,6 +9,7 @@ import {
   recordBackfillProgress,
   recordCollectionFailure,
   recordCollectionSuccess,
+  recordFollowProgress,
   saveCollectionCursor,
   saveCommit,
   saveCompareCache,
@@ -256,6 +257,7 @@ describe("収集カーソル", () => {
       scopeId: "four-keys-metrics-viewer",
       backfilledUntil: "2025-09-20T00:00:00Z",
       backfillComplete: false,
+      followedUntil: null,
       lastSuccessAt: "2026-09-20T05:00:00Z",
       lastError: null,
     });
@@ -271,6 +273,7 @@ describe("収集カーソル", () => {
     const base = {
       scopeId: "four-keys-metrics-viewer",
       backfillComplete: false,
+      followedUntil: null,
       lastSuccessAt: "2026-09-20T05:00:00Z",
       lastError: null,
     };
@@ -291,6 +294,7 @@ describe("収集カーソル", () => {
       scopeId: "four-keys-metrics-viewer",
       backfilledUntil: "2025-09-20T00:00:00Z",
       backfillComplete: true,
+      followedUntil: null,
       lastSuccessAt: "2026-09-20T05:00:00Z",
       lastError: null,
     });
@@ -304,7 +308,12 @@ describe("収集カーソル", () => {
 
   it("スコープごとに独立している", () => {
     const db = openTestDatabase();
-    const base = { backfilledUntil: null, backfillComplete: false, lastError: null };
+    const base = {
+      backfilledUntil: null,
+      backfillComplete: false,
+      followedUntil: null,
+      lastError: null,
+    };
 
     saveCollectionCursor(db, {
       ...base,
@@ -329,6 +338,7 @@ describe("収集成功の記録", () => {
       scopeId: "four-keys-metrics-viewer",
       backfilledUntil: "2025-09-20T00:00:00Z",
       backfillComplete: true,
+      followedUntil: null,
       lastSuccessAt: "2026-09-19T05:00:00Z",
       lastError: "403 Resource not accessible",
     });
@@ -374,6 +384,7 @@ describe("バックフィル進捗の記録", () => {
       scopeId: "four-keys-metrics-viewer",
       backfilledUntil: null,
       backfillComplete: false,
+      followedUntil: null,
       lastSuccessAt: "2026-09-19T05:00:00Z",
       lastError: "レート制限に達したため中断する",
     });
@@ -383,5 +394,41 @@ describe("バックフィル進捗の記録", () => {
     const cursor = findCollectionCursor(db, "four-keys-metrics-viewer");
     expect(cursor?.lastSuccessAt).toBe("2026-09-19T05:00:00Z");
     expect(cursor?.lastError).toBe("レート制限に達したため中断する");
+  });
+});
+
+describe("最新を追った位置の記録", () => {
+  it("どこまで最新を追ったかを更新する", () => {
+    const db = openTestDatabase();
+
+    recordFollowProgress(db, "four-keys-metrics-viewer", "2026-09-20T05:00:00Z");
+    recordFollowProgress(db, "four-keys-metrics-viewer", "2026-09-20T06:00:00Z");
+
+    expect(findCollectionCursor(db, "four-keys-metrics-viewer")?.followedUntil).toBe(
+      "2026-09-20T06:00:00Z",
+    );
+  });
+
+  it("バックフィルの進捗にも最終収集成功時刻にも触らない", () => {
+    // 「どこまで最新を追ったか」「どこまで過去へ遡ったか」「いつ成功したか」は
+    // それぞれ別々に進む（#11 / #12）。
+    const db = openTestDatabase();
+    saveCollectionCursor(db, {
+      scopeId: "four-keys-metrics-viewer",
+      backfilledUntil: "2025-09-20T00:00:00Z",
+      backfillComplete: true,
+      followedUntil: null,
+      lastSuccessAt: "2026-09-19T05:00:00Z",
+      lastError: "401 Bad credentials",
+    });
+
+    recordFollowProgress(db, "four-keys-metrics-viewer", "2026-09-20T06:00:00Z");
+
+    const cursor = findCollectionCursor(db, "four-keys-metrics-viewer");
+    expect(cursor?.followedUntil).toBe("2026-09-20T06:00:00Z");
+    expect(cursor?.backfilledUntil).toBe("2025-09-20T00:00:00Z");
+    expect(cursor?.backfillComplete).toBe(true);
+    expect(cursor?.lastSuccessAt).toBe("2026-09-19T05:00:00Z");
+    expect(cursor?.lastError).toBe("401 Bad credentials");
   });
 });

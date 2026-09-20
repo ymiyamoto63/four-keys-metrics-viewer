@@ -45,6 +45,7 @@ describe("スコープ単位の失敗分離", () => {
       scopeId: "scope-a",
       backfilledUntil: "2025-09-20T00:00:00Z",
       backfillComplete: true,
+      followedUntil: null,
       lastSuccessAt: null,
       lastError: "401 Bad credentials",
     });
@@ -65,6 +66,7 @@ describe("スコープ単位の失敗分離", () => {
       scopeId: "scope-a",
       backfilledUntil: null,
       backfillComplete: false,
+      followedUntil: null,
       lastSuccessAt: "2026-09-19T05:00:00Z",
       lastError: null,
     });
