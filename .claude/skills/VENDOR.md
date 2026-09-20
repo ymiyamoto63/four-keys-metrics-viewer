@@ -13,7 +13,19 @@ These skill folders are copied from Matt Pocock's public skills repository.
 - Each skill's `agents/openai.yaml` (Codex-specific config) was dropped, since this repo drives them through Claude Code.
 - The upstream `skills/engineering/README.md` is kept here as [ENGINEERING-SKILLS.md](./ENGINEERING-SKILLS.md) — it is the index of what each skill does.
 
-Everything else (`SKILL.md` and supporting files) is byte-identical to upstream.
+### Exception: `grilling`
+
+[`grilling/`](./grilling/SKILL.md) comes from `skills/productivity/`, not
+`skills/engineering/`, at the same pinned commit. It is the interview primitive —
+rounds of numbered questions across a design tree, each with a recommended
+answer — that several of the engineering skills delegate to via the Skill tool:
+
+- `grill-with-docs` (its entire body is "call `grilling` and `domain-modeling`")
+- `triage`, `wayfinder`, `improve-codebase-architecture`
+
+Without it those skills reference a skill that does not exist. It is not listed in
+`ENGINEERING-SKILLS.md`, because that file is upstream's `engineering/README.md`
+verbatim.
 
 ## First-time setup
 
@@ -27,8 +39,14 @@ Re-run the import against a newer upstream commit:
 
 ```bash
 git clone --depth 1 https://github.com/mattpocock/skills.git /tmp/mp-skills
-rsync -a --delete --exclude 'agents/' --exclude 'README.md' /tmp/mp-skills/skills/engineering/ .claude/skills/
+rsync -a --delete --exclude 'agents/' --exclude 'README.md' --exclude 'grilling/' \
+  /tmp/mp-skills/skills/engineering/ .claude/skills/
+rsync -a --exclude 'agents/' \
+  /tmp/mp-skills/skills/productivity/grilling/ .claude/skills/grilling/
 ```
+
+The `--exclude 'grilling/'` matters: without it, `--delete` removes the vendored
+`grilling/` folder, because it is not under upstream's `engineering/`.
 
 Then restore `ENGINEERING-SKILLS.md`, `LICENSE` and this file, and update the
 commit SHA above. Local edits to these skills will be overwritten — upstream
