@@ -6,6 +6,7 @@ import {
   listCommits,
   listDeployments,
   listPullRequests,
+  recordBackfillProgress,
   recordCollectionFailure,
   recordCollectionSuccess,
   saveCollectionCursor,
@@ -350,5 +351,37 @@ describe("収集成功の記録", () => {
     expect(findCollectionCursor(db, "four-keys-metrics-viewer")?.lastSuccessAt).toBe(
       "2026-09-20T05:00:00Z",
     );
+  });
+});
+
+describe("バックフィル進捗の記録", () => {
+  it("遡った位置と完了フラグを更新する", () => {
+    const db = openTestDatabase();
+
+    recordBackfillProgress(db, "four-keys-metrics-viewer", "2026-08-21T06:00:00Z", false);
+    recordBackfillProgress(db, "four-keys-metrics-viewer", "2026-07-22T06:00:00Z", true);
+
+    const cursor = findCollectionCursor(db, "four-keys-metrics-viewer");
+    expect(cursor?.backfilledUntil).toBe("2026-07-22T06:00:00Z");
+    expect(cursor?.backfillComplete).toBe(true);
+  });
+
+  it("最終収集成功時刻と直前の失敗には触らない", () => {
+    // 1 窓だけ取ってレート制限で中断した場合、遡った分は確定させたいが、
+    // そのサイクルを成功扱いにはできない（#12）。
+    const db = openTestDatabase();
+    saveCollectionCursor(db, {
+      scopeId: "four-keys-metrics-viewer",
+      backfilledUntil: null,
+      backfillComplete: false,
+      lastSuccessAt: "2026-09-19T05:00:00Z",
+      lastError: "レート制限に達したため中断する",
+    });
+
+    recordBackfillProgress(db, "four-keys-metrics-viewer", "2026-08-21T06:00:00Z", false);
+
+    const cursor = findCollectionCursor(db, "four-keys-metrics-viewer");
+    expect(cursor?.lastSuccessAt).toBe("2026-09-19T05:00:00Z");
+    expect(cursor?.lastError).toBe("レート制限に達したため中断する");
   });
 });
