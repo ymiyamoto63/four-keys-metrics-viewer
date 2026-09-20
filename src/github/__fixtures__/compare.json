@@ -1,0 +1,355 @@
+{
+  "url": "https://api.github.com/repos/ymiyamoto63/four-keys-metrics-viewer/compare/dc68ad0...c7aeb16",
+  "html_url": "https://github.com/ymiyamoto63/four-keys-metrics-viewer/compare/dc68ad0...c7aeb16",
+  "permalink_url": "https://github.com/ymiyamoto63/four-keys-metrics-viewer/compare/ymiyamoto63:dc68ad0...ymiyamoto63:c7aeb16",
+  "diff_url": "https://github.com/ymiyamoto63/four-keys-metrics-viewer/compare/dc68ad0...c7aeb16.diff",
+  "patch_url": "https://github.com/ymiyamoto63/four-keys-metrics-viewer/compare/dc68ad0...c7aeb16.patch",
+  "base_commit": {
+    "sha": "dc68ad05a7330b6e7610f0ac359b929050810dc3",
+    "node_id": "C_kwDOUh8989oAKGRjNjhhZDA1YTczMzBiNmU3NjEwZjBhYzM1OWI5MjkwNTA4MTBkYzM",
+    "commit": {
+      "author": {
+        "name": "ymiyamoto63",
+        "email": "48673424+ymiyamoto63@users.noreply.github.com",
+        "date": "2026-09-20T03:49:00Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2026-09-20T03:49:00Z"
+      },
+      "message": "Merge pull request #6 from ymiyamoto63/claude/intelligent-shannon-9df2w1\n\nAdd grilling skill from upstream productivity skills",
+      "tree": {
+        "sha": "60635e8d5cdc7e6454730949f5aa0d31f46a73b2",
+        "url": "https://api.github.com/repos/ymiyamoto63/four-keys-metrics-viewer/git/trees/60635e8d5cdc7e6454730949f5aa0d31f46a73b2"
+      },
+      "url": "https://api.github.com/repos/ymiyamoto63/four-keys-metrics-viewer/git/commits/dc68ad05a7330b6e7610f0ac359b929050810dc3",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJqr1esCRC1aQ7uu5UhlAAAURoQAESpWw5vYybqloLCRgk8I3fN\nppE29eW3UMOjdPYfk5z07PI04wWfjXGK42p1u2frEtwZm0lbDri9+9aRmbIm8i8j\nEEtvavuZ2m/Fh+VM4ZUnFm/mXJr6CQ1q3PFBoZDt1pA68lXQdPuWGizj25E4HsMa\n/dQw7P+bD5fZjAKaO2NiAO5R4o+fcWh348bco1ctNooI1upXUGm+4eDu65l2ojQl\nCVNQiCB9rX44UfDmZNfDVmP6hH9eU5/vZDxwEN7Wf7LUMEaTDT0jdkslgHkyl8vp\nlx5bB8TvfAxoYVJ15OmRiJDKfgN9NI+QNyjsFgW1F9YSY4w44IdbsYdMJHr6E9/b\n32d1mpBkiQwqKoFBFHafpQtlk6Dc1OjaRf8UAwpAqT82a4PYg/UNi0xa5F87g8Hu\nUz/Q7ymWEU6flTWxHqaLLNFyPzjuAU/xozGWBNAhjo7Xw/bRiBDq1v396PWR/V7X\nKQz/u5dwcpvfeI32l6PfmfBiLZc5NcBG4oFZSV+QvnyfdDPTlDjF3uhvlFACp+ma\nSLdz/v9ACZ54HP0U0LCEX5AgrfE6KV6CUi8efBscbL/RDVbvFs5XPzW5jfXTCVLb\n3sfyzgxe1N3NBWS0k9RlZAp1PGeXhFYawI/NmLbMzUXRTcCyb+S15sozAmWS7jAq\nUQC5MBA8S6/+pe1SVRDQ\n=l9J9\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 60635e8d5cdc7e6454730949f5aa0d31f46a73b2\nparent 69430f7020cccd2bf11594690fe586b8fd91f1b0\nparent d98794cd75f28ddb8c6a65b792e0e51611f3337b\nauthor ymiyamoto63 <48673424+ymiyamoto63@users.noreply.github.com> 1789876140 +0900\ncommitter GitHub <noreply@github.com> 1789876140 +0900\n\nMerge pull request #6 from ymiyamoto63/claude/intelligent-shannon-9df2w1\n\nAdd grilling skill from upstream productivity skills",
+        "verified_at": "2026-09-20T03:49:01Z"
+      }
+    },
+    "url": "https://api.github.com/repos/ymiyamoto63/four-keys-metrics-viewer/commits/dc68ad05a7330b6e7610f0ac359b929050810dc3",
+    "html_url": "https://github.com/ymiyamoto63/four-keys-metrics-viewer/commit/dc68ad05a7330b6e7610f0ac359b929050810dc3",
+    "comments_url": "https://api.github.com/repos/ymiyamoto63/four-keys-metrics-viewer/commits/dc68ad05a7330b6e7610f0ac359b929050810dc3/comments",
+    "author": {
+      "login": "ymiyamoto63",
+      "id": 48673424,
+      "node_id": "MDQ6VXNlcjQ4NjczNDI0",
+      "avatar_url": "https://avatars.githubusercontent.com/u/48673424?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ymiyamoto63",
+      "html_url": "https://github.com/ymiyamoto63",
+      "followers_url": "https://api.github.com/users/ymiyamoto63/followers",
+      "following_url": "https://api.github.com/users/ymiyamoto63/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ymiyamoto63/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ymiyamoto63/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ymiyamoto63/subscriptions",
+      "organizations_url": "https://api.github.com/users/ymiyamoto63/orgs",
+      "repos_url": "https://api.github.com/users/ymiyamoto63/repos",
+      "events_url": "https://api.github.com/users/ymiyamoto63/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ymiyamoto63/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "69430f7020cccd2bf11594690fe586b8fd91f1b0",
+        "url": "https://api.github.com/repos/ymiyamoto63/four-keys-metrics-viewer/commits/69430f7020cccd2bf11594690fe586b8fd91f1b0",
+        "html_url": "https://github.com/ymiyamoto63/four-keys-metrics-viewer/commit/69430f7020cccd2bf11594690fe586b8fd91f1b0"
+      },
+      {
+        "sha": "d98794cd75f28ddb8c6a65b792e0e51611f3337b",
+        "url": "https://api.github.com/repos/ymiyamoto63/four-keys-metrics-viewer/commits/d98794cd75f28ddb8c6a65b792e0e51611f3337b",
+        "html_url": "https://github.com/ymiyamoto63/four-keys-metrics-viewer/commit/d98794cd75f28ddb8c6a65b792e0e51611f3337b"
+      }
+    ]
+  },
+  "merge_base_commit": {
+    "sha": "dc68ad05a7330b6e7610f0ac359b929050810dc3",
+    "node_id": "C_kwDOUh8989oAKGRjNjhhZDA1YTczMzBiNmU3NjEwZjBhYzM1OWI5MjkwNTA4MTBkYzM",
+    "commit": {
+      "author": {
+        "name": "ymiyamoto63",
+        "email": "48673424+ymiyamoto63@users.noreply.github.com",
+        "date": "2026-09-20T03:49:00Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2026-09-20T03:49:00Z"
+      },
+      "message": "Merge pull request #6 from ymiyamoto63/claude/intelligent-shannon-9df2w1\n\nAdd grilling skill from upstream productivity skills",
+      "tree": {
+        "sha": "60635e8d5cdc7e6454730949f5aa0d31f46a73b2",
+        "url": "https://api.github.com/repos/ymiyamoto63/four-keys-metrics-viewer/git/trees/60635e8d5cdc7e6454730949f5aa0d31f46a73b2"
+      },
+      "url": "https://api.github.com/repos/ymiyamoto63/four-keys-metrics-viewer/git/commits/dc68ad05a7330b6e7610f0ac359b929050810dc3",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJqr1esCRC1aQ7uu5UhlAAAURoQAESpWw5vYybqloLCRgk8I3fN\nppE29eW3UMOjdPYfk5z07PI04wWfjXGK42p1u2frEtwZm0lbDri9+9aRmbIm8i8j\nEEtvavuZ2m/Fh+VM4ZUnFm/mXJr6CQ1q3PFBoZDt1pA68lXQdPuWGizj25E4HsMa\n/dQw7P+bD5fZjAKaO2NiAO5R4o+fcWh348bco1ctNooI1upXUGm+4eDu65l2ojQl\nCVNQiCB9rX44UfDmZNfDVmP6hH9eU5/vZDxwEN7Wf7LUMEaTDT0jdkslgHkyl8vp\nlx5bB8TvfAxoYVJ15OmRiJDKfgN9NI+QNyjsFgW1F9YSY4w44IdbsYdMJHr6E9/b\n32d1mpBkiQwqKoFBFHafpQtlk6Dc1OjaRf8UAwpAqT82a4PYg/UNi0xa5F87g8Hu\nUz/Q7ymWEU6flTWxHqaLLNFyPzjuAU/xozGWBNAhjo7Xw/bRiBDq1v396PWR/V7X\nKQz/u5dwcpvfeI32l6PfmfBiLZc5NcBG4oFZSV+QvnyfdDPTlDjF3uhvlFACp+ma\nSLdz/v9ACZ54HP0U0LCEX5AgrfE6KV6CUi8efBscbL/RDVbvFs5XPzW5jfXTCVLb\n3sfyzgxe1N3NBWS0k9RlZAp1PGeXhFYawI/NmLbMzUXRTcCyb+S15sozAmWS7jAq\nUQC5MBA8S6/+pe1SVRDQ\n=l9J9\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 60635e8d5cdc7e6454730949f5aa0d31f46a73b2\nparent 69430f7020cccd2bf11594690fe586b8fd91f1b0\nparent d98794cd75f28ddb8c6a65b792e0e51611f3337b\nauthor ymiyamoto63 <48673424+ymiyamoto63@users.noreply.github.com> 1789876140 +0900\ncommitter GitHub <noreply@github.com> 1789876140 +0900\n\nMerge pull request #6 from ymiyamoto63/claude/intelligent-shannon-9df2w1\n\nAdd grilling skill from upstream productivity skills",
+        "verified_at": "2026-09-20T03:49:01Z"
+      }
+    },
+    "url": "https://api.github.com/repos/ymiyamoto63/four-keys-metrics-viewer/commits/dc68ad05a7330b6e7610f0ac359b929050810dc3",
+    "html_url": "https://github.com/ymiyamoto63/four-keys-metrics-viewer/commit/dc68ad05a7330b6e7610f0ac359b929050810dc3",
+    "comments_url": "https://api.github.com/repos/ymiyamoto63/four-keys-metrics-viewer/commits/dc68ad05a7330b6e7610f0ac359b929050810dc3/comments",
+    "author": {
+      "login": "ymiyamoto63",
+      "id": 48673424,
+      "node_id": "MDQ6VXNlcjQ4NjczNDI0",
+      "avatar_url": "https://avatars.githubusercontent.com/u/48673424?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ymiyamoto63",
+      "html_url": "https://github.com/ymiyamoto63",
+      "followers_url": "https://api.github.com/users/ymiyamoto63/followers",
+      "following_url": "https://api.github.com/users/ymiyamoto63/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ymiyamoto63/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ymiyamoto63/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ymiyamoto63/subscriptions",
+      "organizations_url": "https://api.github.com/users/ymiyamoto63/orgs",
+      "repos_url": "https://api.github.com/users/ymiyamoto63/repos",
+      "events_url": "https://api.github.com/users/ymiyamoto63/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ymiyamoto63/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "69430f7020cccd2bf11594690fe586b8fd91f1b0",
+        "url": "https://api.github.com/repos/ymiyamoto63/four-keys-metrics-viewer/commits/69430f7020cccd2bf11594690fe586b8fd91f1b0",
+        "html_url": "https://github.com/ymiyamoto63/four-keys-metrics-viewer/commit/69430f7020cccd2bf11594690fe586b8fd91f1b0"
+      },
+      {
+        "sha": "d98794cd75f28ddb8c6a65b792e0e51611f3337b",
+        "url": "https://api.github.com/repos/ymiyamoto63/four-keys-metrics-viewer/commits/d98794cd75f28ddb8c6a65b792e0e51611f3337b",
+        "html_url": "https://github.com/ymiyamoto63/four-keys-metrics-viewer/commit/d98794cd75f28ddb8c6a65b792e0e51611f3337b"
+      }
+    ]
+  },
+  "status": "ahead",
+  "ahead_by": 1,
+  "behind_by": 0,
+  "total_commits": 1,
+  "commits": [
+    {
+      "sha": "c7aeb16a2dc0107e8b8016cdd2b9cea85f93df07",
+      "node_id": "C_kwDOUh8989oAKGM3YWViMTZhMmRjMDEwN2U4YjgwMTZjZGQyYjljZWE4NWY5M2RmMDc",
+      "commit": {
+        "author": {
+          "name": "Claude",
+          "email": "noreply@anthropic.com",
+          "date": "2026-09-20T04:21:38Z"
+        },
+        "committer": {
+          "name": "Claude",
+          "email": "noreply@anthropic.com",
+          "date": "2026-09-20T04:21:38Z"
+        },
+        "message": "docs: grilling の合意内容を ADR 6 枚と CONTEXT.md に記録\n\nMVP の設計判断を確定させた。主要な決定:\n\n- デプロイ検出ルールをスコープごとの設定とし、MVP は default_branch\n  (既定 merge_only) と workflow_run の 2 戦略。deployments_api は保留\n- デプロイ時刻はマージコミットの committer date から取る。PR の merged_at は\n  過去日付で作れず、合成履歴による検証が不可能になるため使わない\n- 生イベントのみ恒久保存し、指標の集計値は保存せずクエリ時に計算。\n  外部 API 再取得が必要な導出のみキャッシュし、ルール変更時に破棄\n- Cloudflare Workers + D1 + Cron Triggers、収集は再開可能な分割ジョブ\n- リードタイムはコミット単位、デプロイ間差分は compare API で取得。\n  時刻順近似は長期放置コミットを集計から落とすため却下\n- 週次バケット / JST 月曜始まり / 中央値 + p75,p90、データ不足週は線を繋がない\n- スコープ設定はリポジトリ内の設定ファイルで管理し、編集 UI は作らない\n- アクセス制御はインフラ層に出し、GitHub 認証は read-only の fine-grained PAT\n\nCo-Authored-By: Claude Opus 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01GJbJUqQHUjRQPDxcbxx3p7",
+        "tree": {
+          "sha": "4cc75ca38d4e4bd790d9b2e2eef3f90f28a562a3",
+          "url": "https://api.github.com/repos/ymiyamoto63/four-keys-metrics-viewer/git/trees/4cc75ca38d4e4bd790d9b2e2eef3f90f28a562a3"
+        },
+        "url": "https://api.github.com/repos/ymiyamoto63/four-keys-metrics-viewer/git/commits/c7aeb16a2dc0107e8b8016cdd2b9cea85f93df07",
+        "comment_count": 0,
+        "verification": {
+          "verified": true,
+          "reason": "valid",
+          "signature": "-----BEGIN SSH SIGNATURE-----\nU1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgrLzsfFISF4by8Q+FKz27YpkK1USsBB+m\namu1QkJnbDsAAAADZ2l0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5AAAAQP2fR17g\nLGpFSyqCEsiKSMvZ43ipsEgRUssQHLyh/6nO6fgrS7ZYYX1LHjEHtJ2kMnDp32egefCxWaAswhOT\nCw4=\n-----END SSH SIGNATURE-----",
+          "payload": "tree 4cc75ca38d4e4bd790d9b2e2eef3f90f28a562a3\nparent dc68ad05a7330b6e7610f0ac359b929050810dc3\nauthor Claude <noreply@anthropic.com> 1789878098 +0000\ncommitter Claude <noreply@anthropic.com> 1789878098 +0000\n\ndocs: grilling の合意内容を ADR 6 枚と CONTEXT.md に記録\n\nMVP の設計判断を確定させた。主要な決定:\n\n- デプロイ検出ルールをスコープごとの設定とし、MVP は default_branch\n  (既定 merge_only) と workflow_run の 2 戦略。deployments_api は保留\n- デプロイ時刻はマージコミットの committer date から取る。PR の merged_at は\n  過去日付で作れず、合成履歴による検証が不可能になるため使わない\n- 生イベントのみ恒久保存し、指標の集計値は保存せずクエリ時に計算。\n  外部 API 再取得が必要な導出のみキャッシュし、ルール変更時に破棄\n- Cloudflare Workers + D1 + Cron Triggers、収集は再開可能な分割ジョブ\n- リードタイムはコミット単位、デプロイ間差分は compare API で取得。\n  時刻順近似は長期放置コミットを集計から落とすため却下\n- 週次バケット / JST 月曜始まり / 中央値 + p75,p90、データ不足週は線を繋がない\n- スコープ設定はリポジトリ内の設定ファイルで管理し、編集 UI は作らない\n- アクセス制御はインフラ層に出し、GitHub 認証は read-only の fine-grained PAT\n\nCo-Authored-By: Claude Opus 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01GJbJUqQHUjRQPDxcbxx3p7\n",
+          "verified_at": "2026-09-20T04:21:41Z"
+        }
+      },
+      "url": "https://api.github.com/repos/ymiyamoto63/four-keys-metrics-viewer/commits/c7aeb16a2dc0107e8b8016cdd2b9cea85f93df07",
+      "html_url": "https://github.com/ymiyamoto63/four-keys-metrics-viewer/commit/c7aeb16a2dc0107e8b8016cdd2b9cea85f93df07",
+      "comments_url": "https://api.github.com/repos/ymiyamoto63/four-keys-metrics-viewer/commits/c7aeb16a2dc0107e8b8016cdd2b9cea85f93df07/comments",
+      "author": {
+        "login": "claude",
+        "id": 81847,
+        "node_id": "MDQ6VXNlcjgxODQ3",
+        "avatar_url": "https://avatars.githubusercontent.com/u/81847?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/claude",
+        "html_url": "https://github.com/claude",
+        "followers_url": "https://api.github.com/users/claude/followers",
+        "following_url": "https://api.github.com/users/claude/following{/other_user}",
+        "gists_url": "https://api.github.com/users/claude/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/claude/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/claude/subscriptions",
+        "organizations_url": "https://api.github.com/users/claude/orgs",
+        "repos_url": "https://api.github.com/users/claude/repos",
+        "events_url": "https://api.github.com/users/claude/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/claude/received_events",
+        "type": "User",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "committer": {
+        "login": "claude",
+        "id": 81847,
+        "node_id": "MDQ6VXNlcjgxODQ3",
+        "avatar_url": "https://avatars.githubusercontent.com/u/81847?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/claude",
+        "html_url": "https://github.com/claude",
+        "followers_url": "https://api.github.com/users/claude/followers",
+        "following_url": "https://api.github.com/users/claude/following{/other_user}",
+        "gists_url": "https://api.github.com/users/claude/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/claude/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/claude/subscriptions",
+        "organizations_url": "https://api.github.com/users/claude/orgs",
+        "repos_url": "https://api.github.com/users/claude/repos",
+        "events_url": "https://api.github.com/users/claude/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/claude/received_events",
+        "type": "User",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "parents": [
+        {
+          "sha": "dc68ad05a7330b6e7610f0ac359b929050810dc3",
+          "url": "https://api.github.com/repos/ymiyamoto63/four-keys-metrics-viewer/commits/dc68ad05a7330b6e7610f0ac359b929050810dc3",
+          "html_url": "https://github.com/ymiyamoto63/four-keys-metrics-viewer/commit/dc68ad05a7330b6e7610f0ac359b929050810dc3"
+        }
+      ]
+    }
+  ],
+  "files": [
+    {
+      "sha": "65f645c0d0415a095d998aa2f2f7dc731d4a6b92",
+      "filename": "CONTEXT.md",
+      "status": "added",
+      "additions": 100,
+      "deletions": 0,
+      "changes": 100,
+      "blob_url": "https://github.com/ymiyamoto63/four-keys-metrics-viewer/blob/c7aeb16a2dc0107e8b8016cdd2b9cea85f93df07/CONTEXT.md",
+      "raw_url": "https://github.com/ymiyamoto63/four-keys-metrics-viewer/raw/c7aeb16a2dc0107e8b8016cdd2b9cea85f93df07/CONTEXT.md",
+      "contents_url": "https://api.github.com/repos/ymiyamoto63/four-keys-metrics-viewer/contents/CONTEXT.md?ref=c7aeb16a2dc0107e8b8016cdd2b9cea85f93df07",
+      "patch": "@@ -0,0 +1,100 @@\n+# CONTEXT\n+\n+`four-keys-metrics-viewer` のドメイン用語集。出力（Issue のタイトル、テスト名、識別子、ADR）で\n+ドメイン概念に触れるときは、ここで定義した語を使う。ここに無い概念が必要になったら、\n+語彙を勝手に増やす前に「本当に新しい概念か」を疑う。\n+\n+関連: 設計判断の経緯は `docs/adr/` を参照。コンセプト（何を目指すか）は `README.md`。\n+\n+---\n+\n+## スコープ (Scope)\n+\n+指標を算出する単位。**リポジトリそのものではなく、リポジトリを指す抽象**として扱う。\n+\n+DORA は指標を「1 つのアプリケーションまたはサービス単位」で適用することを推奨しており、\n+本アプリもこれに従う。現時点ではスコープ 1 つが GitHub リポジトリ 1 つに対応するが、\n+将来リポジトリ内をサービス単位に分割できるようにするため、コード上は最初から\n+「スコープ」という独立した概念として持つ。\n+\n+スコープは次を持つ:\n+\n+- 対象リポジトリ（owner / repo）\n+- **デプロイ検出ルール**（後述）を 1 つ\n+- バックフィル範囲（既定 1 年）\n+\n+**複数スコープの指標を合算しない。** 横並び比較もしない。比較の軸は「他チーム」ではなく\n+「過去の自分たち」に置く（`README.md` のアンチパターン参照）。\n+\n+避ける言い換え: 「プロジェクト」「対象リポジトリ」を概念名として使わない。\n+\n+## デプロイ (Deployment)\n+\n+**本番環境に変更が反映された 1 回の出来事。** 5 指標すべてがこの概念の上に乗る。\n+\n+何をデプロイとみなすかは組織ごとに異なるため、本アプリはこれを**固定の定義として持たず、\n+スコープごとの設定（デプロイ検出ルール）として持つ**。\n+\n+デプロイは次を持つ:\n+\n+- 発生時刻（**デプロイ時刻**、後述）\n+- 対応する commit SHA\n+- どの**デプロイ検出ルール**によって検出されたか\n+\n+避ける言い換え: 「リリース」はタグ／GitHub Releases を指す別概念なので、デプロイの意味で使わない。\n+\n+## デプロイ検出ルール (Deploy detection rule)\n+\n+GitHub 上のどの出来事を**デプロイ**とみなすかの設定。スコープごとに **1 つだけ** 設定する。\n+複数ルールの OR 合成はしない（同一デプロイの二重計上を防ぎ、「この数値がどう計算されたか」を\n+辿れる状態を保つため）。\n+\n+MVP で実装するルールは 2 つ:\n+\n+- **`default_branch`** — デフォルトブランチへの反映。粒度を `merge_only`（既定）と `all_pushes` から選ぶ\n+- **`workflow_run`** — 指定した Actions ワークフローの成功実行\n+\n+`deployments_api`（GitHub Deployments API）は保留。詳細は `docs/adr/0001-deploy-detection-rule.md`。\n+\n+## デプロイ時刻 (Deployment timestamp)\n+\n+デプロイが起きた時刻。**`default_branch` ルールでは、マージコミット（または対象コミット）の\n+committer date を採用する。** PR の `merged_at` は使わない。\n+\n+理由は ADR-0001 に記す（要約: 合成履歴による検証を可能にするため、および PR を経由しない\n+直接 push でも同じ経路で動かすため）。\n+\n+## 変更のリードタイム (Change lead time)\n+\n+コードがバージョン管理にコミットされてから本番にデプロイされるまでの時間。\n+\n+- **起点** = そのコミットの **committer date**（author date は rebase / cherry-pick でずれるため使わない）\n+- **終点** = そのコミットが含まれた**デプロイ**の**デプロイ時刻**\n+- **1 サンプル = 1 コミット**（PR 単位ではない。PR を経由しない直接 push を取りこぼさないため）\n+\n+詳細は `docs/adr/0004-metric-definitions.md`。\n+\n+## 生イベント (Raw event)\n+\n+GitHub から収集し、正規化してストアに保存したデータ。`commits` / `pull_requests` /\n+`deploy_events` の 3 種。**恒久保存する。**\n+\n+対して**指標の集計値は一切保存しない**（デプロイ検出ルールが変われば結果が変わるため、\n+クエリ時に毎回計算する）。この区別は ADR-0002 の中心。\n+\n+## 収集カーソル (Collection cursor)\n+\n+スコープごとに「どこまで過去へ遡ったか」「どこまで最新を追ったか」を保持する状態。\n+バックフィルを中断・再開可能にするために持つ。\n+\n+## 障害 (Incident)\n+\n+本番への変更が引き起こしたサービス低下。**不安定性側 3 指標（変更失敗率・障害デプロイ復旧時間・\n+デプロイ手戻り率）の前提となる概念だが、MVP では扱わない。**\n+\n+MVP では自動検出も手動記録もしない。将来の取得元の第一候補は GitHub Issue のラベル運用。\n+スキーマ上、障害イベントには取得元を示す `source` 列を最初から持たせる。\n+\n+注: 2023 年に MTTR（平均修復時間）は「障害デプロイ復旧時間」へ改称・再定義され、\n+対象が「本番への変更が引き起こしたサービス低下からの復旧」に絞り込まれた。\n+外部要因（データセンター障害など）による障害はこの概念に含めない。"
+    },
+    {
+      "sha": "4f108c6e04c30b5bbf4e1c43f15db7c85784d428",
+      "filename": "docs/adr/0001-deploy-detection-rule.md",
+      "status": "added",
+      "additions": 105,
+      "deletions": 0,
+      "changes": 105,
+      "blob_url": "https://github.com/ymiyamoto63/four-keys-metrics-viewer/blob/c7aeb16a2dc0107e8b8016cdd2b9cea85f93df07/docs%2Fadr%2F0001-deploy-detection-rule.md",
+      "raw_url": "https://github.com/ymiyamoto63/four-keys-metrics-viewer/raw/c7aeb16a2dc0107e8b8016cdd2b9cea85f93df07/docs%2Fadr%2F0001-deploy-detection-rule.md",
+      "contents_url": "https://api.github.com/repos/ymiyamoto63/four-keys-metrics-viewer/contents/docs%2Fadr%2F0001-deploy-detection-rule.md?ref=c7aeb16a2dc0107e8b8016cdd2b9cea85f93df07",
+      "patch": "@@ -0,0 +1,105 @@\n+# ADR-0001: デプロイ検出ルールをスコープごとの設定とし、MVP では 2 戦略に絞る\n+\n+- ステータス: Accepted\n+- 日付: 2026-09-20\n+\n+## 文脈\n+\n+Four Keys / DORA の 5 指標はすべて「デプロイとは何か」の定義の上に乗っている。\n+GitHub から取れる候補は複数ある。\n+\n+- Deployments API の `deployment_status = success`（`environment = production`）\n+- GitHub Releases の publish\n+- デフォルトブランチへの merge / push\n+- 特定の Actions ワークフローの成功実行\n+- semver タグの push\n+\n+`README.md` の基本コンセプト 4 は「何をデプロイとみなすか、何を障害とみなすかは組織ごとに異なる。\n+指標の定義とマッピングルールを設定可能にし、画面上でも辿れるようにする」と明言している。\n+つまり**単一の定義に決め打ちする設計はコンセプトと矛盾する**。\n+\n+加えて、最初の利用者となる対象アカウントの直近 active な 4 リポジトリを調査した結果:\n+\n+| シグナル | 4 リポジトリすべて |\n+| --- | --- |\n+| Releases | 0 |\n+| タグ（semver 含む） | 0 |\n+| デプロイ名のワークフロー | 0 |\n+| ワークフロー総数 | 1（生成物の整合性チェック。CD ではない） |\n+| デフォルトブランチのコミット（90 日） | 38 / 86 / 1 / 2 |\n+| Deployments API | 確認手段が無く**未検証** |\n+\n+つまり現時点で確実にデータが存在するのは「デフォルトブランチへのコミット」だけだった。\n+\n+## 決定\n+\n+1. **デプロイ検出ルールをスコープごとの設定項目として持つ。** 1 スコープにつき **1 ルールのみ**。\n+   複数ルールの OR 合成は行わない。\n+2. **MVP で実装するルールは 2 つ。**\n+   - `default_branch` — デフォルトブランチへの反映。粒度を設定で選ぶ。\n+     - `merge_only`（**既定**）: merge commit のみを 1 デプロイとみなす\n+     - `all_pushes`: デフォルトブランチへの全コミットを 1 デプロイとみなす\n+   - `workflow_run` — 指定した Actions ワークフローの成功実行を 1 デプロイとみなす\n+3. **`deployments_api` は保留する。** 後から追加できる抽象は持つが、MVP では実装しない。\n+4. **`default_branch` ルールのデプロイ時刻は、マージコミット（または対象コミット）の\n+   committer date を採用する。** PR の `merged_at` は使わない。\n+5. `default_branch` ルールが有効な間、画面に\n+   「このスコープは『デフォルトブランチへの merge＝デプロイ』として計算しています」を常時表示する。\n+\n+## 理由\n+\n+**1 ルールのみ・OR 合成禁止**: 同一のデプロイが Deployments API とワークフロー成功の両方で\n+記録されると二重計上が起きる。さらに悪いことに、画面から「どちらで数えたのか」を辿れなくなり、\n+`README.md` 柱 4（算出ロジックの開示）が破綻する。重複排除ロジックは MVP に入れる価値のない複雑さ。\n+\n+**既定を `merge_only` にする**: `all_pushes` を既定にすると、調査対象の `like-chatgpt`\n+（10 日間に 86 コミット）のようなリポジトリで「10 日で 86 デプロイ」という無意味な数字が出る。\n+さらに ADR-0004 のリードタイムは「コミットした瞬間にデプロイ」となりほぼ全件ゼロになり、\n+指標が定義によって死ぬ。データ点が少ないほうが、嘘の点が多いより誠実である\n+（データ不足週の扱いは ADR-0004 を参照）。\n+\n+**`all_pushes` も残す**: trunk-based で直接 push しつつ自動デプロイする構成は実在し、\n+そこでは `all_pushes` が正しい。これは柱 4 の「定義は組織ごとに異なる」そのもの。\n+\n+**`deployments_api` を落とす**: 上記調査で痕跡が確認できず、Workers へのデプロイも既定では\n+GitHub Deployments を生成しない。検証すらできていない戦略を投機的に実装するより、\n+`workflow_run` を実装するほうが投資対効果が高い。なお `workflow_run` も現時点でデータは無いが、\n+CD を導入した瞬間に最も正確な戦略になり、かつ「デプロイを計測可能にするには CD を作ればよい」\n+という改善の導線そのものになるため残す。\n+\n+**デプロイ時刻に committer date を使う（`merged_at` ではなく）**: 理由は 2 つ。\n+\n+1. **検証可能性。** GitHub のタイムスタンプには、過去日付で作れるものと作れないものがある。\n+\n+   | データ | 過去日付で作れるか |\n+   | --- | --- |\n+   | コミット / マージコミットの committer date | **作れる**（git オブジェクトの一部） |\n+   | PR の `created_at` / `merged_at` | 作れない（GitHub がサーバー時刻で刻む） |\n+   | Actions の実行日時 | 作れない |\n+   | Deployments / Releases の日時 | 作れない |\n+\n+   `merged_at` を採用すると、サンプルリポジトリに 1 年分の履歴を合成できず、\n+   「週次の推移」（ADR-0004）と「既定 1 年のバックフィル」（ADR-0003）を**そもそも検証できない**。\n+\n+2. **直接 push への対応。** `merged_at` は PR が存在しないと得られない。committer date なら\n+   `merge_only` / `all_pushes` の両粒度で同じコードパスが使える。\n+\n+実リポジトリでは両者はほぼ一致するため、精度上の犠牲はない。\n+\n+## 検討した代替案\n+\n+- **単一の固定ルールにする**: 実装は最も軽いが、`README.md` 柱 4 と正面から矛盾する。却下。\n+- **`all_pushes` を既定にする**: 全リポジトリで必ず線が引けるが、初回起動時に最も壊れた数字を\n+  見せることになる。却下。\n+- **複数ルールを OR 合成して「取れるものは全部デプロイ」とする**: 二重計上と説明不能性。却下。\n+- **Releases / タグ起点のルールを実装する**: 実質「タグ起点」の一種で、`workflow_run` があれば\n+  大半が代替できる。調査でも 0 件だった。保留。\n+\n+## 結果・影響\n+\n+- スコープ設定に `deploy_rule` が必須項目として入る（ADR-0005）。\n+- デプロイ検出ルールを変更すると過去の指標がすべて変わるため、ルール由来の導出キャッシュは\n+  破棄する必要がある（ADR-0002）。\n+- `deployments_api` の実態は**未検証のまま残る**。別途 spike として追跡する。\n+- 対象アカウントの既存リポジトリには依然として測定対象が乏しいため、検証用のサンプルリポジトリを\n+  新規に作る（ADR-0003 / ADR-0004 の検証方針）。"
+    },
+    {
+      "sha": "846047031130431f0533be4fcd1dc47cb4a97bc1",
+      "filename": "docs/adr/0002-event-store-and-data-model.md",
+      "status": "added",
+      "additions": 66,
+      "deletions": 0,
+      "changes": 66,
+      "blob_url": "https://github.com/ymiyamoto63/four-keys-metrics-viewer/blob/c7aeb16a2dc0107e8b8016cdd2b9cea85f93df07/docs%2Fadr%2F0002-event-store-and-data-model.md",
+      "raw_url": "https://github.com/ymiyamoto63/four-keys-metrics-viewer/raw/c7aeb16a2dc0107e8b8016cdd2b9cea85f93df07/docs%2Fadr%2F0002-event-store-and-data-model.md",
+      "contents_url": "https://api.github.com/repos/ymiyamoto63/four-keys-metrics-viewer/contents/docs%2Fadr%2F0002-event-store-and-data-model.md?ref=c7aeb16a2dc0107e8b8016cdd2b9cea85f93df07",
+      "patch": "@@ -0,0 +1,66 @@\n+# ADR-0002: 生イベントのみを保存し、指標はクエリ時に計算する\n+\n+- ステータス: Accepted\n+- 日付: 2026-09-20\n+\n+## 文脈\n+\n+`README.md` の基本コンセプトのうち 2 つがデータ設計を直接拘束する。\n+\n+- 柱 3「推移を見る（点ではなく線）」— 時系列の履歴が要る\n+- 柱 4「算出ロジックを開示する」— 集計値だけでなく、**その根拠となった個々のイベントまで辿れる**必要がある\n+\n+加えて ADR-0001 で「デプロイ検出ルールは設定で変わる」と決めたため、\n+**同じ生データから異なる指標が出うる**という前提がある。\n+\n+取得方式には (a) 画面を開くたびに GitHub API を叩いて計算、(b) 定期収集して自前ストアに蓄積、\n+(c) TTL キャッシュのみ、の選択肢があった。\n+\n+## 決定\n+\n+1. **定期収集して自前ストアに蓄積する。** オンデマンド計算は採らない。\n+2. **保存するのは正規化した生イベントのみ。指標の集計値は一切保存しない。**\n+   指標はクエリ時に毎回、生イベントから計算する。\n+3. スキーマは**ハイブリッド**とする。正規化テーブル（`commits` / `pull_requests` / `deploy_events`）\n+   を持ち、各行に GitHub 生レスポンスの必要部分を `raw` JSON カラムとして残す。\n+4. 導出データを **3 階層**に分けて扱う。\n+   - **① 生イベント** — 恒久保存\n+   - **② 指標の集計値** — 保存しない\n+   - **③ 外部 API を再取得しないと復元できない導出** — キャッシュとして保存し、\n+     **スコープのデプロイ検出ルールが変わったら破棄する**\n+5. 障害イベントのテーブルには、MVP で使わなくても取得元を示す `source` 列を最初から持たせる。\n+\n+## 理由\n+\n+**集計値を保存しない**: ADR-0001 でデプロイ検出ルールを可変にした以上、集計値を保存すると\n+設定変更のたびに全再計算が必要になり、再計算漏れが静かな不整合として残る。\n+また生イベントを持っていれば柱 4 のドリルダウンがそのまま実現できる。\n+「5 指標を見据えたデータモデル」は、指標ごとのテーブルではなく\n+**イベントストア + 解釈レイヤー**の形でこそ素直に拡張できる。\n+\n+**単一の汎用イベントテーブル（`event_type` + `payload` JSON の 1 枚）にしない**: 柔軟だが、\n+ADR-0004 で決めた「コミット単位でリードタイムを出し週次中央値を取る」クエリが\n+JSON 掘りばかりになり、D1（SQLite）上で現実的な速度にならない。型も制約も効かない。\n+\n+**`raw` JSON を併せ持つ**: 収集時に取り落とした項目が後から必要になったとき、\n+GitHub を再度叩かずに再構築できる。放置されたリポジトリの過去データは再取得コストが高い。\n+\n+**③ の階層を明示する理由**: 「集計値は保存しない」という原則だけでは、ADR-0004 の\n+compare API によるコミット範囲の扱いを誤る。これは集計値ではないが導出であり、かつ\n+**外部 API を叩き直さないと復元できない**。保存してよいが、ルール変更時に破棄しなければ\n+古い導出が生き残り、柱 4 の「辿れる」が嘘になる。この但し書きが無いと設計が壊れる。\n+\n+## 検討した代替案\n+\n+- **オンデマンド計算（ストアなし）**: 実装は圧倒的に軽く状態も持たないが、毎回レート制限を食い、\n+  「1 年前からの推移」を出すたびに大量取得が発生する。柱 3 と両立しない。却下。\n+- **TTL キャッシュのみ**: 上記の緩和にしかならず、履歴の恒久保持にならない。却下。\n+- **単一の汎用イベントテーブル**: 上記理由で却下。\n+- **指標の集計値を日次/週次で materialize する**: 高速だが、ルール変更時の再計算と不整合が\n+  実運用の主要な障害要因になる。却下。\n+\n+## 結果・影響\n+\n+- デプロイ検出ルールの変更操作は、③ のキャッシュ破棄を必ず伴う。実装上の不変条件とする。\n+- 指標計算は生イベントに対する純粋関数として切り出せる。テスト戦略（ADR-0004）はこれに依存する。\n+- D1 の容量・書き込み制限に対する見積もりは**未実施**。別途 spike として追跡する。"
+    },
+    {
+      "sha": "2471caa5a377eb2d8a54f57afad1d3d4055b7b49",
+      "filename": "docs/adr/0003-hosting-and-stack.md",
+      "status": "added",
+      "additions": 76,
+      "deletions": 0,
+      "changes": 76,
+      "blob_url": "https://github.com/ymiyamoto63/four-keys-metrics-viewer/blob/c7aeb16a2dc0107e8b8016cdd2b9cea85f93df07/docs%2Fadr%2F0003-hosting-and-stack.md",
+      "raw_url": "https://github.com/ymiyamoto63/four-keys-metrics-viewer/raw/c7aeb16a2dc0107e8b8016cdd2b9cea85f93df07/docs%2Fadr%2F0003-hosting-and-stack.md",
+      "contents_url": "https://api.github.com/repos/ymiyamoto63/four-keys-metrics-viewer/contents/docs%2Fadr%2F0003-hosting-and-stack.md?ref=c7aeb16a2dc0107e8b8016cdd2b9cea85f93df07",
+      "patch": "@@ -0,0 +1,76 @@\n+# ADR-0003: Cloudflare Workers + D1 + Cron Triggers に載せ、収集は再開可能な分割ジョブにする\n+\n+- ステータス: Accepted\n+- 日付: 2026-09-20\n+\n+## 文脈\n+\n+ADR-0002 で「常時動く定期収集ジョブ + イベントストア」が確定した。\n+ADR-0006 で「アプリ内に認証を持たず、アクセス制御はインフラ層に出す」が確定した。\n+したがって要件は「cron が動く / DB がある / 常時稼働する / 運用が軽い / アクセス制御を外に出せる」。\n+\n+利用者は少人数、スコープ数は 1 桁の想定。\n+\n+## 決定\n+\n+1. **Cloudflare Workers + D1 + Cron Triggers + Workers Static Assets** に載せる。\n+   フロントも同じ Worker に同居させ、1 デプロイに閉じる。\n+2. フロントエンドは **Hono + JSX のサーバーサイドレンダリング**。チャートのみクライアント JS。\n+   SPA にしない。\n+3. 画面は **2 階層**。サマリ（選択中スコープの全指標）→ 指標詳細（チャート + 根拠イベント一覧）。\n+   個別イベントの詳細は自前で持たず、GitHub の該当 PR / コミットへ外部リンクする。\n+4. **収集トリガはポーリングのみ。cron 間隔は 1 時間。** webhook は使わない。\n+5. **初回バックフィルは既定 1 年**（スコープごとに設定可能）。\n+   **収集カーソルを DB に持つ再開可能な分割ジョブ**として実装し、cron の各周回で少しずつ遡る。\n+6. 失敗は**スコープ単位で独立**させ、1 スコープの失敗が他を止めないようにする。\n+7. **レート制限に到達したら待機せず即座に中断**し、次の cron 周回に委ねる。\n+8. 各スコープの**最終収集成功時刻**と**バックフィル進捗**を画面に常時表示する。\n+\n+## 理由\n+\n+**Workers を選ぶ**: 定期収集は「誰も見ていない時間に動く」ことが必須で、VPS 構成ではそのためだけに\n+サーバーを維持し続けることになる。Cron Triggers と D1 が標準装備で、無料枠で常時稼働でき、\n+ADR-0006 で外出しすると決めたアクセス制御の受け皿（Cloudflare Access）も同じ基盤上にある。\n+既存の `cloudflare-learning` リポジトリがあり、学習投資も既にある。\n+\n+**SPA にしない**: 画面が 2 階層しかなく、必要な相互作用は「チャートの点をクリック → 根拠イベント一覧」\n+だけで、これはリンク遷移で成立する。SPA が持ち込むルーティングと状態管理に見合う要件がない。\n+\n+**webhook を使わない**: ADR-0004 で集計粒度を**週次**に決めた以上、分単位の鮮度に価値がない。\n+webhook は公開エンドポイント・署名検証・再送/重複処理を抱えるうえ、\n+「webhook 設定より前の履歴は取れない」ためバックフィル用のポーリングを結局消せない。\n+取得経路が 2 つになることは、ADR-0001 の「二重計上を避ける」方針とも相性が悪い。\n+\n+**バックフィルを分割ジョブにする**: Workers には CPU 実行時間の上限があり、\n+**一括取得は必ず途中で死ぬ**。収集カーソルを持てば中断しても損失がなく、\n+「過去に遡る収集」と「最新を追う収集」を同じ仕組みで書ける。\n+\n+**既定 1 年**: 週次バケットで推移を見るには数十週分が要る。90 日では週 13 本しか点が打てず\n+「推移」にならない。全履歴は、1 年以上放置されたリポジトリ群を考えると API 消費の無駄が大きい。\n+\n+**レート制限時に待機しない**: Workers の実行時間上限下で `sleep` は自殺行為。カーソルがあるので\n+中断してよい。\n+\n+**収集状態を画面に出す**: ADR-0004 で「データ不足の週は値を出さない」と決めたが、\n+**収集が壊れている期間と、本当にデプロイが無かった期間は画面上で同じ空白に見える**。\n+最終収集成功時刻を出さないと利用者は空白を「デプロイしていない」と誤読する。\n+これは表示の親切さではなく**指標の正しさの一部**である。\n+\n+## 検討した代替案\n+\n+- **Node/TypeScript 単一プロセス + SQLite を Docker で VPS/自宅**: ベンダーロックがなく\n+  ローカルと本番が同一になるが、サーバーの面倒を見続ける必要がある。\n+  Workers の CPU 時間上限や D1 の制約を受け入れられない場合の退避先として記録しておく。\n+- **Next.js on Vercel + Postgres (Neon/Supabase)**: エコシステムは厚いが、\n+  cron・DB・ホスティングが 3 ベンダーに分かれる。却下。\n+- **React SPA + Recharts**: 2 画面には過剰。却下。\n+- **webhook 併用**: 上記理由で却下。\n+\n+## 結果・影響\n+\n+- **既知のリスク**: D1 は SQLite ベースで書き込みスループットと DB サイズに制約があり、\n+  Workers には CPU 実行時間の上限がある。分割ジョブ設計はこの制約への直接の対応だが、\n+  容量の実見積もりは未実施（ADR-0002 の積み残し）。\n+- PAT は Workers Secrets に置く（ADR-0006）。保管と更新の運用手順は未整備。\n+- Cloudflare Access の具体設定手順は未整備。\n+- チャートライブラリは未選定。ADR-0004 の「欠損週を補間しない」が選定条件になる。"
+    },
+    {
+      "sha": "f729a5a9bd2e581ef49988dea17ba3da208f230b",
+      "filename": "docs/adr/0004-metric-definitions.md",
+      "status": "added",
+      "additions": 110,
+      "deletions": 0,
+      "changes": 110,
+      "blob_url": "https://github.com/ymiyamoto63/four-keys-metrics-viewer/blob/c7aeb16a2dc0107e8b8016cdd2b9cea85f93df07/docs%2Fadr%2F0004-metric-definitions.md",
+      "raw_url": "https://github.com/ymiyamoto63/four-keys-metrics-viewer/raw/c7aeb16a2dc0107e8b8016cdd2b9cea85f93df07/docs%2Fadr%2F0004-metric-definitions.md",
+      "contents_url": "https://api.github.com/repos/ymiyamoto63/four-keys-metrics-viewer/contents/docs%2Fadr%2F0004-metric-definitions.md?ref=c7aeb16a2dc0107e8b8016cdd2b9cea85f93df07",
+      "patch": "@@ -0,0 +1,110 @@\n+# ADR-0004: 指標の算出定義と、その検証方法\n+\n+- ステータス: Accepted\n+- 日付: 2026-09-20\n+\n+## 文脈\n+\n+MVP で扱うのは**スループット側 2 指標**（デプロイ頻度・変更のリードタイム）。\n+不安定性側 3 指標は「何を障害とみなすか」という人間の定義に依存し、ラベル運用などの前提を\n+利用者に強いるため、MVP から外す（`README.md` 柱 1 の軽量性を優先）。\n+\n+デプロイの定義は ADR-0001 で決まっている。ここで決めるのは、そこから指標をどう出すか。\n+\n+## 決定\n+\n+### 変更のリードタイム\n+\n+- **起点** = そのコミットの **committer date**（author date は使わない）\n+- **終点** = そのコミットが含まれた**デプロイ**の**デプロイ時刻**（ADR-0001）\n+- **1 サンプル = 1 コミット。** デプロイ間の差分コミット集合を対象とし、\n+  コミット 1 件ごとにリードタイムを出す。PR 単位にはしない。\n+- デプロイ間の差分は **GitHub compare API**\n+  (`GET /repos/{owner}/{repo}/compare/{base}...{head}`) でグラフ正確に取得する。\n+  結果は ADR-0002 の**③ キャッシュ**として保存し、デプロイ検出ルール変更時に破棄する。\n+- 詳細画面に **「コミット → PR open」「PR open → merge」「merge → デプロイ」の 3 区間内訳**を出す。\n+\n+### デプロイ頻度\n+\n+- **「週あたり回数」を主指標**、**「デプロイ間隔の中央値」を副指標**として併記する。\n+\n+### 集計の共通ルール\n+\n+- **週次バケット、JST 月曜始まり。**\n+- 代表値は**中央値を主線**とし、**p75 / p90 を薄く重ねる**。平均は使わない。\n+- **データ点が少ない週は値を出さず、線も繋がない。**\n+\n+### 検証方法\n+\n+- 指標計算を**純粋関数に切り出し、記録した GitHub API レスポンス（fixture）でユニットテストする。**\n+- **サンプルリポジトリ**（`four-keys-sample-service` 相当）を新規に作り、\n+  **最小アプリ + 本物の CD ワークフロー + 1 年分の合成コミット / マージコミット**を持たせる。\n+  用途は **E2E（API レスポンス形の確認）に限定**する。\n+\n+## 理由\n+\n+**committer date を起点にする**: rebase / cherry-pick / 古いパッチの適用で author date は\n+数ヶ月前を指すことがあり、リードタイムが実態の何倍にも跳ねる。committer date は\n+「この履歴に入った時刻」を指すので歪みが小さい。\n+\n+**PR 単位でなくコミット単位**: PR を経由しない直接 push を取りこぼす。調査した実リポジトリでは\n+直接 push の比率が高く、PR 単位だとデータの大半が消える。\n+\n+**compare API を使い、時刻順近似を採らない**: 時刻順近似（デフォルトブランチのコミットを\n+committer date でソートし「前回デプロイ時刻 〜 今回デプロイ時刻」の窓に割り当てる方法）には\n+致命的な欠陥がある。**3 週間前に作られた feature branch が今日 merge された場合、\n+そのコミットの committer date は 3 週間前を指すので時間窓に入らず、集計から丸ごと消える。**\n+つまりこの近似は、リードタイムが最も長かったコミット＝最も会話の価値があるデータを\n+システマティックに削り落とす。精度の問題ではなく、**指標が逆向きに嘘をつく**\n+（放置された PR ほど数値に現れない）問題である。API コストは、稼働中のスコープが数件・\n+1 時間ポーリングという条件では無視できる。\n+\n+**3 区間内訳を出す**: 柱 4（算出ロジックの開示）を満たすと同時に、\n+「遅いのはコーディングか、レビュー待ちか、デプロイ待ちか」という改善の会話に直結する分解になる。\n+合計値だけでは会話が生まれない。\n+\n+**中央値 + p75/p90**: リードタイムは右に長い裾を引く分布で、平均は外れ値 1 件で跳ねる。\n+一方で中央値だけだと「たまに 3 週間かかる PR がある」という一番会話すべき事実が消える。\n+`README.md` の「会話のきっかけ」という立場では外れ値こそが話の種になる。\n+\n+**JST 月曜始まり**: 利用者が日本チームであり、UTC 週境界だと月曜午前のデプロイが前週に落ちて\n+直感に反する。\n+\n+**日次でも月次でもなく週次**: 少人数チームでは日次はスカスカでノイズだらけ、\n+月次は施策前後の変化が見えるまで遅すぎる。\n+\n+**データ不足週を繋がない**: 少数サンプルの中央値を折れ線で繋ぐと嘘をつく。\n+なお ADR-0001 で `merge_only` を既定にした結果、**これは例外処理ではなく通常の表示状態になる**。\n+\n+**fixture によるユニットテストを主、サンプルリポジトリを従にする**: 指標計算のバグが出る場所と、\n+サンプルリポジトリで再現できる場所がズレている。実際に壊れるのは\n+**週バケットの境界・タイムゾーン・デプロイ 0 件の週・同一時刻の複数デプロイ・\n+バックフィル途中でのカーソル再開**といった境界条件で、これらをサンプルリポジトリ上で\n+意図的に発生させるのは不可能か極めて手間。逆に E2E でしか分からないのは\n+「GitHub API のレスポンス形が想定どおりか」だけ。\n+\n+**サンプルリポジトリが合成履歴と本物の CD の両方を持つ理由**: ADR-0001 に示したとおり、\n+過去日付で作れるのはコミット / マージコミットのみで、Actions の実行日時は作れない。\n+したがって**合成履歴だけでは `workflow_run` ルールを検証できず、\n+本物の CD だけでは 1 年分の推移を検証できない**。片方では MVP の 2 戦略の半分しか検証できない。\n+\n+## 検討した代替案\n+\n+- **起点を PR の open 日時にする**: レビュー待ち時間だけを測ることになり、\n+  DORA の定義（コミットからデプロイまで）から外れる。3 区間内訳の一部として出すに留める。\n+- **起点を PR の merge 日時にする**: デプロイ待ち時間だけになる。同上。\n+- **時刻順近似でコミットを割り当てる**: 上記理由で却下。\n+- **平均値を主指標にする**: 外れ値に弱い。却下。\n+- **単一スコアに丸める / 目標値を提示する**: `README.md` が明示的に避けるとしたアンチパターン。却下。\n+\n+## 結果・影響\n+\n+- チャートライブラリは「欠損週を勝手に補間しない」ことが選定条件になる。\n+  多くのライブラリは既定で補間するため、実装時の要注意ポイントとして残る。\n+- 合成履歴の具体設計（何週分・週あたり何コミット・PR 何件・リードタイムの分布）は未着手。\n+  ここを雑に作ると「常に綺麗な線が出るテストデータ」になり、欠損週や外れ値の表示を検証できない。\n+- 不安定性側 3 指標と Quick Check セルフ評価は MVP に入れない。\n+  Quick Check の価値は自動算出値との突き合わせ（柱 5）にあるが、\n+  MVP では**突き合わせる相手が存在しない**ため、単独で入れると\n+  「アンケートに答えて点が出るだけ」の機能になり、避けると宣言した「単一スコアに丸める」に近づく。\n+  不安定性側 3 指標を載せる段階で同時に入れる。"
+    },
+    {
+      "sha": "6a4f4296d0deae49d77f837dc835d8970c38c4eb",
+      "filename": "docs/adr/0005-scope-and-configuration.md",
+      "status": "added",
+      "additions": 57,
+      "deletions": 0,
+      "changes": 57,
+      "blob_url": "https://github.com/ymiyamoto63/four-keys-metrics-viewer/blob/c7aeb16a2dc0107e8b8016cdd2b9cea85f93df07/docs%2Fadr%2F0005-scope-and-configuration.md",
+      "raw_url": "https://github.com/ymiyamoto63/four-keys-metrics-viewer/raw/c7aeb16a2dc0107e8b8016cdd2b9cea85f93df07/docs%2Fadr%2F0005-scope-and-configuration.md",
+      "contents_url": "https://api.github.com/repos/ymiyamoto63/four-keys-metrics-viewer/contents/docs%2Fadr%2F0005-scope-and-configuration.md?ref=c7aeb16a2dc0107e8b8016cdd2b9cea85f93df07",
+      "patch": "@@ -0,0 +1,57 @@\n+# ADR-0005: スコープを抽象として持ち、設定はリポジトリ内の設定ファイルで管理する\n+\n+- ステータス: Accepted\n+- 日付: 2026-09-20\n+\n+## 文脈\n+\n+DORA は指標を「1 つのアプリケーションまたはサービス単位」で適用することを推奨し、\n+`README.md` も「リポジトリ（あるいはリポジトリ内のサービス単位）をスコープの基本単位とし、\n+組織横断での安易な合算・比較は行わない」と明言している。\n+\n+また柱 4 により、「何をデプロイとみなすか」（ADR-0001 のデプロイ検出ルール）は\n+**設定可能**でなければならない。その設定をどこに置くかを決める必要がある。\n+\n+## 決定\n+\n+1. **複数リポジトリを登録し、画面で 1 つずつ切り替えて表示する。合算しない。横並び比較もしない。**\n+2. 指標の計算対象は「リポジトリ」ではなく **「スコープ」という抽象**として持つ。\n+   現時点では 1 スコープ = 1 リポジトリだが、将来リポジトリ内をサービス単位に分割できる余地を残す。\n+3. **スコープ設定はリポジトリ内の設定ファイル**（例 `scopes.toml`）で管理し、\n+   アプリのデプロイに同梱する。変更には PR とデプロイを要する。\n+4. **MVP では設定編集 UI を作らない。**\n+\n+スコープが持つ項目: 対象リポジトリ（owner / repo）、デプロイ検出ルール 1 つ（ADR-0001）、\n+バックフィル範囲（既定 1 年、ADR-0003）。\n+\n+## 理由\n+\n+**合算しない**: `README.md` のアンチパターン「チーム間の競争を煽らない」「個人の評価に使わせない」\n+に直結する。比較の軸は「他チーム」ではなく「過去の自分たち」に置く。\n+\n+**スコープという抽象を最初から入れる**: 「リポジトリ」で直接モデリングすると、\n+サービス単位への分割が必要になった時点で全クエリとスキーマに波及する。\n+抽象を 1 段挟むコストは今なら小さい。\n+\n+**設定ファイルにする（編集 UI にしない）**: 理由は運用の楽さではなく**柱 4 の含意**である。\n+「何をデプロイとみなすか」はチームが議論して合意すべき定義であって、\n+こっそり画面から書き換えられてよいものではない。設定ファイルなら変更が PR に現れ、\n+**「この時点で定義を変えた」という履歴が残る**。指標が不連続に跳ねたときに原因を辿れるのは、\n+この履歴があるからである。編集 UI はその履歴を消す。\n+スコープ数が 1 桁である以上、再デプロイの手間は論点にならない。\n+\n+## 検討した代替案\n+\n+- **D1 のテーブル + 画面から編集**: 即時反映で運用は楽だが、定義変更の履歴が残らない。\n+  UI 実装コストも増える。却下。\n+- **設定ファイルを正とし起動時に D1 へ同期**: 履歴は残るが、二重管理と同期タイミングの問題を\n+  持ち込む。スコープ数が 1 桁の現状では利点がない。却下。\n+- **1 リポジトリ固定（設定で指定、乗り換えは設定変更）**: 実質すぐ足りなくなる。却下。\n+- **リポジトリ内をサービス単位に分割できるようにする**: 「何がサービス境界か」の定義が必要で、\n+  コンセプトの複雑度を一段上げる。抽象だけ用意して実装は後回し。\n+\n+## 結果・影響\n+\n+- デプロイ検出ルールの変更は PR として記録される。ADR-0002 の ③ キャッシュ破棄は\n+  デプロイ時に実行される必要がある。\n+- 対象リポジトリを増やすたびにデプロイが要る。スコープ数が 2 桁に乗ったら再検討する。"
+    },
+    {
+      "sha": "f32bb0a7d5033a930bdf788bcc5d3e8fd1df9af1",
+      "filename": "docs/adr/0006-auth-and-access-control.md",
+      "status": "added",
+      "additions": 63,
+      "deletions": 0,
+      "changes": 63,
+      "blob_url": "https://github.com/ymiyamoto63/four-keys-metrics-viewer/blob/c7aeb16a2dc0107e8b8016cdd2b9cea85f93df07/docs%2Fadr%2F0006-auth-and-access-control.md",
+      "raw_url": "https://github.com/ymiyamoto63/four-keys-metrics-viewer/raw/c7aeb16a2dc0107e8b8016cdd2b9cea85f93df07/docs%2Fadr%2F0006-auth-and-access-control.md",
+      "contents_url": "https://api.github.com/repos/ymiyamoto63/four-keys-metrics-viewer/contents/docs%2Fadr%2F0006-auth-and-access-control.md?ref=c7aeb16a2dc0107e8b8016cdd2b9cea85f93df07",
+      "patch": "@@ -0,0 +1,63 @@\n+# ADR-0006: アクセス制御をアプリ外に出し、GitHub 認証は単一の read-only PAT で行う\n+\n+- ステータス: Accepted\n+- 日付: 2026-09-20\n+\n+## 文脈\n+\n+ADR-0003 で自ホスト Web アプリとして Cloudflare Workers に載せることが決まっている。\n+決めるべきは独立した 2 つの事柄:\n+\n+1. **誰が画面を見られるか**（画面側のアクセス制御）\n+2. **アプリが GitHub をどう認証するか**（データ取得側の credential）\n+\n+利用者は少人数。調査の結果、対象アカウントには **Organization が存在せず、全 37 リポジトリが\n+個人アカウント所有**であることが分かっている。対象リポジトリには private も含まれる。\n+\n+## 決定\n+\n+1. **画面側の認証をアプリ内に実装しない。** アクセス制御はインフラ層\n+   （Cloudflare Access / リバースプロキシ / VPN）に出す。\n+2. **GitHub 認証は単一の credential を環境変数（Workers Secrets）で持つ。**\n+   閲覧者ごとの OAuth トークンは使わない。\n+3. credential は **fine-grained PAT（read-only、対象リポジトリのみ選択）** とする。\n+   GitHub App へ移行できる形で実装する。\n+\n+## 理由\n+\n+**単一 credential が構造的に要請される**: ADR-0002 で定期収集を選んだ以上、\n+収集は「閲覧者が誰もいない時間」にも動く必要がある。閲覧者の OAuth トークンでは収集できない。\n+\n+**画面側の認証をアプリに持たせない**: GitHub OAuth ログインを実装し\n+「対象リポジトリへの read 権限がある人だけ見られる」を実現しようとすると、\n+アプリが権限計算を背負うことになる。少人数の自ホスト構成には過剰。\n+Cloudflare Access が ADR-0003 で選んだ基盤上に無料枠で存在し、自前実装が一切不要。\n+\n+これは「アクセス制御をしない」という意味ではなく、**アクセス制御をアプリの外に追い出す**判断である。\n+\n+**GitHub App ではなく fine-grained PAT を選ぶ**: 当初は GitHub App を推した\n+（レート制限枠が広く、個人に紐づかず、権限を read-only に絞れる）。\n+しかし調査で **Organization が存在せず全リポジトリが個人所有**であることが分かり、\n+個人アカウント相手では GitHub App のセットアップ手間に対する見返りが薄い。\n+fine-grained PAT なら read-only かつ対象リポジトリを明示的に選択でき、\n+必要な権限の絞り込みはほぼ同等に達成できる。\n+\n+GitHub App への移行余地は残す。利用が組織に広がる、レート制限が問題になる、\n+あるいは PAT の期限管理が負担になった時点で再検討する。\n+\n+## 検討した代替案\n+\n+- **GitHub OAuth ログインを画面に実装する**: チーム外への URL 漏洩を許容できない場合の選択肢。\n+  今回はインフラ層で足りると判断したが、要件が変われば最初に見直す箇所。\n+- **閲覧者ごとの OAuth トークンで GitHub を叩く**: 定期収集と両立しない。却下。\n+- **GitHub App を単一 credential として使う**: 上記理由で当面見送り。移行先として残す。\n+- **classic PAT**: 権限の絞り込みが粗い。却下。\n+\n+## 結果・影響\n+\n+- **PAT の保管場所（Workers Secrets）と更新運用は未整備。** 期限切れで収集が静かに止まる\n+  リスクがあるため、ADR-0003 の「最終収集成功時刻の画面表示」がその検知手段を兼ねる。\n+- **Cloudflare Access の具体的な設定手順は未整備。** これを怠ると URL を知る全員が閲覧できる状態に\n+  なるため、デプロイ手順に必須ステップとして含める必要がある。\n+- private リポジトリを対象にする以上、PAT の権限設定ミスは収集失敗として現れる。\n+  スコープ単位の失敗分離（ADR-0003）により他スコープには波及しない。"
+    }
+  ]
+}
