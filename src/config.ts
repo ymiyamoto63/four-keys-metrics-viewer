@@ -10,6 +10,8 @@ export type Config = {
   host: string;
   port: number;
   databasePath: string;
+  /** スコープ設定ファイル（ADR-0005）の場所。 */
+  scopesPath: string;
   githubToken: string | undefined;
   collectCron: string;
   collectOnStartup: boolean;
@@ -66,6 +68,7 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): Config {
     host: readHost(env),
     port: readPort(env),
     databasePath: env.DATABASE_PATH ?? "./data/four-keys.sqlite",
+    scopesPath: env.SCOPES_PATH ?? "./scopes.toml",
     githubToken: env.GITHUB_TOKEN || undefined,
     collectCron: env.COLLECT_CRON ?? "0 * * * *",
     collectOnStartup: readBoolean(env.COLLECT_ON_STARTUP, true),

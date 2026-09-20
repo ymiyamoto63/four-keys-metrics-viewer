@@ -14,9 +14,14 @@ Four Keys（デプロイ頻度・変更のリードタイム・変更障害率�
 ```sh
 cp .env.example .env
 # .env に GitHub の fine-grained PAT（read-only・対象リポジトリのみ）を設定する
+
+cp scopes.example.toml scopes.toml
+# scopes.toml に計測対象のスコープ（リポジトリとデプロイ検出ルール）を書く
 ```
 
 `.env` は `.gitignore` 済みです。**コミットしないでください。**
+`scopes.toml` は逆に**コミットします**（下の「スコープ設定」を参照）。
+スコープ設定が無い・壊れている場合、アプリは起動時にエラーで停止します。
 
 ### Docker で起動する（通常はこちら）
 
@@ -57,8 +62,51 @@ npm test            # vitest run
 | `HOST` | `127.0.0.1` | バインド先。下の注意を参照 |
 | `PORT` | `3000` | 待ち受けポート |
 | `DATABASE_PATH` | `./data/four-keys.sqlite` | SQLite ファイル。Docker では `/data/four-keys.sqlite` |
+| `SCOPES_PATH` | `./scopes.toml` | スコープ設定ファイル。未作成・不正なら起動しない |
 | `COLLECT_CRON` | `0 * * * *` | 稼働中の収集スケジュール |
 | `COLLECT_ON_STARTUP` | `true` | 起動時に 1 回追いつくかどうか |
+
+### スコープ設定（`scopes.toml`）
+
+**スコープ**は指標を算出する単位です（`CONTEXT.md`）。いまは 1 スコープ = 1 リポジトリで、
+画面では 1 つずつ切り替えて表示します。**合算も横並び比較もしません。**
+
+設定は画面からではなくリポジトリ内の `scopes.toml` で行います。狙いは運用の楽さではなく、
+**「何をデプロイとみなすか」の変更が PR の履歴に残ること**です（ADR-0005）。
+指標が不連続に跳ねたとき、原因をこの履歴から辿れます。**編集 UI は作りません。**
+
+```toml
+[[scopes]]
+id = "four-keys-metrics-viewer"        # DB の scope_id と画面 URL に使う。後から変えない
+owner = "ymiyamoto63"
+repo = "four-keys-metrics-viewer"
+backfill_days = 365                    # 省略可。既定 365（1 年）
+
+[scopes.deploy_rule.default_branch]    # デプロイ検出ルールは 1 スコープに 1 つだけ
+granularity = "merge_only"             # merge_only（推奨） / all_pushes
+```
+
+| キー | 必須 | 説明 |
+|---|---|---|
+| `id` | ○ | スコープの識別子。英数字で始まり、`.` `_` `-` が使える。重複不可 |
+| `owner` / `repo` | ○ | 対象リポジトリ。`repo` にはリポジトリ名だけを書く |
+| `backfill_days` | | 初回バックフィルで遡る日数。既定 365（ADR-0003） |
+| `[scopes.deploy_rule.default_branch]` | ※ | デフォルトブランチへの反映をデプロイとみなす。`granularity` 必須 |
+| `[scopes.deploy_rule.workflow_run]` | ※ | 指定ワークフローの成功実行をデプロイとみなす。`workflow` 必須（例 `deploy.yml`） |
+
+※ デプロイ検出ルールは**どちらか 1 つだけ**を書きます。2 つ書くと起動時にエラーになります。
+複数ルールの OR 合成は、同一デプロイの二重計上を生み「この数値をどのルールで数えたのか」を
+辿れなくするため禁止しています（ADR-0001）。`granularity` の `all_pushes` は
+デフォルトブランチへの全コミットを 1 デプロイとして数えるため、
+直接 push で自動デプロイする構成でない限り `merge_only` を選んでください。
+
+設定の誤り（ルール 2 つ、未知のルール名、`granularity` の欠落、キーの綴り間違いなど）は
+**起動時にまとめてエラーとして表示され、アプリは起動しません。**
+黙って既定値に落ちることはしません。指標の定義に関わる設定を取り違えたまま動かすと、
+画面上は正常な数字に見えてしまうためです。
+
+Docker の場合、`scopes.toml` はイメージに焼き込まれます。編集したら
+`docker compose up --build` で作り直してください。
 
 > **公開範囲について。** ホスト上で直接動かす場合、アプリは `127.0.0.1` にのみバインドします。
 > Docker の場合はコンテナ内で `0.0.0.0` にバインドし（そうしないとホストから到達できません）、

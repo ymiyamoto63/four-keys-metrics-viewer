@@ -1,0 +1,55 @@
+# スコープ設定のサンプル（ADR-0005）。
+#
+# このファイルをコピーして `scopes.toml` を作る。
+#
+#     cp scopes.example.toml scopes.toml
+#
+# `scopes.toml` は .env と違い**コミットする**。スコープの定義変更——とくに
+# 「何をデプロイとみなすか」——が PR の履歴に残ることが、設定ファイル方式を選んだ理由そのもの
+# だからである（ADR-0005）。指標が不連続に跳ねたとき、原因をこの履歴から辿る。
+#
+# 読み込み場所は既定で ./scopes.toml。SCOPES_PATH で変更できる。
+# 不正な設定は起動時にエラーで落ちる（黙って既定値に落ちることはしない）。
+
+# スコープ = 指標を算出する単位（CONTEXT.md）。いまは 1 スコープ = 1 リポジトリ。
+# 複数スコープの指標は合算も横並び比較もしない。画面で 1 つずつ切り替えて見る。
+[[scopes]]
+# DB の scope_id と画面の URL に使う識別子。英数字で始め、`.` `_` `-` が使える。
+# 一度決めたら変えない（変えると収集済みのイベントと結び付かなくなる）。
+id = "four-keys-metrics-viewer"
+owner = "ymiyamoto63"
+repo = "four-keys-metrics-viewer"
+
+# 初回バックフィルで遡る日数。省略時は 365（1 年、ADR-0003）。
+# 週次の推移を見るには数十週分が要るため、90 日程度に縮めると点が足りなくなる。
+backfill_days = 365
+
+# デプロイ検出ルールは 1 スコープにつき **1 つだけ**（ADR-0001）。
+# 2 つ書くと起動時にエラーになる。複数ルールの OR 合成は、同一デプロイの二重計上を生み、
+# 「この数値をどのルールで数えたのか」を辿れなくするため禁止している。
+#
+# ルール 1: default_branch — デフォルトブランチへの反映をデプロイとみなす。
+#   granularity は必須。
+#     merge_only  … merge commit のみを 1 デプロイとみなす（推奨）
+#     all_pushes  … デフォルトブランチへの全コミットを 1 デプロイとみなす
+#   all_pushes は「直接 push で自動デプロイ」の構成では正しいが、そうでないリポジトリでは
+#   デプロイ回数が膨らみ、リードタイムがほぼ全件ゼロになる。既定のつもりで選ばないこと。
+[scopes.deploy_rule.default_branch]
+granularity = "merge_only"
+
+# ルール 2: workflow_run — 指定した Actions ワークフローの成功実行をデプロイとみなす。
+#   上の default_branch と**同時には書けない**。使うときは上を消す。
+#   workflow はワークフローのファイル名（または数値 ID）。
+#
+# [scopes.deploy_rule.workflow_run]
+# workflow = "deploy.yml"
+
+# スコープを増やすときは [[scopes]] をもう 1 つ書く。
+#
+# [[scopes]]
+# id = "another-service"
+# owner = "ymiyamoto63"
+# repo = "another-service"
+#
+# [scopes.deploy_rule.workflow_run]
+# workflow = "deploy.yml"

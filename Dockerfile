@@ -26,12 +26,18 @@ WORKDIR /app
 ENV NODE_ENV=production \
     TZ=Asia/Tokyo \
     DATABASE_PATH=/data/four-keys.sqlite \
+    SCOPES_PATH=/app/scopes.toml \
     PORT=3000
 # DB ファイルは volume に置く。/data の所有者を node ユーザーに合わせておく。
 RUN mkdir -p /data && chown -R node:node /data
 COPY --from=prod-deps --chown=node:node /app/node_modules ./node_modules
 COPY --from=build --chown=node:node /app/dist ./dist
 COPY --chown=node:node package.json ./
+# スコープ設定はイメージに焼き込む。定義を変えるには再ビルド（= デプロイ）が要る、
+# という ADR-0005 の意図をそのまま形にしている。
+# glob にしているのは、scopes.toml をまだ作っていないクローンでもビルドを通すため
+# （その場合は起動時に「ファイルがありません」で落ちる）。
+COPY --chown=node:node scopes*.toml ./
 USER node
 EXPOSE 3000
 CMD ["node", "dist/index.js"]
