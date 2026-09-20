@@ -22,10 +22,11 @@ import { type Context, Hono } from "hono";
 import type { Config } from "../config.ts";
 import type { Db } from "../db/index.ts";
 import type { Scope } from "../scopes.ts";
-import { isMetricKey, summaryHref } from "./charts.ts";
+import { isMetricKey, metricDetailHref, summaryHref } from "./charts.ts";
+import { loadWeekEvidence } from "./evidence.ts";
 import { DEFAULT_PERIOD_WEEKS, PeriodQueryError, parsePeriodWeeks, periodOf } from "./period.ts";
 import { loadScopeMetrics } from "./scope-metrics.ts";
-import { MetricDetailPlaceholder } from "./views/metric-detail-placeholder.tsx";
+import { MetricDetail } from "./views/metric-detail.tsx";
 import { NoticePage } from "./views/notice-page.tsx";
 import { Summary } from "./views/summary.tsx";
 
@@ -98,7 +99,15 @@ export function createApp({ config, db, scopes, now = () => new Date() }: AppOpt
     );
   });
 
-  // 指標詳細（#21）。中身はまだ無いが、サマリの点のリンク先を 404 にしないため経路だけ置く。
+  /**
+   * 指標詳細（#21）。ADR-0003 の 2 階層目。
+   *
+   * `week` を必須にせず、未指定なら**期間の最終週**にする。サマリの点から来る経路では必ず
+   * 付いているが、URL を手で削ったときに 400 で止めるほどの誤りではない（週の選択は
+   * 期間の選択と違い、値そのものを変えずに見る場所を変えるだけ）。
+   * 一方、**期間の外や週開始日でない `week` は 400 で止める**。空の一覧を返すと、
+   * 収集の穴（ADR-0007）と URL の誤りが画面上で同じ空白に見えるため。
+   */
   app.get("/scopes/:scopeId/metrics/:metric", (c) => {
     const scope = scopes.find((candidate) => candidate.id === c.req.param("scopeId"));
     if (scope === undefined) {
@@ -120,16 +129,56 @@ export function createApp({ config, db, scopes, now = () => new Date() }: AppOpt
     let weeks: ReturnType<typeof parsePeriodWeeks>;
     try {
       weeks = parsePeriodWeeks(c.req.query("weeks"));
-    } catch {
-      weeks = DEFAULT_PERIOD_WEEKS;
+    } catch (error) {
+      if (!(error instanceof PeriodQueryError)) {
+        throw error;
+      }
+      return c.html(
+        <NoticePage
+          title="その期間は選べません"
+          message={error.message}
+          backHref={summaryHref(scope.id, DEFAULT_PERIOD_WEEKS)}
+          backLabel={`${scope.id} のサマリへ`}
+        />,
+        400,
+      );
+    }
+
+    const at = now();
+    // 集計値は保存しない（ADR-0002）。サマリと同じ入口を毎リクエスト通す。
+    const metrics = loadScopeMetrics(db, scope, periodOf(weeks, at), at);
+    const weekKeys = metrics.leadTime.weeks.map((week) => week.week);
+    const latestWeek = weekKeys[weekKeys.length - 1];
+    const week = c.req.query("week") ?? latestWeek;
+
+    const evidence = week === undefined ? undefined : loadWeekEvidence(db, metrics, week);
+    if (evidence === undefined) {
+      const first = weekKeys[0];
+      return c.html(
+        <NoticePage
+          title="その週は表示できません"
+          message={
+            `週 \`${week ?? ""}\` はこの集計期間にありません。` +
+            `指定できるのは ${first ?? "-"} 〜 ${latestWeek ?? "-"} の、JST 月曜始まりの週開始日です。`
+          }
+          backHref={
+            latestWeek === undefined
+              ? summaryHref(scope.id, weeks)
+              : metricDetailHref(scope.id, metric, latestWeek, weeks)
+          }
+          backLabel="最新の週へ"
+        />,
+        400,
+      );
     }
 
     return c.html(
-      <MetricDetailPlaceholder
-        scope={scope}
+      <MetricDetail
+        metrics={metrics}
         metric={metric}
-        week={c.req.query("week")}
+        evidence={evidence}
         weeks={weeks}
+        weekKeys={weekKeys}
       />,
     );
   });

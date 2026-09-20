@@ -10,9 +10,17 @@
  */
 
 import type { DeployFrequencyResult } from "../metrics/deploy-frequency.ts";
-import { toChartWeeks, toDeployCountPoints } from "../metrics/deploy-frequency.ts";
+import {
+  toChartWeeks,
+  toDeployCountPoints,
+  toDeployIntervalMedianPoints,
+} from "../metrics/deploy-frequency.ts";
 import type { LeadTimeMetrics } from "../metrics/lead-time.ts";
-import { toLeadTimeChart } from "../metrics/lead-time.ts";
+import {
+  LEAD_TIME_UNIT_LABEL,
+  toLeadTimeBreakdownChart,
+  toLeadTimeChart,
+} from "../metrics/lead-time.ts";
 import type { PeriodWeeks } from "./period.ts";
 import type { WeeklyLineChartProps } from "./views/chart.tsx";
 
@@ -56,8 +64,18 @@ export function metricDetailHref(
   return `/scopes/${encodeURIComponent(scopeId)}/metrics/${metric}?week=${week}&weeks=${weeks}`;
 }
 
-/** `WeeklyLineChart` にそのまま渡せる props（`pointHref` は呼び出し側が足す）。 */
-export type ChartSpec = Pick<WeeklyLineChartProps, "title" | "weeks" | "series" | "unitLabel">;
+/**
+ * `WeeklyLineChart` にそのまま渡せる props（`pointHref` は呼び出し側が足す）。
+ *
+ * `missingWeekNote` をここに含めるのは、**空白の理由を知っているのは指標の側だけ**だからである
+ * （#21）。チャートは「どの系列にも値が無い週」しか知らず、それが収集の穴（ADR-0007）なのか
+ * 標本数ゲート（ADR-0004）なのかを言えない。言えない側に文言を持たせると、
+ * どちらか一方の理由で両方を説明することになる。
+ */
+export type ChartSpec = Pick<
+  WeeklyLineChartProps,
+  "title" | "weeks" | "series" | "unitLabel" | "missingWeekNote"
+>;
 
 /**
  * デプロイ頻度（主指標 = 週あたりのデプロイ回数）。
@@ -71,6 +89,32 @@ export function deployFrequencyChart(result: DeployFrequencyResult): ChartSpec {
     weeks: toChartWeeks(result),
     unitLabel: " 回",
     series: [{ name: "デプロイ数", role: "primary", points: toDeployCountPoints(result) }],
+    // デプロイ頻度の空白は**標本不足ではない**。収集済みの週はデプロイ 0 件でも 0 として
+    // 点が打たれる（#17）ので、点が無い＝その週を数え切れていない、以外にならない。
+    missingWeekNote: (count) =>
+      `値を出していない ${count} 週は、収集がその週の全体に届いていない週です（ADR-0007）。` +
+      "デプロイが 0 件だった週は欠損ではなく 0 として点を打っています。",
+  };
+}
+
+/**
+ * デプロイ頻度の**副指標**（デプロイ間隔の中央値）。詳細画面（#21）だけに出す。
+ *
+ * サマリに並べないのは #20 の判断（`deployFrequencyChart` のコメント）どおり。単位が
+ * 回 / 時間で混ざるためで、ここは「デプロイ頻度をもう一段掘る」画面なので並べてよい。
+ */
+export function deployIntervalChart(result: DeployFrequencyResult): ChartSpec {
+  return {
+    title: `デプロイ間隔の中央値（${LEAD_TIME_UNIT_LABEL}）`,
+    weeks: toChartWeeks(result),
+    unitLabel: ` ${LEAD_TIME_UNIT_LABEL}`,
+    series: [
+      { name: "間隔の中央値", role: "primary", points: toDeployIntervalMedianPoints(result) },
+    ],
+    // 間隔だけは主指標と違い、標本数ゲート（ADR-0004）でも空白になる。両方を書く。
+    missingWeekNote: (count) =>
+      `値を出していない ${count} 週は、デプロイ間隔の標本が足りない週（ADR-0004）か、` +
+      "収集がその週の全体に届いていない週（ADR-0007）です。下の根拠イベントで確かめられます。",
   };
 }
 
@@ -82,5 +126,29 @@ export function leadTimeChart(metrics: LeadTimeMetrics): ChartSpec {
     weeks: chart.weeks,
     unitLabel: ` ${chart.unitLabel}`,
     series: chart.series,
+    missingWeekNote: (count) =>
+      `値を出していない ${count} 週は、標本（コミット）が ${metrics.minSamples} 件未満の週` +
+      "（ADR-0004）か、収集がその週の全体に届いていない週（ADR-0007）です。" +
+      "どちらなのかは収集状態と下の根拠イベントで確かめられます。",
+  };
+}
+
+/**
+ * リードタイムの 3 区間内訳（コミット → PR open → merge → デプロイ）の週次推移。#21。
+ *
+ * **合計側とは別の標本数ゲートを通っている**（#18）。内訳を持つ標本は PR に結び付いた
+ * コミットだけなので、合計が出ている週でも内訳が空白になることがある。文言でそう言う。
+ */
+export function leadTimeBreakdownChart(metrics: LeadTimeMetrics): ChartSpec {
+  const chart = toLeadTimeBreakdownChart(metrics);
+  return {
+    title: `リードタイムの 3 区間内訳（各区間の中央値・${chart.unitLabel}）`,
+    weeks: chart.weeks,
+    unitLabel: ` ${chart.unitLabel}`,
+    series: chart.series,
+    missingWeekNote: (count) =>
+      `内訳を出していない ${count} 週は、内訳を持つ標本（PR に結び付いたコミット）が ` +
+      `${metrics.minSamples} 件未満の週です。合計リードタイムが出ている週でも、` +
+      "その週のコミットが直接 push ばかりなら内訳は出ません（#18）。",
   };
 }
