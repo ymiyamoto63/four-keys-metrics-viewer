@@ -7,6 +7,7 @@ import {
   listDeployments,
   listPullRequests,
   recordCollectionFailure,
+  recordCollectionSuccess,
   saveCollectionCursor,
   saveCommit,
   saveCompareCache,
@@ -317,5 +318,37 @@ describe("収集カーソル", () => {
 
     expect(findCollectionCursor(db, "scope-a")?.lastSuccessAt).toBe("2026-09-20T05:00:00Z");
     expect(findCollectionCursor(db, "scope-b")?.lastSuccessAt).toBe("2026-09-01T05:00:00Z");
+  });
+});
+
+describe("収集成功の記録", () => {
+  it("最終収集成功時刻を更新し、直前の失敗を消す", () => {
+    const db = openTestDatabase();
+    saveCollectionCursor(db, {
+      scopeId: "four-keys-metrics-viewer",
+      backfilledUntil: "2025-09-20T00:00:00Z",
+      backfillComplete: true,
+      lastSuccessAt: "2026-09-19T05:00:00Z",
+      lastError: "403 Resource not accessible",
+    });
+
+    recordCollectionSuccess(db, "four-keys-metrics-viewer", "2026-09-20T05:00:00Z");
+
+    const cursor = findCollectionCursor(db, "four-keys-metrics-viewer");
+    expect(cursor?.lastSuccessAt).toBe("2026-09-20T05:00:00Z");
+    expect(cursor?.lastError).toBeNull();
+    // バックフィルの進捗には触らない（#12 が持つ）。
+    expect(cursor?.backfilledUntil).toBe("2025-09-20T00:00:00Z");
+    expect(cursor?.backfillComplete).toBe(true);
+  });
+
+  it("カーソルが無いスコープでも記録できる", () => {
+    const db = openTestDatabase();
+
+    recordCollectionSuccess(db, "four-keys-metrics-viewer", "2026-09-20T05:00:00Z");
+
+    expect(findCollectionCursor(db, "four-keys-metrics-viewer")?.lastSuccessAt).toBe(
+      "2026-09-20T05:00:00Z",
+    );
   });
 });
