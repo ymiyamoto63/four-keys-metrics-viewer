@@ -13,7 +13,8 @@
     "typecheck": "tsc --noEmit",
     "lint": "biome check .",
     "format": "biome check --write .",
-    "test": "vitest run"
+    "test": "vitest run",
+    "record:fixtures": "tsx src/metrics/record-fixtures.ts"
   },
   "dependencies": {
     "@hono/node-server": "^2.1.1",
