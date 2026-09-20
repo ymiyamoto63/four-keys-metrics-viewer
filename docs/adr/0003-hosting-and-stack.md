@@ -1,7 +1,13 @@
 # ADR-0003: Cloudflare Workers + D1 + Cron Triggers に載せ、収集は再開可能な分割ジョブにする
 
-- ステータス: Accepted（2026-09-20 に訂正を追記。下部「追記」を参照）
+- ステータス: **Superseded by ADR-0007**（2026-09-20）
 - 日付: 2026-09-20
+
+> **この ADR はもはや有効ではない。** Cloudflare Workers + D1 ではなく、
+> Node + SQLite を Docker で自ホストする構成に切り替わった。
+> 現行の決定は `docs/adr/0007-self-hosted-node-sqlite.md` を参照。
+> 本 ADR の決定のうち、フロントエンド構成・画面階層・ポーリング方針・
+> バックフィル範囲・失敗の扱い・収集状態の表示は ADR-0007 に引き継がれている。
 
 ## 文脈
 
