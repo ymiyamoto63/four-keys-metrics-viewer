@@ -289,6 +289,28 @@ export function findCollectionCursor(db: Db, scopeId: string): CollectionCursor 
 }
 
 /**
+ * バックフィルの進捗を記録する（#12）。最終収集成功時刻と直前の失敗には触らない。
+ *
+ * 「どこまで過去へ遡ったか」と収集サイクルの成否は別々に進む。1 窓だけ取ってレート制限で
+ * 中断した場合、遡った分は確定させたいが、そのサイクルを成功扱いにはできない。
+ */
+export function recordBackfillProgress(
+  db: Db,
+  scopeId: string,
+  backfilledUntil: string | null,
+  complete: boolean,
+): void {
+  db.prepare(
+    `INSERT INTO collection_cursors
+       (scope_id, backfilled_until, backfill_complete, last_success_at, last_error)
+     VALUES (?, ?, ?, NULL, NULL)
+     ON CONFLICT (scope_id) DO UPDATE SET
+       backfilled_until  = excluded.backfilled_until,
+       backfill_complete = excluded.backfill_complete`,
+  ).run(scopeId, backfilledUntil, complete ? 1 : 0);
+}
+
+/**
  * 収集の失敗を記録する。最終収集成功時刻は上書きしない。
  * PAT の期限切れなどで収集が静かに止まったことを、画面から読み取れるようにするため。
  */
