@@ -2,7 +2,7 @@ import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
-import { projectCommit, projectCompare, projectPullRequest } from "./project.ts";
+import { mergeComparePages, projectCommit, projectCompare, projectPullRequest } from "./project.ts";
 
 const FIXTURES = join(dirname(fileURLToPath(import.meta.url)), "__fixtures__");
 
@@ -153,5 +153,37 @@ describe("compare の射影", () => {
 
   it("すべて返却されている場合は打ち切りではない", () => {
     expect(projectCompare(fixture("compare")).truncated).toBe(false);
+  });
+});
+
+describe("compare のページ合成", () => {
+  const page = (totalCommits: number, commitShas: string[]) => ({
+    commitShas,
+    totalCommits,
+    truncated: commitShas.length < totalCommits,
+  });
+
+  it("全ページを束ねて打ち切りを解消する", () => {
+    const merged = mergeComparePages([page(3, ["a", "b"]), page(3, ["c"])]);
+
+    expect(merged.commitShas).toEqual(["a", "b", "c"]);
+    expect(merged.totalCommits).toBe(3);
+    expect(merged.truncated).toBe(false);
+  });
+
+  it("束ねても total_commits に届かなければ打ち切りのまま返す", () => {
+    // 黙って欠けさせないための印。ここを落とすとリードタイムの標本が静かに減る（#15）。
+    expect(mergeComparePages([page(300, ["a"])]).truncated).toBe(true);
+  });
+
+  it("ページ境界で重複した SHA を二重に数えない", () => {
+    // 1 サンプル = 1 コミット（ADR-0004）なので、重複はそのまま二重計上になる。
+    const merged = mergeComparePages([page(2, ["a", "b"]), page(2, ["b"])]);
+
+    expect(merged.commitShas).toEqual(["a", "b"]);
+  });
+
+  it("ページが 1 つも無ければ空の差分になる", () => {
+    expect(mergeComparePages([])).toEqual({ commitShas: [], totalCommits: 0, truncated: false });
   });
 });

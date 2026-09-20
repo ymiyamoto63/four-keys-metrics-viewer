@@ -275,3 +275,96 @@ describe("エンドポイントのラッパ", () => {
     expect(compare).not.toHaveProperty("files");
   });
 });
+
+describe("compare のページング", () => {
+  /** SHA 列を持つ compare のレスポンス 1 ページ分。`files` は本物同様あっても捨てられる。 */
+  function comparePage(totalCommits: number, shas: string[]): unknown {
+    return {
+      total_commits: totalCommits,
+      commits: shas.map((sha) => ({ sha })),
+      files: [{ filename: "src/index.ts" }],
+    };
+  }
+
+  function shaRange(from: number, count: number): string[] {
+    return Array.from({ length: count }, (_, index) => `sha-${from + index}`);
+  }
+
+  const next = (url: string): Record<string, string> => ({ link: `<${url}>; rel="next"` });
+
+  it("250 件を超える差分でも、全ページを辿って全件取る", async () => {
+    // 1 ページで済ませると差分の大きいデプロイほどコミットが落ち、リードタイムの標本が
+    // 黙って欠ける（ADR-0004 が退けた時刻順近似と同じ壊れ方）。
+    const total = 255;
+    const { client, calls } = fakeGitHub([
+      {
+        body: comparePage(total, shaRange(1, 100)),
+        headers: next("https://api.github.com/repos/o/r/compare/a...b?per_page=100&page=2"),
+      },
+      {
+        body: comparePage(total, shaRange(101, 100)),
+        headers: next("https://api.github.com/repos/o/r/compare/a...b?per_page=100&page=3"),
+      },
+      { body: comparePage(total, shaRange(201, 55)) },
+    ]);
+
+    const compare = await client.compare(REPO, "a", "b");
+
+    expect(compare.commitShas).toHaveLength(total);
+    expect(compare.commitShas.at(-1)).toBe("sha-255");
+    expect(compare.truncated).toBe(false);
+    expect(calls).toHaveLength(3);
+    expect(new URL(calls[0]?.url ?? "").searchParams.get("per_page")).toBe("100");
+  });
+
+  it("Link ヘッダが無くても、total_commits に届くまで page を自分で進める", async () => {
+    const { client, calls } = fakeGitHub([
+      { body: comparePage(150, shaRange(1, 100)) },
+      { body: comparePage(150, shaRange(101, 50)) },
+    ]);
+
+    const compare = await client.compare(REPO, "a", "b");
+
+    expect(compare.commitShas).toHaveLength(150);
+    expect(compare.truncated).toBe(false);
+    expect(new URL(calls[1]?.url ?? "").searchParams.get("page")).toBe("2");
+  });
+
+  it("全件取れたら、それ以上ページを取りに行かない", async () => {
+    const { client, calls } = fakeGitHub([
+      {
+        body: comparePage(2, shaRange(1, 2)),
+        headers: next("https://api.github.com/repos/o/r/compare/a...b?page=2"),
+      },
+    ]);
+
+    const compare = await client.compare(REPO, "a", "b");
+
+    expect(compare.commitShas).toEqual(["sha-1", "sha-2"]);
+    expect(calls).toHaveLength(1);
+  });
+
+  it("進まないページを受け取ったら止め、欠けを truncated として見せる", async () => {
+    const { client, calls } = fakeGitHub([
+      { body: comparePage(300, shaRange(1, 100)) },
+      { body: comparePage(300, []) },
+    ]);
+
+    const compare = await client.compare(REPO, "a", "b");
+
+    expect(compare.truncated).toBe(true);
+    expect(compare.commitShas).toHaveLength(100);
+    expect(calls).toHaveLength(2);
+  });
+
+  it("同じコミットが 2 ページに現れても二重に数えない", async () => {
+    const { client } = fakeGitHub([
+      { body: comparePage(3, ["sha-1", "sha-2"]) },
+      { body: comparePage(3, ["sha-2", "sha-3"]) },
+    ]);
+
+    const compare = await client.compare(REPO, "a", "b");
+
+    expect(compare.commitShas).toEqual(["sha-1", "sha-2", "sha-3"]);
+  });
+});
