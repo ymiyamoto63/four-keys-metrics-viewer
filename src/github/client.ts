@@ -15,6 +15,7 @@
 
 import type { GitHubAuth } from "./auth.ts";
 import {
+  mergeComparePages,
   type ProjectedCommit,
   type ProjectedCompare,
   type ProjectedPullRequest,
@@ -134,6 +135,9 @@ export type GitHubClient = {
    * ワークフロー実行。射影は `workflow_run` ルール（#14）が決めるため、ここでは生のまま返す。
    */
   listWorkflowRuns(repo: Repo, params?: ListWorkflowRunsParams): AsyncGenerator<unknown>;
+  /**
+   * 2 つのデプロイの間の差分コミット集合（ADR-0004）。**全ページを辿って返す**（#15）。
+   */
   compare(repo: Repo, base: string, head: string): Promise<ProjectedCompare>;
 };
 
@@ -227,11 +231,38 @@ export function createGitHubClient(options: GitHubClientOptions): GitHubClient {
     },
 
     async compare(repo, base, head) {
-      const url = buildUrl(
-        `/repos/${segment(repo.owner)}/${segment(repo.repo)}/compare/${segment(base)}...${segment(head)}`,
-      );
-      const response = await request(url);
-      return projectCompare(await response.json());
+      const path = `/repos/${segment(repo.owner)}/${segment(repo.repo)}/compare/${segment(base)}...${segment(head)}`;
+
+      // compare は 1 レスポンスあたり最大 250 コミットで打ち切られる。1 ページで済ませると、
+      // 差分が大きいデプロイほど後ろのコミットが落ち、リードタイムの標本が黙って欠ける。
+      // それは ADR-0004 が退けた「時刻順近似」と同じ壊れ方（長くかかったコミットほど
+      // 集計から消える）なので、**`total_commits` に届くまで必ず続きを取る**（#15）。
+      const pages: ProjectedCompare[] = [];
+      let pageNumber = 1;
+      let url: string | undefined = buildUrl(path, { per_page: PER_PAGE, page: pageNumber });
+
+      while (url !== undefined) {
+        const response = await request(url);
+        const page = projectCompare(await response.json());
+        pages.push(page);
+
+        if (!mergeComparePages(pages).truncated) {
+          break;
+        }
+        // 進まないページを受け取ったら止める。`total_commits` との食い違いが残っても
+        // `truncated` が立ったまま返るので、欠けは呼び出し側から見える（黙って欠けない）。
+        if (page.commitShas.length === 0) {
+          break;
+        }
+
+        pageNumber += 1;
+        // Link ヘッダがあればそれを辿る（他のエンドポイントと同じ扱い）。
+        // 無い場合も `page` を自分で進める。ここで諦めると打ち切りがそのまま残るため。
+        url =
+          nextPageUrl(response, origin) ?? buildUrl(path, { per_page: PER_PAGE, page: pageNumber });
+      }
+
+      return mergeComparePages(pages);
     },
   };
 }

@@ -127,8 +127,13 @@ export type ProjectedCompare = {
   commitShas: string[];
   totalCommits: number;
   /**
-   * compare API は 1 レスポンスあたり最大 250 コミットしか返さない。
-   * 取りこぼしたまま集計すると、リードタイムの標本が黙って欠ける。
+   * `total_commits` に届いていない＝差分コミットを取りこぼしている。
+   *
+   * compare API は 1 レスポンスあたり最大 250 コミットしか返さないため、1 ページだけ見ると
+   * ここが立つ。**立ったまま集計してはいけない**（#15）。取りこぼしはリードタイムの標本を
+   * 黙って欠けさせ、ADR-0004 が退けた「時刻順近似」と同じ壊れ方——長くかかったコミットほど
+   * 集計から消える——を再現する。クライアントは `mergeComparePages` で全ページを束ね、
+   * ここが倒れた状態（false）にしてから返す。
    */
   truncated: boolean;
 };
@@ -138,6 +143,7 @@ type CompareResponse = {
   commits: { sha: string }[];
 };
 
+/** compare レスポンス **1 ページ分**の射影。全ページの合成は `mergeComparePages`。 */
 export function projectCompare(response: unknown): ProjectedCompare {
   const compare = response as CompareResponse;
   const commitShas = compare.commits.map((commit) => commit.sha);
@@ -147,5 +153,31 @@ export function projectCompare(response: unknown): ProjectedCompare {
     commitShas,
     totalCommits: compare.total_commits,
     truncated: commitShas.length < compare.total_commits,
+  };
+}
+
+/**
+ * ページ分割された compare を 1 つの差分コミット集合に束ねる（#15）。
+ *
+ * `total_commits` はどのページでも同じ全体件数を指すので先頭ページのものを採る。
+ * SHA は**重複を除きつつ順序を保つ**。ページ境界がずれて同じコミットが 2 ページに現れても、
+ * 1 サンプル = 1 コミット（ADR-0004）が二重計上されないようにするため。
+ */
+export function mergeComparePages(pages: readonly ProjectedCompare[]): ProjectedCompare {
+  const commitShas: string[] = [];
+  const seen = new Set<string>();
+  for (const page of pages) {
+    for (const sha of page.commitShas) {
+      if (!seen.has(sha)) {
+        seen.add(sha);
+        commitShas.push(sha);
+      }
+    }
+  }
+  const totalCommits = pages[0]?.totalCommits ?? 0;
+  return {
+    commitShas,
+    totalCommits,
+    truncated: commitShas.length < totalCommits,
   };
 }
