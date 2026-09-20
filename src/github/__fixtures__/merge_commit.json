@@ -1,0 +1,87 @@
+{
+  "author": {
+    "avatar_url": "https://avatars.githubusercontent.com/u/48673424?v=4",
+    "events_url": "https://api.github.com/users/ymiyamoto63/events{/privacy}",
+    "followers_url": "https://api.github.com/users/ymiyamoto63/followers",
+    "following_url": "https://api.github.com/users/ymiyamoto63/following{/other_user}",
+    "gists_url": "https://api.github.com/users/ymiyamoto63/gists{/gist_id}",
+    "gravatar_id": "",
+    "html_url": "https://github.com/ymiyamoto63",
+    "id": 48673424,
+    "login": "ymiyamoto63",
+    "node_id": "MDQ6VXNlcjQ4NjczNDI0",
+    "organizations_url": "https://api.github.com/users/ymiyamoto63/orgs",
+    "received_events_url": "https://api.github.com/users/ymiyamoto63/received_events",
+    "repos_url": "https://api.github.com/users/ymiyamoto63/repos",
+    "site_admin": false,
+    "starred_url": "https://api.github.com/users/ymiyamoto63/starred{/owner}{/repo}",
+    "subscriptions_url": "https://api.github.com/users/ymiyamoto63/subscriptions",
+    "type": "User",
+    "url": "https://api.github.com/users/ymiyamoto63",
+    "user_view_type": "public"
+  },
+  "comments_url": "https://api.github.com/repos/ymiyamoto63/four-keys-metrics-viewer/commits/559c75729cb2115f8bb54f52d41b23357912940c/comments",
+  "commit": {
+    "author": {
+      "date": "2026-09-20T04:30:00Z",
+      "email": "48673424+ymiyamoto63@users.noreply.github.com",
+      "name": "ymiyamoto63"
+    },
+    "comment_count": 0,
+    "committer": {
+      "date": "2026-09-20T04:30:00Z",
+      "email": "noreply@github.com",
+      "name": "GitHub"
+    },
+    "message": "Merge pull request #27 from ymiyamoto63/claude/quirky-mendel-1dpn73\n\ndocs: Add ADRs and domain context for four-keys metrics viewer",
+    "tree": {
+      "sha": "4cc75ca38d4e4bd790d9b2e2eef3f90f28a562a3",
+      "url": "https://api.github.com/repos/ymiyamoto63/four-keys-metrics-viewer/git/trees/4cc75ca38d4e4bd790d9b2e2eef3f90f28a562a3"
+    },
+    "url": "https://api.github.com/repos/ymiyamoto63/four-keys-metrics-viewer/git/commits/559c75729cb2115f8bb54f52d41b23357912940c",
+    "verification": {
+      "payload": "tree 4cc75ca38d4e4bd790d9b2e2eef3f90f28a562a3\nparent dc68ad05a7330b6e7610f0ac359b929050810dc3\nparent c7aeb16a2dc0107e8b8016cdd2b9cea85f93df07\nauthor ymiyamoto63 \u003c48673424+ymiyamoto63@users.noreply.github.com\u003e 1789878600 +0900\ncommitter GitHub \u003cnoreply@github.com\u003e 1789878600 +0900\n\nMerge pull request #27 from ymiyamoto63/claude/quirky-mendel-1dpn73\n\ndocs: Add ADRs and domain context for four-keys metrics viewer",
+      "reason": "valid",
+      "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJqr2FICRC1aQ7uu5UhlAAAnNwQAAtITSnPosLPrxtFDruaFwyg\nK1JG4sHMPqrhFv89RQvGEA7hLd1eUXz/AAjnw28K7HqrVdbdrP52h6MPLf70lx6R\nEsYRnNppaxATFBXAKKSZchmT9Ck/osaj8m9aQbjFG2yBAibf0nbzV0Sw372UhYdI\nQppk9qkcYGqcvN9E/m348VLcU7CwqSScFbzfu4Nvrm4J6FGcAUuN1M11Hj1BcEBG\nka02tlfhayPzEGPDB2nOxIu2Ihq64gqiJO8nXk4xMQYYAXPQZI2sPuUzt0uffRzB\nnWMj1++To9wA3zCXknNAcCVYfApLUiziVG7DBi/obkbpBS+t6BqV+nh1p8CpmY6u\nr8Q4hM/uWfA5z7fSVhhVKnbE/Tgy7BUoFTjnhBVxXqOagwD9CHDlRQU3Jk0qRj/W\n09zYViORbnsU6xomKcnOy3Uzyg1M3TZM1YEIW4YoCUmP6CJRsmscUxoQxXV3rSEc\nK9HZPjiUDDA9pMFgt1UL704RMRFh5Ke99ALgqhvJrrEoIuqWPgQWsSM3G2ASX4nX\n4zcVo5iuhXOATe5xqIYQ4x/QgM2YKcufTbIbpA2iyCDrfyP6oFDUWvOG/yKPNhG6\npRfuNgCKdX1w2Jv4+A50Y2F6z09fgReHTc0ZaV0UEJ7KNhONFxwQIPt7xd0OFsFJ\nNwfZS/51K1NXURI1QoLG\n=VvXH\n-----END PGP SIGNATURE-----\n",
+      "verified": true,
+      "verified_at": "2026-09-20T04:30:00Z"
+    }
+  },
+  "committer": {
+    "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+    "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+    "followers_url": "https://api.github.com/users/web-flow/followers",
+    "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+    "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+    "gravatar_id": "",
+    "html_url": "https://github.com/web-flow",
+    "id": 19864447,
+    "login": "web-flow",
+    "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+    "organizations_url": "https://api.github.com/users/web-flow/orgs",
+    "received_events_url": "https://api.github.com/users/web-flow/received_events",
+    "repos_url": "https://api.github.com/users/web-flow/repos",
+    "site_admin": false,
+    "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+    "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+    "type": "User",
+    "url": "https://api.github.com/users/web-flow",
+    "user_view_type": "public"
+  },
+  "html_url": "https://github.com/ymiyamoto63/four-keys-metrics-viewer/commit/559c75729cb2115f8bb54f52d41b23357912940c",
+  "node_id": "C_kwDOUh8989oAKDU1OWM3NTcyOWNiMjExNWY4YmI1NGY1MmQ0MWIyMzM1NzkxMjk0MGM",
+  "parents": [
+    {
+      "html_url": "https://github.com/ymiyamoto63/four-keys-metrics-viewer/commit/dc68ad05a7330b6e7610f0ac359b929050810dc3",
+      "sha": "dc68ad05a7330b6e7610f0ac359b929050810dc3",
+      "url": "https://api.github.com/repos/ymiyamoto63/four-keys-metrics-viewer/commits/dc68ad05a7330b6e7610f0ac359b929050810dc3"
+    },
+    {
+      "html_url": "https://github.com/ymiyamoto63/four-keys-metrics-viewer/commit/c7aeb16a2dc0107e8b8016cdd2b9cea85f93df07",
+      "sha": "c7aeb16a2dc0107e8b8016cdd2b9cea85f93df07",
+      "url": "https://api.github.com/repos/ymiyamoto63/four-keys-metrics-viewer/commits/c7aeb16a2dc0107e8b8016cdd2b9cea85f93df07"
+    }
+  ],
+  "sha": "559c75729cb2115f8bb54f52d41b23357912940c",
+  "url": "https://api.github.com/repos/ymiyamoto63/four-keys-metrics-viewer/commits/559c75729cb2115f8bb54f52d41b23357912940c"
+}

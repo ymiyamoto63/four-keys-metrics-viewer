@@ -1,0 +1,6 @@
+DROP INDEX idx_commits_scope_committed_at;
+DROP INDEX idx_pull_requests_scope_created_at;
+DROP INDEX idx_pull_requests_scope_merged_at;
+DROP INDEX idx_deploy_events_scope_rule_deployed_at;
+DROP INDEX idx_pull_requests_scope_merge_commit;
+DROP INDEX idx_incidents_scope_started_at;

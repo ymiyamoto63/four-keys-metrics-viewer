@@ -1,0 +1,82 @@
+{
+  "author": {
+    "avatar_url": "https://avatars.githubusercontent.com/u/81847?v=4",
+    "events_url": "https://api.github.com/users/claude/events{/privacy}",
+    "followers_url": "https://api.github.com/users/claude/followers",
+    "following_url": "https://api.github.com/users/claude/following{/other_user}",
+    "gists_url": "https://api.github.com/users/claude/gists{/gist_id}",
+    "gravatar_id": "",
+    "html_url": "https://github.com/claude",
+    "id": 81847,
+    "login": "claude",
+    "node_id": "MDQ6VXNlcjgxODQ3",
+    "organizations_url": "https://api.github.com/users/claude/orgs",
+    "received_events_url": "https://api.github.com/users/claude/received_events",
+    "repos_url": "https://api.github.com/users/claude/repos",
+    "site_admin": false,
+    "starred_url": "https://api.github.com/users/claude/starred{/owner}{/repo}",
+    "subscriptions_url": "https://api.github.com/users/claude/subscriptions",
+    "type": "User",
+    "url": "https://api.github.com/users/claude",
+    "user_view_type": "public"
+  },
+  "comments_url": "https://api.github.com/repos/ymiyamoto63/four-keys-metrics-viewer/commits/c7aeb16a2dc0107e8b8016cdd2b9cea85f93df07/comments",
+  "commit": {
+    "author": {
+      "date": "2026-09-20T04:21:38Z",
+      "email": "noreply@anthropic.com",
+      "name": "Claude"
+    },
+    "comment_count": 0,
+    "committer": {
+      "date": "2026-09-20T04:21:38Z",
+      "email": "noreply@anthropic.com",
+      "name": "Claude"
+    },
+    "message": "docs: grilling の合意内容を ADR 6 枚と CONTEXT.md に記録\n\nMVP の設計判断を確定させた。主要な決定:\n\n- デプロイ検出ルールをスコープごとの設定とし、MVP は default_branch\n  (既定 merge_only) と workflow_run の 2 戦略。deployments_api は保留\n- デプロイ時刻はマージコミットの committer date から取る。PR の merged_at は\n  過去日付で作れず、合成履歴による検証が不可能になるため使わない\n- 生イベントのみ恒久保存し、指標の集計値は保存せずクエリ時に計算。\n  外部 API 再取得が必要な導出のみキャッシュし、ルール変更時に破棄\n- Cloudflare Workers + D1 + Cron Triggers、収集は再開可能な分割ジョブ\n- リードタイムはコミット単位、デプロイ間差分は compare API で取得。\n  時刻順近似は長期放置コミットを集計から落とすため却下\n- 週次バケット / JST 月曜始まり / 中央値 + p75,p90、データ不足週は線を繋がない\n- スコープ設定はリポジトリ内の設定ファイルで管理し、編集 UI は作らない\n- アクセス制御はインフラ層に出し、GitHub 認証は read-only の fine-grained PAT\n\nCo-Authored-By: Claude Opus 5 \u003cnoreply@anthropic.com\u003e\nClaude-Session: https://claude.ai/code/session_01GJbJUqQHUjRQPDxcbxx3p7",
+    "tree": {
+      "sha": "4cc75ca38d4e4bd790d9b2e2eef3f90f28a562a3",
+      "url": "https://api.github.com/repos/ymiyamoto63/four-keys-metrics-viewer/git/trees/4cc75ca38d4e4bd790d9b2e2eef3f90f28a562a3"
+    },
+    "url": "https://api.github.com/repos/ymiyamoto63/four-keys-metrics-viewer/git/commits/c7aeb16a2dc0107e8b8016cdd2b9cea85f93df07",
+    "verification": {
+      "payload": "tree 4cc75ca38d4e4bd790d9b2e2eef3f90f28a562a3\nparent dc68ad05a7330b6e7610f0ac359b929050810dc3\nauthor Claude \u003cnoreply@anthropic.com\u003e 1789878098 +0000\ncommitter Claude \u003cnoreply@anthropic.com\u003e 1789878098 +0000\n\ndocs: grilling の合意内容を ADR 6 枚と CONTEXT.md に記録\n\nMVP の設計判断を確定させた。主要な決定:\n\n- デプロイ検出ルールをスコープごとの設定とし、MVP は default_branch\n  (既定 merge_only) と workflow_run の 2 戦略。deployments_api は保留\n- デプロイ時刻はマージコミットの committer date から取る。PR の merged_at は\n  過去日付で作れず、合成履歴による検証が不可能になるため使わない\n- 生イベントのみ恒久保存し、指標の集計値は保存せずクエリ時に計算。\n  外部 API 再取得が必要な導出のみキャッシュし、ルール変更時に破棄\n- Cloudflare Workers + D1 + Cron Triggers、収集は再開可能な分割ジョブ\n- リードタイムはコミット単位、デプロイ間差分は compare API で取得。\n  時刻順近似は長期放置コミットを集計から落とすため却下\n- 週次バケット / JST 月曜始まり / 中央値 + p75,p90、データ不足週は線を繋がない\n- スコープ設定はリポジトリ内の設定ファイルで管理し、編集 UI は作らない\n- アクセス制御はインフラ層に出し、GitHub 認証は read-only の fine-grained PAT\n\nCo-Authored-By: Claude Opus 5 \u003cnoreply@anthropic.com\u003e\nClaude-Session: https://claude.ai/code/session_01GJbJUqQHUjRQPDxcbxx3p7\n",
+      "reason": "valid",
+      "signature": "-----BEGIN SSH SIGNATURE-----\nU1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgrLzsfFISF4by8Q+FKz27YpkK1USsBB+m\namu1QkJnbDsAAAADZ2l0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5AAAAQP2fR17g\nLGpFSyqCEsiKSMvZ43ipsEgRUssQHLyh/6nO6fgrS7ZYYX1LHjEHtJ2kMnDp32egefCxWaAswhOT\nCw4=\n-----END SSH SIGNATURE-----",
+      "verified": true,
+      "verified_at": "2026-09-20T04:21:41Z"
+    }
+  },
+  "committer": {
+    "avatar_url": "https://avatars.githubusercontent.com/u/81847?v=4",
+    "events_url": "https://api.github.com/users/claude/events{/privacy}",
+    "followers_url": "https://api.github.com/users/claude/followers",
+    "following_url": "https://api.github.com/users/claude/following{/other_user}",
+    "gists_url": "https://api.github.com/users/claude/gists{/gist_id}",
+    "gravatar_id": "",
+    "html_url": "https://github.com/claude",
+    "id": 81847,
+    "login": "claude",
+    "node_id": "MDQ6VXNlcjgxODQ3",
+    "organizations_url": "https://api.github.com/users/claude/orgs",
+    "received_events_url": "https://api.github.com/users/claude/received_events",
+    "repos_url": "https://api.github.com/users/claude/repos",
+    "site_admin": false,
+    "starred_url": "https://api.github.com/users/claude/starred{/owner}{/repo}",
+    "subscriptions_url": "https://api.github.com/users/claude/subscriptions",
+    "type": "User",
+    "url": "https://api.github.com/users/claude",
+    "user_view_type": "public"
+  },
+  "html_url": "https://github.com/ymiyamoto63/four-keys-metrics-viewer/commit/c7aeb16a2dc0107e8b8016cdd2b9cea85f93df07",
+  "node_id": "C_kwDOUh8989oAKGM3YWViMTZhMmRjMDEwN2U4YjgwMTZjZGQyYjljZWE4NWY5M2RmMDc",
+  "parents": [
+    {
+      "html_url": "https://github.com/ymiyamoto63/four-keys-metrics-viewer/commit/dc68ad05a7330b6e7610f0ac359b929050810dc3",
+      "sha": "dc68ad05a7330b6e7610f0ac359b929050810dc3",
+      "url": "https://api.github.com/repos/ymiyamoto63/four-keys-metrics-viewer/commits/dc68ad05a7330b6e7610f0ac359b929050810dc3"
+    }
+  ],
+  "sha": "c7aeb16a2dc0107e8b8016cdd2b9cea85f93df07",
+  "url": "https://api.github.com/repos/ymiyamoto63/four-keys-metrics-viewer/commits/c7aeb16a2dc0107e8b8016cdd2b9cea85f93df07"
+}
