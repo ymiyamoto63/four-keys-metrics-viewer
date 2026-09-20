@@ -114,6 +114,9 @@ Docker の場合、`scopes.toml` はイメージに焼き込まれます。編�
 > **この左辺の `127.0.0.1:` を外すと、同一ネットワーク上の全端末から認証なしで閲覧可能になります。**
 > 詳細は `docs/adr/0006-auth-and-access-control.md` の実装上の補足を参照してください。
 
+PAT の発行・更新手順、公開範囲の確認手順、SQLite ファイルのバックアップ・復旧手順は
+[`docs/operations.md`](docs/operations.md) にまとめています。
+
 ---
 
 ## コンセプト
