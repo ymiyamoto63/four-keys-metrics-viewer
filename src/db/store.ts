@@ -300,3 +300,24 @@ export function recordCollectionFailure(db: Db, scopeId: string, message: string
      ON CONFLICT (scope_id) DO UPDATE SET last_error = excluded.last_error`,
   ).run(scopeId, message);
 }
+
+/**
+ * 収集の成功を記録する。最終収集成功時刻を更新し、直前の失敗を消す。
+ *
+ * バックフィルの進捗（`backfilled_until` / `backfill_complete`）には触らない。
+ * 「どこまで最新を追ったか」と「どこまで過去へ遡ったか」は別々に進むため（#12）。
+ */
+export function recordCollectionSuccess(
+  db: Db,
+  scopeId: string,
+  at: string = new Date().toISOString(),
+): void {
+  db.prepare(
+    `INSERT INTO collection_cursors
+       (scope_id, backfilled_until, backfill_complete, last_success_at, last_error)
+     VALUES (?, NULL, 0, ?, NULL)
+     ON CONFLICT (scope_id) DO UPDATE SET
+       last_success_at = excluded.last_success_at,
+       last_error      = NULL`,
+  ).run(scopeId, at);
+}
