@@ -3,12 +3,17 @@ import { type Config, ConfigError, isLoopback, loadConfig } from "./config.ts";
 import { openDatabase } from "./db/index.ts";
 import { logger } from "./logger.ts";
 import { startScheduler } from "./scheduler/index.ts";
+import { describeDeployRule, loadScopes, type Scope } from "./scopes.ts";
 import { createApp } from "./server/app.tsx";
 
 function main(): void {
   let config: Config;
+  let scopes: Scope[];
   try {
     config = loadConfig();
+    // スコープ設定が不正なまま起動すると、画面には「デプロイ 0 件」が正常値として出る。
+    // 指標の定義に関わる設定なので、黙って動かさずここで止める（ADR-0005）。
+    scopes = loadScopes(config.scopesPath);
   } catch (error) {
     if (error instanceof ConfigError) {
       logger.error("設定が不正なため起動を中止する", { error: error.message });
@@ -17,6 +22,16 @@ function main(): void {
     }
     throw error;
   }
+
+  logger.info("スコープ設定を読み込んだ", {
+    path: config.scopesPath,
+    scopes: scopes.map((scope) => ({
+      id: scope.id,
+      repo: `${scope.owner}/${scope.repo}`,
+      deployRule: describeDeployRule(scope.deployRule),
+      backfillDays: scope.backfillDays,
+    })),
+  });
 
   if (!config.githubToken) {
     logger.warn("GITHUB_TOKEN が未設定です。画面は開きますが収集は動きません", {
