@@ -1,6 +1,8 @@
 import { serve } from "@hono/node-server";
 import { type Config, ConfigError, isLoopback, loadConfig } from "./config.ts";
 import { openDatabase } from "./db/index.ts";
+import { patAuth } from "./github/auth.ts";
+import { createGitHubClient, type GitHubClient } from "./github/client.ts";
 import { logger } from "./logger.ts";
 import { startScheduler } from "./scheduler/index.ts";
 import { describeDeployRule, loadScopes, type Scope } from "./scopes.ts";
@@ -33,14 +35,19 @@ function main(): void {
     })),
   });
 
-  if (!config.githubToken) {
-    logger.warn("GITHUB_TOKEN が未設定です。画面は開きますが収集は動きません", {
+  // GITHUB_TOKEN が無くても画面は開く（ADR-0006）。ただし収集は**黙って空振りさせない**。
+  // クライアントを undefined のまま渡し、収集はスコープごとの失敗として記録される（#11）。
+  let client: GitHubClient | undefined;
+  if (config.githubToken) {
+    client = createGitHubClient({ auth: patAuth(config.githubToken) });
+  } else {
+    logger.warn("GITHUB_TOKEN が未設定です。画面は開きますが収集は失敗として記録されます", {
       hint: ".env に GITHUB_TOKEN を設定してください",
     });
   }
 
   const db = openDatabase(config.databasePath);
-  const scheduler = startScheduler(config, db);
+  const scheduler = startScheduler({ config, db, scopes, client });
   const app = createApp(config, db);
 
   const server = serve({ fetch: app.fetch, hostname: config.host, port: config.port }, (info) => {

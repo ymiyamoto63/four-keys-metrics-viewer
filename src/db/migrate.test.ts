@@ -16,6 +16,7 @@ const ALL_MIGRATIONS = [
   "005_collection_cursors",
   "006_incidents",
   "007_indexes",
+  "008_collection_cursor_followed_until",
 ];
 
 function emptyDatabase() {
