@@ -7,14 +7,14 @@
     "node": ">=22"
   },
   "scripts": {
-    "dev": "tsx watch src/index.ts",
+    "dev": "tsx watch --env-file-if-exists=.env src/index.ts",
     "build": "tsc -p tsconfig.build.json && cp -R src/db/migrations dist/db/migrations",
-    "start": "node dist/index.js",
+    "start": "node --env-file-if-exists=.env dist/index.js",
     "typecheck": "tsc --noEmit",
     "lint": "biome check .",
     "format": "biome check --write .",
     "test": "vitest run",
-    "record:fixtures": "tsx src/metrics/record-fixtures.ts",
+    "record:fixtures": "tsx --env-file-if-exists=.env src/metrics/record-fixtures.ts",
     "sample:generate": "tsx src/sample-repo/generate.ts"
   },
   "dependencies": {
