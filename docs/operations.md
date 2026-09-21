@@ -83,6 +83,11 @@ git check-ignore -v .env
 設定を反映するには再起動が要る（Docker の場合 `docker compose up -d` で
 コンテナを作り直す。詳細は「1.4 ローテーション手順」と同じ）。
 
+`.env` を読むのは 2 経路ある。**Docker では `docker-compose.yml` の `env_file`**、
+**ホストで直接動かす場合は `npm run dev` / `npm start` の `--env-file-if-exists`**
+（`package.json`）。既に環境変数として設定されている値は `.env` で上書きされないので、
+Docker 側で渡した値が勝つ。`.env` が無くても起動する。
+
 ### 1.3 期限切れの検知
 
 PAT の期限が切れると、収集は**エラーにはなるがプロセスは落ちない**
