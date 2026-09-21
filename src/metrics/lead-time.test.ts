@@ -320,6 +320,119 @@ describe("代表値", () => {
   });
 });
 
+/* --- merged_at とデプロイ時刻のズレ（#51） -------------------------------- */
+
+describe("merged_at がデプロイ時刻より後でも内訳を落とさない（#51）", () => {
+  /**
+   * `default_branch` ルールのデプロイ時刻はマージコミットの committer date（ADR-0001 決定 4）。
+   * GitHub は「マージコミットを作る → merged として記録する」順に書くので、
+   * **`merged_at` は構造的に常にデプロイ時刻以上**になる。
+   *
+   * 実測（#23 の E2E、ymiyamoto63/four-keys-sample-service）:
+   *
+   * | PR | merged_at | デプロイ時刻 | 差 |
+   * | -- | --------- | ------------ | -- |
+   * | #1 | 04:27:45Z | 04:27:44Z    | +1 秒 |
+   * | #2 | 06:55:28Z | 06:55:28Z    | 0 秒 |
+   * | #3 | 06:55:41Z | 06:55:41Z    | 0 秒 |
+   *
+   * 以前は `merged_at <= デプロイ時刻` を要求していたので、#1 だけ内訳が落ちた。
+   */
+  function withSkew(skewSeconds: number) {
+    const deployedAt = "2026-09-15T12:00:00.000Z";
+    const mergedAt = new Date(Date.parse(deployedAt) + skewSeconds * 1000).toISOString();
+    return input({
+      deployments: [deployment("merge-skew", deployedAt)],
+      commits: [
+        { sha: "head-1", committedAt: "2026-09-15T06:00:00.000Z" },
+        { sha: "head-2", committedAt: "2026-09-15T05:00:00.000Z" },
+        { sha: "head-3", committedAt: "2026-09-15T04:00:00.000Z" },
+      ],
+      pullRequests: [1, 2, 3].map((number) => ({
+        number,
+        headSha: `head-${number}`,
+        createdAt: "2026-09-15T08:00:00.000Z",
+        mergedAt,
+        mergeCommitSha: null,
+      })),
+      deployCommits: [
+        {
+          deploymentCommitSha: "merge-skew",
+          baseSha: "deploy-base",
+          commitShas: ["head-1", "head-2", "head-3"],
+          truncated: false,
+        },
+      ],
+    });
+  }
+
+  it("1 秒のズレでも内訳が出て、merge → デプロイ は 0 になる", () => {
+    const week = weekOfKey(calculateLeadTime(withSkew(1)), "2026-09-14");
+
+    expect(week.breakdown?.count).toBe(3);
+    // 0 に倒す。merge_only では merge がデプロイそのものなので、これは近似ではない。
+    expect(week.breakdown?.mergeToDeploy.median).toBe(0);
+    expect(week.samples.every((sample) => sample.breakdown !== null)).toBe(true);
+  });
+
+  it.each([0, 1, 30, 60])("ズレ %s 秒までは内訳を出す", (skew) => {
+    const week = weekOfKey(calculateLeadTime(withSkew(skew)), "2026-09-14");
+    expect(week.breakdown?.count).toBe(3);
+    expect(week.breakdown?.mergeToDeploy.median).toBe(0);
+  });
+
+  it("許容幅を超えるズレは内訳を作らない（別のデプロイが先に運んだケース）", () => {
+    // 数分〜数日ずれるのは cherry-pick などで別のデプロイが先にそのコミットを運んだ場合。
+    // そこを 0 に潰すと「デプロイ待ち 0 時間」が実在したように見える。
+    const week = weekOfKey(calculateLeadTime(withSkew(61)), "2026-09-14");
+
+    expect(week.breakdown).toBeNull();
+    expect(week.samples.every((sample) => sample.breakdown === null)).toBe(true);
+    // 合計リードタイムは残る（内訳だけ無しに倒す）。
+    expect(week.summary).not.toBeNull();
+  });
+
+  it("デプロイ時刻が merged_at より後なら、その差がそのまま merge → デプロイ になる", () => {
+    // workflow_run ルールではデプロイ時刻が merged_at の数分後になる。ここは素直に測る。
+    const week = weekOfKey(calculateLeadTime(withSkew(-3600)), "2026-09-14");
+    expect(week.breakdown?.mergeToDeploy.median).toBe(1);
+  });
+
+  it("コミット → PR open が負のときは、これまでどおり内訳なし", () => {
+    // 許容幅は「merge → デプロイ」だけに効く。マージコミット自身を救ってはいけない。
+    const deployedAt = "2026-09-15T12:00:00.000Z";
+    const metrics = calculateLeadTime(
+      input({
+        deployments: [deployment("merge-self", deployedAt)],
+        commits: [{ sha: "merge-self", committedAt: deployedAt }],
+        pullRequests: [
+          {
+            number: 9,
+            headSha: "merge-self",
+            // PR の作成時刻がコミットより前 = マージコミット自身の形。
+            createdAt: "2026-09-15T08:00:00.000Z",
+            mergedAt: deployedAt,
+            mergeCommitSha: null,
+          },
+        ],
+        deployCommits: [
+          {
+            deploymentCommitSha: "merge-self",
+            baseSha: "deploy-base",
+            commitShas: ["merge-self"],
+            truncated: false,
+          },
+        ],
+      }),
+      { minSamples: 1 },
+    );
+    const week = weekOfKey(metrics, "2026-09-14");
+
+    expect(week.samples[0]?.breakdown).toBeNull();
+    expect(week.summary).not.toBeNull();
+  });
+});
+
 /* --- 3 区間内訳の代表値 --------------------------------------------------- */
 
 describe("3 区間内訳の代表値", () => {

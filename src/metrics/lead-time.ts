@@ -46,6 +46,14 @@ import { parseInstant, type Week, weekOf, weeksBetween } from "./week.ts";
 
 const MS_PER_HOUR = 60 * 60 * 1000;
 
+/**
+ * 「merge → デプロイ」が負でも内訳を捨てない許容幅（#51）。理由は `buildBreakdown` に書いた。
+ *
+ * 1 分にしてあるのは、埋めたいズレ（同じ merge を 2 つの時刻源が記録する差。実測 0〜1 秒）と、
+ * 潰してはいけないズレ（別のデプロイが先にそのコミットを運んだ。数分〜数日）を分ける値だから。
+ */
+const MERGE_TO_DEPLOY_TOLERANCE_MS = 60 * 1000;
+
 /** 返り値の数値の単位。**時間**（上のコメントの理由）。 */
 export const LEAD_TIME_UNIT = "hours" as const;
 
@@ -443,16 +451,40 @@ function buildSample(
 /**
  * 3 区間内訳を作る。作れなければ `null`（**0 で埋めない**）。
  *
- * 作らない条件は 2 つ。
+ * 作らない条件は 3 つ。
  *
  * 1. **対応する PR が無い / 未マージ。** PR を経由しない直接 push がここに来る（#18）。
  *    「PR open」「merge」という時刻がそもそも存在しないので、内訳なしとして返す。
  *    issue #18 が「内訳なし、として返すのが素直」と示したとおり。
- * 2. **区切り時刻が順番どおりに並んでいない。** マージコミット自身がこれに当たる:
- *    マージコミットの committer date は PR の作成時刻より後なので「コミット → PR open」が
- *    負になる。負の区間を返すと「レビューが始まる前に書かれた」という意味不明な内訳が
- *    代表値に混ざる。合計リードタイム（マージコミットでは 0 時間）は残したまま、
- *    内訳だけ無しに倒す。
+ * 2. **コミット → PR open → merge が順番どおりに並んでいない。** マージコミット自身が
+ *    これに当たる: マージコミットの committer date は PR の作成時刻より後なので
+ *    「コミット → PR open」が負になる。負の区間を返すと「レビューが始まる前に書かれた」
+ *    という意味不明な内訳が代表値に混ざる。合計リードタイム（マージコミットでは 0 時間）は
+ *    残したまま、内訳だけ無しに倒す。
+ * 3. **デプロイ時刻が PR のマージ時刻より「大きく」前。** そのデプロイはこの PR の merge が
+ *    運んだものではない（cherry-pick などで別のデプロイが先に運んだ）ので、
+ *    「merge → デプロイ」を測っても意味がない。
+ *
+ * ## 「大きく前」に許容幅を設けている理由（#51）
+ *
+ * `default_branch` ルールのデプロイ時刻は**マージコミットの committer date** であり、
+ * PR の `merged_at` は使わない（ADR-0001 決定 4）。GitHub 上では
+ *
+ * 1. マージコミットが作られる（committer date が刻まれる）
+ * 2. そのあと PR が merged として記録される（`merged_at`）
+ *
+ * の順に起きるため、**`merged_at` は構造的に常にデプロイ時刻以上**になる。
+ * かつて「`merged_at <= デプロイ時刻`」を満たさない標本を内訳なしにしていたので、
+ * 両者が同じ秒に丸まったときだけ内訳が出る、という**秒の丸めに依存したコインフリップ**に
+ * なっていた。実測（#23 の E2E）では実 PR 3 件のうち 1 件が 1 秒差で落ち、
+ * 内訳の標本が `MIN_SAMPLES` を割って**その週の内訳が丸ごと消えた**。
+ *
+ * このズレの正体は分かっている（同じ 1 回の merge を、2 つの別の時刻源が記録している）。
+ * したがってこの範囲では**「merge → デプロイ = 0」と読むのが実態に合う**。
+ * `merge_only` において merge はデプロイそのものなので、0 は近似ではなく正しい値である。
+ *
+ * 許容幅を無制限にしないのは、上記 3 の「別のデプロイが先に運んだ」を 0 に潰さないため。
+ * そちらは数分〜数日ずれるので、1 分で両者を分けられる。
  */
 function buildBreakdown(
   committedMs: number,
@@ -464,13 +496,18 @@ function buildBreakdown(
   }
   const openedMs = parseInstant(pullRequest.createdAt, "PR の作成時刻");
   const mergedMs = parseInstant(pullRequest.mergedAt, "PR のマージ時刻");
-  if (!(committedMs <= openedMs && openedMs <= mergedMs && mergedMs <= deployedMs)) {
+  if (!(committedMs <= openedMs && openedMs <= mergedMs)) {
+    return null;
+  }
+  if (deployedMs < mergedMs - MERGE_TO_DEPLOY_TOLERANCE_MS) {
     return null;
   }
   return {
     commitToPrOpen: (openedMs - committedMs) / MS_PER_HOUR,
     prOpenToMerge: (mergedMs - openedMs) / MS_PER_HOUR,
-    mergeToDeploy: (deployedMs - mergedMs) / MS_PER_HOUR,
+    // 許容幅の中の負は 0 に倒す（上記の理由）。3 区間の和が合計リードタイムから
+    // 最大で許容幅ぶんずれるが、代表値は区間ごとに出すので合計との一致は前提にしていない。
+    mergeToDeploy: Math.max(0, deployedMs - mergedMs) / MS_PER_HOUR,
     pullRequestNumber: pullRequest.number,
   };
 }
