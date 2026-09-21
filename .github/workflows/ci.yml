@@ -1,0 +1,66 @@
+name: ci
+
+# PR と main への push で lint / typecheck / test を回す（#47）。
+# このリポジトリは指標計算の正しさを純粋関数のユニットテストで担保すると決めている
+# （ADR-0004）。その根拠を自動で確認するのがこのワークフローの役割。
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+# 同じブランチの古い実行は打ち切る。PR は push のたびに走るため、
+# 打ち切らないと古い結果が残って「どれが今の head の結果か」が読めなくなる。
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          # package.json の engines (>=22) に合わせる。
+          node-version: "22"
+          cache: npm
+
+      - run: npm ci
+
+      # lint / typecheck / test は互いに独立なので、1 つ落ちても残りの結果が欲しい。
+      # 別ジョブに分けると npm ci が 3 回走るため、同一ジョブ内で continue-on-error を使う。
+      - id: lint
+        run: npm run lint
+        continue-on-error: true
+
+      - id: typecheck
+        run: npm run typecheck
+        continue-on-error: true
+
+      # src/sample-repo/generate.test.ts は実際に git を呼び、
+      # サンプルアプリの npm test / npm run build をサブプロセスで実行する（#22）。
+      # 生成側がリポジトリローカルに git config を設定するので、
+      # runner の user.name / user.email が未設定でも通る。
+      - id: test
+        run: npm test
+        continue-on-error: true
+
+      # continue-on-error を使うと個々のステップが緑のままになるため、
+      # ここで明示的に落とす。これが無いと全部失敗してもジョブは成功する。
+      - name: 結果を集計する
+        run: |
+          failed=""
+          [ "${{ steps.lint.outcome }}" = "success" ] || failed="$failed lint"
+          [ "${{ steps.typecheck.outcome }}" = "success" ] || failed="$failed typecheck"
+          [ "${{ steps.test.outcome }}" = "success" ] || failed="$failed test"
+          if [ -n "$failed" ]; then
+            echo "失敗:$failed" >> "$GITHUB_STEP_SUMMARY"
+            echo "失敗したチェック:$failed"
+            exit 1
+          fi
+          echo "lint / typecheck / test すべて成功" >> "$GITHUB_STEP_SUMMARY"
