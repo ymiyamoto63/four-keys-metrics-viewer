@@ -46,6 +46,23 @@ export type WeeklyLineChartProps = {
    * `undefined` を返した週の点はリンクにしない。
    */
   pointHref?: (week: string) => string | undefined;
+  /**
+   * 欠損週（どの系列にも値が無い週）に添える説明文を、**呼び出し側が指定する**（#21）。
+   *
+   * ## なぜ固定文言をやめたのか
+   *
+   * ここは以前「データ点が少ない n 週は値を出さず…」という固定文言を出していた（#20 時点）。
+   * だが空白の理由は指標ごとに違う。
+   *
+   * - **デプロイ頻度**の空白は ADR-0007 由来の**収集の穴**である。標本不足ではない
+   *   （収集済みでデプロイ 0 件の週は、欠損ではなく `0` として点が打たれる。#17）
+   * - **リードタイム**の空白は ADR-0004 の**標本数ゲート**と収集の穴の両方がありうる
+   *
+   * 両方を「データ点が少ない」の一語で説明すると、#20 が画面全体で避けたはずの
+   * 「収集が壊れている期間と本当にデプロイが無かった期間の区別」がここで潰れる。
+   * 既定は**指標に依らない中立文**にし、理由を言えるチャートだけが言う形にした。
+   */
+  missingWeekNote?: (missingWeekCount: number) => string;
   /** 目盛りとツールチップの数値整形。既定は小数 1 桁まで */
   formatValue?: (value: number) => string;
   width?: number;
@@ -70,6 +87,7 @@ export function WeeklyLineChart({
   series,
   unitLabel,
   pointHref,
+  missingWeekNote = defaultMissingWeekNote,
   formatValue = defaultFormatValue,
   width = DEFAULT_WIDTH,
   height = DEFAULT_HEIGHT,
@@ -249,8 +267,8 @@ export function WeeklyLineChart({
       ) : null}
 
       {missingWeeks.length > 0 ? (
-        <p class="fk-chart__note">
-          データ点が少ない {missingWeeks.length} 週は値を出さず、線も繋いでいません（ADR-0004）。
+        <p class="fk-chart__note" data-testid="chart-missing-note">
+          {missingWeekNote(missingWeeks.length)}
         </p>
       ) : null}
     </figure>
@@ -290,6 +308,19 @@ function niceStep(rawStep: number): number {
     if (rawStep <= multiplier * magnitude) return multiplier * magnitude;
   }
   return 10 * magnitude;
+}
+
+/**
+ * 欠損週の既定の説明。**理由を断定しない**（#21）。
+ *
+ * 標本不足（ADR-0004）なのか収集の穴（ADR-0007）なのかはこのコンポーネントからは分からない。
+ * 分からないものを片方の理由で書くと、もう片方の週の読み方が必ず狂う。
+ */
+function defaultMissingWeekNote(missingWeekCount: number): string {
+  return (
+    `値を出していない週が ${missingWeekCount} 週あります（線も繋いでいません）。` +
+    "空白が収集の穴なのか標本不足なのかは、同じページの収集状態とカバレッジの説明で確かめられます。"
+  );
 }
 
 function defaultFormatValue(value: number): string {

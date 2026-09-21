@@ -55,6 +55,33 @@ const CSS = `
     background: color-mix(in srgb, crimson 18%, transparent);
   }
 
+  /* 根拠イベント一覧（#21）。1 デプロイ = 1 ブロック、その下にコミットの表を置く。 */
+  .fk-evidence { list-style: none; margin: 1rem 0; padding: 0; }
+  .fk-evidence__deployment {
+    margin: 0 0 1.25rem;
+    padding: 0.75rem 1rem;
+    border: 1px solid color-mix(in srgb, currentColor 20%, transparent);
+    border-radius: 6px;
+  }
+  .fk-evidence__deployment h3 { font-size: 1rem; margin: 0 0 0.5rem; }
+  .fk-evidence__table {
+    width: 100%;
+    margin-top: 0.75rem;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+  }
+  .fk-evidence__table th, .fk-evidence__table td {
+    padding: 0.35rem 0.5rem;
+    text-align: left;
+    vertical-align: top;
+    border-top: 1px solid color-mix(in srgb, currentColor 15%, transparent);
+  }
+  .fk-evidence__table th { font-weight: 600; white-space: nowrap; }
+  /* 表は横に広い。狭い画面では表だけ横スクロールさせ、ページ全体は横に溢れさせない。 */
+  @media (max-width: 45rem) {
+    .fk-evidence__deployment { overflow-x: auto; }
+  }
+
   /* スコープ・期間の切り替え。並べるのはリンクだけで、数値は添えない（#20） */
   .fk-switcher { margin: 1rem 0; }
   .fk-switcher__label { font-weight: 600; margin-right: 0.5rem; }

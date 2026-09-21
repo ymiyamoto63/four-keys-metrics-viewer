@@ -43,6 +43,11 @@ export type SeedDeployment = {
   deployedAt: string;
   /** 直前のデプロイとの差分コミット。`undefined` なら compare 未取得（`pending`）にする。 */
   commitShas?: string[];
+  /**
+   * compare が打ち切られた割り当てにする（#18 の `truncatedDeployments`）。
+   * 指標詳細（#21）が「標本から外したもの」を出すことをテストするために要る。
+   */
+  truncated?: boolean;
 };
 
 export type SeedOptions = {
@@ -78,7 +83,18 @@ export function seedScope(db: Db, options: SeedOptions): void {
       committedAt: commit.committedAt,
       authoredAt: commit.committedAt,
       message: `commit ${commit.sha}`,
-      raw: {},
+      // `raw` は `docs/raw-columns.md` の射影と同じ形にしておく。空にすると
+      // 指標詳細（#21）の GitHub 外部リンクがテストで検証できない。
+      raw: {
+        sha: commit.sha,
+        html_url: `https://github.com/${scope.owner}/${scope.repo}/commit/${commit.sha}`,
+        commit: {
+          message: `commit ${commit.sha}`,
+          committer: { date: commit.committedAt },
+          author: { date: commit.committedAt },
+        },
+        parents: [],
+      },
     });
   }
 
@@ -105,7 +121,21 @@ export function seedScope(db: Db, options: SeedOptions): void {
       detectionRule,
       commitSha: deployment.sha,
       deployedAt: deployment.deployedAt,
-      raw: {},
+      // デプロイの `raw` は検出ルールごとに中身が違う（`docs/raw-columns.md`）。
+      // `default_branch` は判定根拠だけで `html_url` を持たない（#21 の画面は
+      // 対象コミットのページへ送る）。`workflow_run` はワークフロー実行の URL を持つ。
+      raw:
+        scope.deployRule.name === "default_branch"
+          ? {
+              rule: "default_branch",
+              granularity: scope.deployRule.granularity,
+              parent_count: 2,
+            }
+          : {
+              html_url: `https://github.com/${scope.owner}/${scope.repo}/actions/runs/${index + 1}`,
+              name: scope.deployRule.workflow,
+              path: `.github/workflows/${scope.deployRule.workflow}`,
+            },
     });
     const previous = ordered[index - 1];
     if (previous === undefined || deployment.commitShas === undefined) {
@@ -117,7 +147,7 @@ export function seedScope(db: Db, options: SeedOptions): void {
       baseSha: previous.sha,
       headSha: deployment.sha,
       commitShas: deployment.commitShas,
-      truncated: false,
+      truncated: deployment.truncated ?? false,
     });
   }
 
