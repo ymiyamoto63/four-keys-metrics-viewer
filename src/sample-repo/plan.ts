@@ -260,6 +260,7 @@ export function planSampleHistory(options: PlanOptions): SampleHistoryPlan {
   }
 
   const latestWeek = weekOf(options.now);
+  const nowMs = parseInstant(options.now, "基準時刻");
   const latestStartMs = parseInstant(latestWeek.startedAt, "最新週の開始時刻");
   const oldestStartMs = latestStartMs - (weekCount - 1) * MS_PER_WEEK;
 
@@ -286,10 +287,26 @@ export function planSampleHistory(options: PlanOptions): SampleHistoryPlan {
     const notes = placements.map((placement) => placement.note);
 
     const weekStartMs = parseInstant(week.startedAt, "週の開始時刻");
-    const slots = timeSlots(shape.mergeCount + shape.directPushCount, weekStartMs, random);
+    // **`now` より後のスロットは捨てる。**
+    //
+    // 最新週は進行中なので、週内のスロット（月〜金に散らす）は素直に作ると `now` を追い越す。
+    // 追い越したまま積むと、リポジトリの履歴に**未来日付のコミット**が並ぶ。進行中の週は
+    // 収集カバレッジが `partial` になるので指標値には現れないが、収集は `until = now` の窓で
+    // 取るため、生成したコミットの一部が最初から収集対象外になる。検証用の履歴としては
+    // 「画面に出ないデータが混ざっている」状態で、あとから原因を切り分けられなくなる。
+    //
+    // スロットは全数ぶん作ってから捨てる。件数で分岐して作ると乱数を引く回数が変わり、
+    // 過去週の形まで `now` に依存して動いてしまう（`shapeOf` と同じ理由）。
+    const slots = timeSlots(shape.mergeCount + shape.directPushCount, weekStartMs, random).filter(
+      (at) => at <= nowMs,
+    );
+    // 落とす順は merge より直接 push を優先して残す（直接 push は 1 コミットで完結し、
+    // merge はブランチのコミットを伴うので、半端に切れると差分の形が崩れる）。
+    const directPushCount = Math.min(shape.directPushCount, slots.length);
+    const mergeCount = Math.min(shape.mergeCount, slots.length - directPushCount);
     let slot = 0;
 
-    for (let n = 0; n < shape.directPushCount; n += 1) {
+    for (let n = 0; n < directPushCount; n += 1) {
       sequence += 1;
       const at = slots[slot] ?? weekStartMs;
       slot += 1;
@@ -311,7 +328,7 @@ export function planSampleHistory(options: PlanOptions): SampleHistoryPlan {
 
     const stale = placements.find((placement) => placement.kind === "stale_branch");
 
-    for (let n = 0; n < shape.mergeCount; n += 1) {
+    for (let n = 0; n < mergeCount; n += 1) {
       sequence += 1;
       const mergeAt = simultaneous ? sharedSlot : (slots[slot] ?? weekStartMs);
       slot += 1;
@@ -341,8 +358,10 @@ export function planSampleHistory(options: PlanOptions): SampleHistoryPlan {
     plannedWeeks.push({
       week,
       anomalies: placements.map((placement) => placement.kind),
-      mergeCount: shape.mergeCount,
-      directPushCount: shape.directPushCount,
+      // 計画したとおりではなく**実際に置いた件数**を返す。最新週は `now` で切られるため、
+      // `shape` の件数を返すとテストと生成ログが履歴と食い違う。
+      mergeCount,
+      directPushCount,
       notes,
     });
   });

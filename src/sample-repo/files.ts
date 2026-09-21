@@ -134,24 +134,39 @@ const PACKAGE_JSON = `{
 `;
 
 /**
- * 本物の CD ワークフロー。**main への push で走り、GitHub Pages へ実際にデプロイする。**
+ * 本物の CD ワークフロー。**main への push で走り、GitHub Deployment を実際に記録する。**
  *
- * ## なぜ本物のデプロイ先が要るか
+ * ## なぜ GitHub Pages をやめたか
  *
- * `workflow_run` ルールは「指定したワークフローの成功実行」をデプロイとみなす
- * （ADR-0001 決定 2）。成功実行さえ積めれば形式的には検証できるが、中身が空の
- * ワークフローだと「デプロイしていないのにデプロイと数えた」状態を作ることになり、
- * サンプルリポジトリが検証したい「本物の CD の形」から外れる。Pages は secret 不要で
- * 実際に Deployments と Releases 相当の痕跡が残るため、保留にした `deployments_api`
- * ルール（`docs/spikes/0026-deployments-api.md`）を将来調べ直すときの材料にもなる。
+ * 当初は Pages へデプロイしていたが、**private リポジトリの Pages は有料プランでしか使えない。**
+ * 実際に #22 で作ったサンプルリポジトリ（private）では `actions/configure-pages` が
+ * `Create Pages site failed. Error: Resource not accessible by integration` で落ち、
+ * CD の成功実行が 0 件になった。
  *
- * ## `enablement: true` を付けてある理由
+ * これは単に赤いだけでは済まない。`workflow_run` ルールは成功実行だけを数えるので
+ * （`src/deploy/workflow-run.ts` の `isDeployRun`）、デプロイ 0 件になる。そして画面上の症状は
+ * 「グラフが空」であり、**収集側のバグと区別が付かない。** サンプルリポジトリは
+ * 「アプリが正しいか」を確かめる道具なので、道具側が黙って壊れているのが最悪の状態である。
  *
- * Pages が未設定のリポジトリでは `deploy-pages` が失敗する。失敗実行は
- * `isDeployRun`（`src/deploy/workflow-run.ts`）が弾くのでデプロイ 0 件になり、
- * `workflow_run` ルールの E2E（#23）が「アプリのバグなのか設定漏れなのか」
- * 分からない状態で止まる。`configure-pages` に有効化を任せて、手作業の前提を減らす。
- * それでも有効化できない場合は Settings → Pages → Source を GitHub Actions にする。
+ * サンプルリポジトリは合成履歴（1 年分の実在しない開発）を持つため public にしづらい。
+ * したがって**公開範囲に依存しないデプロイ先**を選ぶ必要がある。
+ *
+ * ## なぜ Deployments API なのか
+ *
+ * GitHub Deployments は「デプロイが起きた」ことを表す GitHub 自身の記録であり、
+ * private リポジトリでも無料で作れる。成果物は artifact として実際に上げるので、
+ * 「テストして、ビルドして、デプロイを記録する」という CD の形も保てる。
+ *
+ * 副次的な利点として、保留中の `deployments_api` ルール
+ * （ADR-0001 決定 3 / `docs/spikes/0026-deployments-api.md`）を将来調べ直すときの
+ * 実データがここに溜まる。Pages のままではこの材料は得られなかった。
+ *
+ * ## 落ちやすい箇所を減らしてある
+ *
+ * `required_contexts: []` を渡すのは、これを省くと GitHub が「このコミットのチェックが
+ * 全部成功しているか」を見にいき、自分自身がまだ完了していないため 409 で落ちるため。
+ * `auto_merge: false` を渡すのは、既定の `true` だとベースブランチへの自動マージを試み、
+ * デプロイを作らずに 202 を返すことがあるため。
  */
 const DEPLOY_WORKFLOW = `name: deploy
 
@@ -164,8 +179,8 @@ on:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
+  # Deployment を記録するために要る。Pages は private + 無料プランでは使えないため使わない。
+  deployments: write
 
 # デプロイは直列にする。同時実行を取り消すと成功実行が積まれない。
 concurrency:
@@ -185,23 +200,38 @@ jobs:
   deploy:
     needs: test
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: \${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
         with:
           node-version: "22"
       - run: npm run build
-      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-artifact@v4
         with:
-          enablement: true
-      - uses: actions/upload-pages-artifact@v4
-        with:
+          name: site
           path: dist
-      - id: deployment
-        uses: actions/deploy-pages@v4
+
+      - name: Deployment を記録する
+        env:
+          GH_TOKEN: \${{ github.token }}
+        run: |
+          set -euo pipefail
+          # required_contexts: [] を渡さないと、GitHub がこのコミットのチェック完了を待ち、
+          # 自分自身がまだ完了していないため 409 になる。
+          # auto_merge: false を渡さないと、既定の true がベースへの自動マージを試みる。
+          id=$(jq -nc --arg ref "$GITHUB_SHA" '{
+                 ref: $ref,
+                 environment: "production",
+                 auto_merge: false,
+                 required_contexts: [],
+                 description: "four-keys-sample-service"
+               }' \\
+             | gh api --method POST "repos/$GITHUB_REPOSITORY/deployments" --input - --jq '.id')
+          echo "deployment id: $id"
+          jq -nc '{ state: "success", description: "deployed" }' \\
+            | gh api --method POST "repos/$GITHUB_REPOSITORY/deployments/$id/statuses" \\
+                --input - --jq '.state'
 `;
 
 const GITIGNORE = `node_modules/
@@ -215,7 +245,8 @@ const README = `# four-keys-sample-service
 ## これは何か
 
 - **最小アプリ** — \`features/\` を走査して一覧を返すだけの Node HTTP サーバー。依存ゼロ
-- **本物の CD** — \`.github/workflows/deploy.yml\`。main への push で GitHub Pages へ実際にデプロイする
+- **本物の CD** — \`.github/workflows/deploy.yml\`。main への push でテスト → ビルド →
+  GitHub Deployment の記録まで行う（private + 無料プランで Pages が使えないため Pages は使わない）
 - **1 年分の合成履歴** — 過去日付のコミットとマージコミット。生成元は
   \`four-keys-metrics-viewer\` の \`src/sample-repo/\`
 

@@ -69,6 +69,85 @@ describe("planSampleHistory", () => {
     expect(landedAt).toEqual([...landedAt].sort((a, b) => a - b));
   });
 
+  /**
+   * `now` を週内のいろいろな位置に置いて試す。**曜日を変えないと再現しない。**
+   *
+   * 週内スロットは JST 月曜〜金曜に散らすので、`now` が週の後半（例: 日曜）なら
+   * 素直に作っても偶然すべて過去に収まる。`now` が週初（月曜の朝）のときだけ
+   * スロットが `now` を追い越す。#22 のサンプルリポジトリはまさに月曜に生成され、
+   * 4 日先のコミットが 13 件積まれた。単一の `now` で書いたテストはこれを見逃す。
+   *
+   * JST 月曜 00:00 = UTC 日曜 15:00。以下はその前後を意図的にまたいでいる。
+   */
+  it.each([
+    ["JST 月曜の朝（週の頭）", "2026-09-21T01:00:00.000Z"],
+    ["JST 月曜 00:30（週境界の直後）", "2026-09-20T15:30:00.000Z"],
+    ["JST 水曜の昼（週の半ば）", "2026-09-23T03:00:00.000Z"],
+    ["JST 日曜の夜（週の終わり）", "2026-09-27T10:00:00.000Z"],
+    ["既定のテスト基準時刻", NOW],
+  ])("未来日付のコミットを作らない: %s", (_label, now) => {
+    // 進行中の週は partial 扱いで指標値に出ないため、**画面を見ても気付けない。**
+    const built = planSampleHistory({ now });
+    const nowMs = parseInstant(now);
+    for (const change of built.changes) {
+      const commits = change.kind === "merge" ? [...change.commits, change.merge] : [change.commit];
+      for (const commit of commits) {
+        expect(parseInstant(commit.committedAt)).toBeLessThanOrEqual(nowMs);
+      }
+    }
+  });
+
+  it("now による切り落としは進行中の週だけに効く", () => {
+    // 切り落としが過去週まで削ると、意図して置いた異常ケースが「生成した時刻」次第で
+    // 消えることになる。同じ週の中で `now` を動かしても、最後の週以外は一致すること。
+    //
+    // 最後の週が空になること自体は正しい。JST 月曜の朝 10 時に生成すれば、
+    // その週にはまだ何も起きていないのが実際の履歴である。
+    const early = planSampleHistory({ now: "2026-09-21T01:00:00.000Z" });
+    const late = planSampleHistory({ now: "2026-09-25T10:00:00.000Z" });
+
+    expect(early.weeks).toHaveLength(late.weeks.length);
+    const shapeOfWeeks = (built: SampleHistoryPlan) =>
+      built.weeks
+        .slice(0, -1)
+        .map((week) => [week.week.key, week.mergeCount, week.directPushCount]);
+    expect(shapeOfWeeks(early)).toEqual(shapeOfWeeks(late));
+  });
+
+  it("最新のコミットが now から遠く離れない", () => {
+    // 切り落としが効きすぎて直近が丸ごと消えると、画面の右端が不自然に古くなる。
+    // 進行中の週が空になることはあるので、許容は 1 週間強に取る。
+    for (const now of [NOW, "2026-09-21T01:00:00.000Z", "2026-09-23T03:00:00.000Z"]) {
+      const built = planSampleHistory({ now });
+      const newest = Math.max(
+        ...built.changes.map((change) =>
+          parseInstant(
+            change.kind === "merge" ? change.merge.committedAt : change.commit.committedAt,
+          ),
+        ),
+      );
+      const daysBehind = (parseInstant(now) - newest) / (24 * 60 * 60 * 1000);
+      expect(daysBehind).toBeGreaterThanOrEqual(0);
+      expect(daysBehind).toBeLessThan(8);
+    }
+  });
+
+  it("週ごとの mergeCount が実際に置いた merge の件数と一致する", () => {
+    // 最新週は now で切られるので、計画値ではなく実数を返さないと
+    // 生成ログとテストが履歴と食い違う。
+    const built = plan();
+    const merges = new Map<string, number>();
+    const pushes = new Map<string, number>();
+    for (const change of built.changes) {
+      const target = change.kind === "merge" ? merges : pushes;
+      target.set(change.weekKey, (target.get(change.weekKey) ?? 0) + 1);
+    }
+    for (const week of built.weeks) {
+      expect(week.mergeCount).toBe(merges.get(week.week.key) ?? 0);
+      expect(week.directPushCount).toBe(pushes.get(week.week.key) ?? 0);
+    }
+  });
+
   it("各変更は自分の weekKey の週に載る", () => {
     // ここがずれると、意図して置いた欠損週が隣の週に落ちて検証にならない。
     for (const change of plan().changes) {
