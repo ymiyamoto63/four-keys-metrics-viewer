@@ -117,6 +117,20 @@ Docker の場合、`scopes.toml` はイメージに焼き込まれます。編�
 PAT の発行・更新手順、公開範囲の確認手順、SQLite ファイルのバックアップ・復旧手順は
 [`docs/operations.md`](docs/operations.md) にまとめています。
 
+### 検証用のサンプルリポジトリ
+
+実際のリポジトリを登録する前に動作を確かめたい場合は、**1 年分の合成履歴と本物の CD を持つ
+サンプルリポジトリ**を生成できます。
+
+```sh
+npm run sample:generate -- --out ../four-keys-sample-service
+```
+
+欠損週・外れ値・同一時刻の複数デプロイ・直接 push といった**意図的な異常ケース**を
+仕込んであるため、「常に綺麗な線が出るテストデータ」にはなりません。
+生成後に GitHub へ push する手順と、収集から表示までの確認手順は
+[`docs/sample-repo.md`](docs/sample-repo.md) にまとめています。
+
 ---
 
 ## コンセプト
