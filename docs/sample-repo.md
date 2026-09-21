@@ -72,6 +72,11 @@ npm run sample:generate -- --out ../four-keys-sample-service
 | 同一時刻の 2 件 / 3 件のデプロイ | 二重計上が起きないこと。デプロイ間隔 0 時間 |
 | PR を経由しない直接 push（単独の週と、merge と混ざる週） | コミット単位のリードタイムが取りこぼさないこと |
 
+生成は `--now`（既定は現在時刻）より後のコミットを作らない。最新週は進行中なので
+週内スロットが `now` を追い越しうるが、追い越した分は捨てている
+（捨てた結果、生成した曜日によっては最新週が 0 件になることがある。これは正しい状態で、
+JST 月曜の朝に生成すればその週にはまだ何も起きていない）。
+
 **異常ケースは最古の週と最新の週には置いていない。** どちらも収集カバレッジが必ず
 `partial` になり（バックフィルの端と進行中の今週）、デプロイ回数が `null` で表示されるため、
 そこに欠損週を置いても「意図した 0」なのか「まだ集めていない」のか区別が付かない。
@@ -95,11 +100,15 @@ git push -u origin main
 
 ### 2.1 CD を緑にする
 
-`deploy.yml` は main への push で走り、**GitHub Pages へ実際にデプロイする**。
-`configure-pages` に `enablement: true` を付けてあるので通常は自動で有効化されるが、
-組織のポリシーなどで有効化できない場合は手動で設定する。
+`deploy.yml` は main への push で走り、テスト → ビルド → **GitHub Deployment の記録**まで行う。
+追加の設定は要らない（`GITHUB_TOKEN` の `deployments: write` はワークフローが宣言している）。
 
-- `Settings` → `Pages` → `Build and deployment` → `Source` を **GitHub Actions** にする
+> **GitHub Pages は使わない。** private リポジトリの Pages は有料プランでしか使えず、
+> 実際に #22 で `actions/configure-pages` が
+> `Create Pages site failed. Error: Resource not accessible by integration` で落ちた。
+> 合成履歴を持つこのリポジトリは public にしづらいので、公開範囲に依存しない
+> Deployments API を使う。`deployments_api` ルール（ADR-0001 決定 3 で保留）を
+> 将来調べ直すときの実データが溜まるという副次的な利点もある。
 
 ```sh
 gh run list --workflow deploy.yml
