@@ -1,24 +1,138 @@
-import { Hono } from "hono";
+/**
+ * HTTP の経路（#20）。
+ *
+ * ## URL の階層
+ *
+ * ADR-0003 が決めた 2 階層（サマリ → 指標詳細）を、そのまま URL の階層にする。
+ *
+ * - `/` — 先頭のスコープのサマリへ転送する
+ * - `/scopes/:scopeId` — サマリ（#20）。期間は `?weeks=`
+ * - `/scopes/:scopeId/metrics/:metric` — 指標詳細（#21）。週は `?week=YYYY-MM-DD`
+ *
+ * **スコープを URL の第 1 階層に置く**のは、指標がスコープ単位でしか存在しないため
+ * （`CONTEXT.md`）。`/metrics/deploy-frequency?scope=...` の形にすると
+ * 「スコープを外した指標」という URL が書けてしまい、合算の入口になる。
+ * 3 階層目（個別イベント）は作らない。GitHub へ外部リンクする（ADR-0003）。
+ *
+ * URL の生成は `charts.ts` の `summaryHref` / `metricDetailHref` に寄せてある。
+ * ここで解釈する形とあちらで作る形は必ず対で直すこと。
+ */
+
+import { type Context, Hono } from "hono";
 import type { Config } from "../config.ts";
 import type { Db } from "../db/index.ts";
-import { ChartPreview } from "./views/chart-preview.tsx";
-import { Placeholder } from "./views/placeholder.tsx";
+import type { Scope } from "../scopes.ts";
+import { isMetricKey, summaryHref } from "./charts.ts";
+import { DEFAULT_PERIOD_WEEKS, PeriodQueryError, parsePeriodWeeks, periodOf } from "./period.ts";
+import { loadScopeMetrics } from "./scope-metrics.ts";
+import { MetricDetailPlaceholder } from "./views/metric-detail-placeholder.tsx";
+import { NoticePage } from "./views/notice-page.tsx";
+import { Summary } from "./views/summary.tsx";
 
-export function createApp(config: Config, db: Db): Hono {
+export type AppOptions = {
+  config: Config;
+  db: Db;
+  /** `scopes.toml` の内容（ADR-0005）。画面はここにあるスコープしか表示しない。 */
+  scopes: readonly Scope[];
+  /** 現在時刻。収集状態の「n 時間前」と集計期間の終端に使う。テストで固定できるよう注入する。 */
+  now?: () => Date;
+};
+
+export function createApp({ config, db, scopes, now = () => new Date() }: AppOptions): Hono {
   const app = new Hono();
 
-  app.get("/", (c) =>
-    c.html(
-      <Placeholder
-        databasePath={config.databasePath}
-        collectCron={config.collectCron}
-        githubTokenPresent={config.githubToken !== undefined}
-      />,
-    ),
-  );
+  app.get("/", (c) => {
+    const first = scopes[0];
+    if (first === undefined) {
+      // `loadScopes` が 0 件を拒否するので通常ここへは来ない（ADR-0005）。
+      return c.html(
+        <NoticePage
+          title="スコープがありません"
+          message="`scopes.toml` にスコープが 1 つも定義されていません。"
+        />,
+        500,
+      );
+    }
+    return c.redirect(summaryHref(first.id, DEFAULT_PERIOD_WEEKS));
+  });
 
-  // 合成データでチャートの描画を確認するための経路（#19）。本番の画面は #20 / #21 で作る。
-  app.get("/_preview/chart", (c) => c.html(<ChartPreview />));
+  app.get("/scopes/:scopeId", (c) => {
+    const scope = scopes.find((candidate) => candidate.id === c.req.param("scopeId"));
+    if (scope === undefined) {
+      return unknownScope(c, scopes);
+    }
+
+    let weeks: ReturnType<typeof parsePeriodWeeks>;
+    try {
+      weeks = parsePeriodWeeks(c.req.query("weeks"));
+    } catch (error) {
+      if (!(error instanceof PeriodQueryError)) {
+        throw error;
+      }
+      return c.html(
+        <NoticePage
+          title="その期間は選べません"
+          message={error.message}
+          backHref={summaryHref(scope.id, DEFAULT_PERIOD_WEEKS)}
+          backLabel={`${scope.id} のサマリへ`}
+        />,
+        400,
+      );
+    }
+
+    const at = now();
+    // 指標の集計値は保存しない（ADR-0002）。毎リクエストここで計算し直す。
+    const metrics = loadScopeMetrics(db, scope, periodOf(weeks, at), at);
+
+    return c.html(
+      <Summary
+        metrics={metrics}
+        scopes={scopes}
+        weeks={weeks}
+        environment={{
+          databasePath: config.databasePath,
+          collectCron: config.collectCron,
+          githubTokenPresent: config.githubToken !== undefined,
+        }}
+      />,
+    );
+  });
+
+  // 指標詳細（#21）。中身はまだ無いが、サマリの点のリンク先を 404 にしないため経路だけ置く。
+  app.get("/scopes/:scopeId/metrics/:metric", (c) => {
+    const scope = scopes.find((candidate) => candidate.id === c.req.param("scopeId"));
+    if (scope === undefined) {
+      return unknownScope(c, scopes);
+    }
+    const metric = c.req.param("metric");
+    if (!isMetricKey(metric)) {
+      return c.html(
+        <NoticePage
+          title="知らない指標です"
+          message={`指標 \`${metric}\` はありません。MVP の対象はデプロイ頻度と変更のリードタイムの 2 つです。`}
+          backHref={summaryHref(scope.id, DEFAULT_PERIOD_WEEKS)}
+          backLabel={`${scope.id} のサマリへ`}
+        />,
+        404,
+      );
+    }
+
+    let weeks: ReturnType<typeof parsePeriodWeeks>;
+    try {
+      weeks = parsePeriodWeeks(c.req.query("weeks"));
+    } catch {
+      weeks = DEFAULT_PERIOD_WEEKS;
+    }
+
+    return c.html(
+      <MetricDetailPlaceholder
+        scope={scope}
+        metric={metric}
+        week={c.req.query("week")}
+        weeks={weeks}
+      />,
+    );
+  });
 
   app.get("/healthz", (c) => {
     const row = db.prepare("select 1 as ok").get() as { ok: number } | undefined;
@@ -26,4 +140,25 @@ export function createApp(config: Config, db: Db): Hono {
   });
 
   return app;
+}
+
+/**
+ * 知らないスコープ。**空のサマリを返さない。**
+ *
+ * 存在しない `scope_id` に対して空のグラフを返すと、収集が届いていないスコープと
+ * 見分けが付かない（ADR-0004 の空白と同じ形で混ざる）。404 で止める。
+ */
+function unknownScope(c: Context, scopes: readonly Scope[]): ReturnType<Context["html"]> {
+  const first = scopes[0];
+  return c.html(
+    <NoticePage
+      title="知らないスコープです"
+      message={`そのスコープは \`scopes.toml\` にありません。表示できるのは ${scopes
+        .map((scope) => scope.id)
+        .join(" / ")} です。`}
+      backHref={first === undefined ? undefined : summaryHref(first.id, DEFAULT_PERIOD_WEEKS)}
+      backLabel="サマリへ"
+    />,
+    404,
+  );
 }
